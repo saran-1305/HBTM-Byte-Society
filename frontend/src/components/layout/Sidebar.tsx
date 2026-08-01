@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/cn';
 import {
   IconLayoutDashboard,
-  IconUser,
+  IconRoute,
   IconBook,
   IconSparkles,
   IconHistory,
@@ -18,7 +18,7 @@ import { UserMenu } from '@/components/UserMenu';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: IconLayoutDashboard, path: '/dashboard' },
-  { label: 'Identity', icon: IconUser, path: '/identity' },
+  { label: 'Arc', icon: IconRoute, path: '/arc' },
   { label: 'Knowledge', icon: IconBook, path: '/knowledge' },
   { label: 'Recommendations', icon: IconSparkles, path: '/recommendations' },
   { label: 'Reflection', icon: IconHistory, path: '/reflection' },

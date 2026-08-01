@@ -15,7 +15,7 @@ interface MobileTabBarProps {
 
 // Replaces the hamburger+drawer as the primary mobile nav: thumb-reach
 // bottom bar for the tabs used most, "More" opens the existing drawer for
-// everything else (Identity, Recommendations, Analytics, Settings, profile).
+// everything else (Arc, Recommendations, Analytics, Settings, Account).
 export function MobileTabBar({ onMore }: MobileTabBarProps) {
   return (
     <nav

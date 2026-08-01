@@ -40,6 +40,7 @@ interface OnboardingContextType {
   markTourSeen: () => void;
   lastSeenStageIndex: number;
   setLastSeenStageIndex: (index: number) => void;
+  startedAt: string | null;
   resetAll: () => void;
 }
 
@@ -88,6 +89,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const seedProfile = saved?.profile ? { ...defaultProfile, ...saved.profile } : defaultProfile;
     return getStageIndex(seedProfile, saved?.reflectionCount ?? 0);
   });
+  const [startedAt, setStartedAt] = useState<string | null>(() => readSavedState()?.startedAt ?? null);
 
   // Save to local storage on any change
   useEffect(() => {
@@ -105,11 +107,12 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         reduceMotionOverride,
         hasSeenTour,
         lastSeenStageIndex,
+        startedAt,
       })
     );
   }, [
     profile, isOnboardingComplete, reflectionCount, reflectionDates, recentlyViewed,
-    savedIds, dismissedIds, notificationPrefs, reduceMotionOverride, hasSeenTour, lastSeenStageIndex,
+    savedIds, dismissedIds, notificationPrefs, reduceMotionOverride, hasSeenTour, lastSeenStageIndex, startedAt,
   ]);
 
   const updateProfile = (data: Partial<OnboardingProfile>) => {
@@ -120,6 +123,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const startOnboarding = (name: string) => {
     const userId = crypto.randomUUID();
     setProfile((prev) => ({ ...prev, userId, name }));
+    setStartedAt((prev) => prev ?? new Date().toISOString());
     return userId;
   };
 
@@ -176,6 +180,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     setReduceMotionOverride(false);
     setHasSeenTour(false);
     setLastSeenStageIndex(0);
+    setStartedAt(null);
   };
 
   return (
@@ -203,6 +208,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         markTourSeen,
         lastSeenStageIndex,
         setLastSeenStageIndex,
+        startedAt,
         resetAll,
       }}
     >

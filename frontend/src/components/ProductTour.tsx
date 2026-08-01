@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn';
 
 const STEPS = [
   { title: 'Search is tab-specific', body: "Press ⌘K (or Ctrl+K) anywhere. Every tab searches its own content — there's no generic nav list to dig through." },
-  { title: 'Track your stage', body: 'The bar on Dashboard and Identity shows where you are across the 5-stage arc, and moves as you reflect.' },
+  { title: 'Track your stage', body: 'The bar on Dashboard and your Arc shows where you are across the 5-stage journey, and moves as you reflect.' },
   { title: 'Make it yours', body: "Bookmark picks, mark ones you don't want, and tune notifications any time from Settings." },
 ];
 

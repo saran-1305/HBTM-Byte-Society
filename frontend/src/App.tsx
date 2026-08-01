@@ -9,7 +9,8 @@ import { ProductTour } from '@/components/ProductTour';
 import WelcomePage from '@/features/onboard/WelcomePage';
 import OnboardFlow from '@/features/onboard/OnboardFlow';
 import Dashboard from '@/pages/Dashboard';
-import Identity from '@/pages/Identity';
+import Arc from '@/pages/Arc';
+import Account from '@/pages/Account';
 import Knowledge from '@/pages/Knowledge';
 import Recommendations from '@/pages/Recommendations';
 import Reflection from '@/pages/Reflection';
@@ -32,8 +33,10 @@ function AnimatedRoutes() {
       <Route path="/onboard/questions" element={<OnboardFlow />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/curate" element={<Dashboard />} />
-      <Route path="/identity" element={<Identity />} />
-      <Route path="/growth-plan" element={<Navigate to="/identity" replace />} />
+      <Route path="/arc" element={<Arc />} />
+      <Route path="/identity" element={<Navigate to="/arc" replace />} />
+      <Route path="/growth-plan" element={<Navigate to="/arc" replace />} />
+      <Route path="/account" element={<Account />} />
       <Route path="/knowledge" element={<Knowledge />} />
       <Route path="/recommendations" element={<Recommendations />} />
       <Route path="/reflection" element={<Reflection />} />

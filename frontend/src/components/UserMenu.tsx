@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Settings, Download, RotateCcw } from 'lucide-react';
-import { useOnboarding } from '@/context/OnboardingContext';
-import { useToast } from '@/context/ToastContext';
-import { exportUserData } from '@/lib/exportData';
-import { cn } from '@/lib/cn';
+import { Route, CircleUserRound, Settings } from 'lucide-react';
 import type { OnboardingProfile } from '@/types/onboarding';
 
 interface UserMenuProps {
@@ -14,34 +10,14 @@ interface UserMenuProps {
 
 export function UserMenu({ profile, onNavigate }: UserMenuProps) {
   const [open, setOpen] = useState(false);
-  const [confirmingReset, setConfirmingReset] = useState(false);
-  const { resetAll } = useOnboarding();
-  const { showToast } = useToast();
   const navigate = useNavigate();
 
-  const close = () => { setOpen(false); setConfirmingReset(false); };
+  const close = () => setOpen(false);
 
   const go = (path: string) => {
     close();
     onNavigate?.();
     navigate(path);
-  };
-
-  const handleExport = () => {
-    exportUserData();
-    showToast('Downloading your data...');
-    close();
-  };
-
-  const handleReset = () => {
-    if (!confirmingReset) {
-      setConfirmingReset(true);
-      return;
-    }
-    resetAll();
-    close();
-    onNavigate?.();
-    navigate('/');
   };
 
   return (
@@ -76,10 +52,18 @@ export function UserMenu({ profile, onNavigate }: UserMenuProps) {
             <button
               type="button"
               role="menuitem"
-              onClick={() => go('/identity')}
+              onClick={() => go('/arc')}
               className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors text-left"
             >
-              <User className="w-4 h-4" /> View identity
+              <Route className="w-4 h-4" /> View arc
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => go('/account')}
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors text-left"
+            >
+              <CircleUserRound className="w-4 h-4" /> Account
             </button>
             <button
               type="button"
@@ -88,27 +72,6 @@ export function UserMenu({ profile, onNavigate }: UserMenuProps) {
               className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors text-left"
             >
               <Settings className="w-4 h-4" /> Settings
-            </button>
-            <div className="h-px bg-white/10 my-1.5" />
-            <button
-              type="button"
-              role="menuitem"
-              onClick={handleExport}
-              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors text-left"
-            >
-              <Download className="w-4 h-4" /> Export data
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              onClick={handleReset}
-              onBlur={() => setConfirmingReset(false)}
-              className={cn(
-                'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors text-left',
-                confirmingReset ? 'text-spotlight hover:bg-spotlight/10' : 'text-white/80 hover:bg-white/10 hover:text-white'
-              )}
-            >
-              <RotateCcw className="w-4 h-4" /> {confirmingReset ? 'Confirm reset' : 'Reset profile'}
             </button>
           </div>
         </>

@@ -62,8 +62,8 @@ export function RightPanel({ profile, reasoning, streak }: RightPanelProps) {
       </PanelCard>
 
       <PanelCard
-        title="Growth Plan"
-        action={<Link to="/identity" className="text-xs text-muted hover:text-white transition-colors">Full plan</Link>}
+        title="Your Arc"
+        action={<Link to="/arc" className="text-xs text-muted hover:text-white transition-colors">Full arc</Link>}
       >
         <div className="relative pl-2.5 space-y-4">
           <div className="absolute left-[0.85rem] top-1.5 bottom-1.5 w-px bg-white/10" />
