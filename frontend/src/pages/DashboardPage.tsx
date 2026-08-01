@@ -1,4 +1,3 @@
-import React from 'react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import StatCard from '../components/dashboard/StatCard';
 import Recommendations from '../components/dashboard/Recommendations';

@@ -1,6 +1,5 @@
-import React from 'react';
 import { Loader2 } from 'lucide-react';
-import { useRecommendations } from '@/hooks/useRecommendations';
+import { useRecommendations } from '../../hooks/useRecommendations';
 
 const Recommendations = () => {
   const { data: recs, loading } = useRecommendations();

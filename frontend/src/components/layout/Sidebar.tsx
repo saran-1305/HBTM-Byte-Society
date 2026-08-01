@@ -1,4 +1,3 @@
-import React from 'react';
 import { Home, User, Target, BookOpen, ThumbsUp, Activity, BarChart2, ArrowRight } from 'lucide-react';
 
 const Sidebar = () => {

@@ -1,6 +1,5 @@
-import React from 'react';
-import { CheckCircle2, Circle, Clock, Loader2 } from 'lucide-react';
-import { useGrowthPlan } from '@/hooks/useGrowthPlan';
+import { CheckCircle2, Loader2 } from 'lucide-react';
+import { useGrowthPlan } from '../../hooks/useGrowthPlan';
 
 const GrowthPlan = () => {
   const { data, loading } = useGrowthPlan();

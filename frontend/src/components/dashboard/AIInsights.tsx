@@ -1,4 +1,3 @@
-import React from 'react';
 import { Sparkles, ArrowRight, Bot } from 'lucide-react';
 
 const AIInsights = () => {
