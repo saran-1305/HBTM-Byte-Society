@@ -1,19 +1,17 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { OnboardingProvider } from '@/context/OnboardingContext';
-import Onboarding from '@/pages/Onboarding';
-import Dashboard from '@/pages/Dashboard';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import WelcomePage from './features/onboard/WelcomePage';
+import OnboardFlow from './features/onboard/OnboardFlow';
+import DashboardPage from './pages/DashboardPage';
 
 function App() {
   return (
-    <Router>
-      <OnboardingProvider>
-        <Routes>
-          <Route path="/" element={<Navigate to="/onboarding" replace />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </OnboardingProvider>
-    </Router>
+    <Routes>
+      <Route path="/" element={<WelcomePage />} />
+      <Route path="/onboard/questions" element={<OnboardFlow />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/curate" element={<DashboardPage />} />
+    </Routes>
   );
 }
 
