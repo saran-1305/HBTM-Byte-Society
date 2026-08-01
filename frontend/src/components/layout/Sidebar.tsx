@@ -11,7 +11,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
-import { useOnboarding } from '@/context/OnboardingContext';
+import { useIdentityProfile } from '@/hooks/useIdentityProfile';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
@@ -25,7 +25,16 @@ const NAV_ITEMS = [
 
 export const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { profile } = useOnboarding();
+  const { data: profile } = useIdentityProfile();
+  
+  const fullName = profile?.full_name || 'User';
+  const initial = fullName.charAt(0).toUpperCase();
+  
+  // Try to parse growth_focus_areas array safely, fallback to default if missing
+  let currentFocus = 'Explorer';
+  if (profile?.growth_focus_areas && profile.growth_focus_areas.length > 0) {
+    currentFocus = profile.growth_focus_areas[0];
+  }
 
   return (
     <aside className="w-64 bg-slate-50 border-r border-slate-200 h-screen flex flex-col p-4">
@@ -79,11 +88,11 @@ export const Sidebar: React.FC = () => {
       {/* User Profile */}
       <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
         <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-medium shrink-0">
-          U
+          {initial}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-slate-900 truncate">Karthik R.</p>
-          <p className="text-xs text-slate-500 truncate">{profile.aspiration || 'User'}</p>
+          <p className="text-sm font-semibold text-slate-900 truncate">{fullName}</p>
+          <p className="text-xs text-slate-500 truncate">{currentFocus}</p>
         </div>
       </div>
     </aside>

@@ -58,24 +58,22 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const submitProfile = async () => {
     setIsSubmitting(true);
     try {
-      let token = localStorage.getItem('token');
-      if (!token) {
-        // Mock auth for demo purposes since Auth UI isn't built yet
-        const email = `demo${Date.now()}@example.com`;
-        await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password: 'demo' })
-        });
-        const loginRes = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ username: email, password: 'demo' })
-        });
-        const loginData = await loginRes.json();
-        token = loginData.access_token;
-        localStorage.setItem('token', token);
-      }
+      // For demo purposes, always generate a fresh user during onboarding submission
+      // to ensure no stale token issues occur.
+      const email = `demo${Date.now()}@example.com`;
+      await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: 'demo' })
+      });
+      const loginRes = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ username: email, password: 'demo' })
+      });
+      const loginData = await loginRes.json();
+      const token = loginData.access_token;
+      localStorage.setItem('token', token);
 
       // 1. Start Onboarding
       await fetch('/api/onboarding/start', {
@@ -106,6 +104,9 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       });
 
       localStorage.removeItem('onboarding_state');
+      
+      // Redirect to dashboard after successful onboarding!
+      window.location.href = '/dashboard';
     } catch (e) {
       console.error('Failed to submit profile', e);
     } finally {

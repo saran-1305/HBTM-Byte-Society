@@ -1,11 +1,15 @@
 import React from 'react';
 import { Search, Bell } from 'lucide-react';
+import { useIdentityProfile } from '@/hooks/useIdentityProfile';
 
 export const Header: React.FC = () => {
+  const { data: profile } = useIdentityProfile();
+  const firstName = profile?.full_name?.split(' ')[0] || 'User';
+
   return (
     <header className="h-20 px-8 flex items-center justify-between bg-slate-50">
       <div>
-        <h1 className="text-2xl font-serif text-slate-900 mb-1">Good morning, Karthik! 👋</h1>
+        <h1 className="text-2xl font-serif text-slate-900 mb-1">Good morning, {firstName}! 👋</h1>
         <p className="text-sm text-slate-500">Your AI curator has prepared your personalized growth roadmap.</p>
       </div>
       

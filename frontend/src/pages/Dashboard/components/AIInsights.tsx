@@ -1,7 +1,12 @@
 import React from 'react';
 import { Sparkles, ArrowRight } from 'lucide-react';
+import { useIdentityProfile } from '@/hooks/useIdentityProfile';
 
-export const AIInsights: React.FC = () => {
+export const AIInsights = () => {
+  const { data: profile } = useIdentityProfile();
+  
+  const insightsText = profile?.identity_summary || "Based on your recent activity, dedicating 20 more minutes to System Design today will increase your retention by 40%. You're also at peak energy levels right now.";
+
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
@@ -13,8 +18,8 @@ export const AIInsights: React.FC = () => {
       </div>
 
       <div className="bg-indigo-50/50 rounded-xl p-5 border border-indigo-100 relative overflow-hidden flex-1 flex flex-col justify-between">
-        <p className="text-sm text-slate-700 leading-relaxed relative z-10 pr-16">
-          You learn best between 9-11 AM. Consider scheduling your deep work sessions during this time.
+        <p className="text-sm text-slate-700 leading-relaxed relative z-10 pr-16 line-clamp-4">
+          {insightsText}
         </p>
         
         <div className="mt-4 relative z-10">

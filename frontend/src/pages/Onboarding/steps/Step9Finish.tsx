@@ -6,14 +6,13 @@ import { useOnboarding } from '@/context/OnboardingContext';
 
 export const Step9Finish: React.FC = () => {
   const navigate = useNavigate();
-  const { profile } = useOnboarding();
+  const { submitProfile } = useOnboarding();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate('/dashboard');
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [navigate]);
+    // Actually call the API to save the user profile and trigger AI generation
+    submitProfile().catch(console.error);
+    // submitProfile already redirects to /dashboard upon success, so we don't need a timeout here
+  }, []);
 
   return (
     <StepWrapper className="text-center mt-20">

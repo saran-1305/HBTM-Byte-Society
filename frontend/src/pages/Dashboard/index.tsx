@@ -1,5 +1,4 @@
 import React from 'react';
-import { useOnboarding } from '@/context/OnboardingContext';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from './components/StatCard';
 import { Recommendations } from './components/Recommendations';
@@ -7,12 +6,21 @@ import { GrowthPlanTimeline } from './components/GrowthPlanTimeline';
 import { HabitProgress } from './components/HabitProgress';
 import { RecentReflection } from './components/RecentReflection';
 import { AIInsights } from './components/AIInsights';
+import { useIdentityProfile } from '@/hooks/useIdentityProfile';
 
 import { Target, Flame, Clock, TrendingUp } from 'lucide-react';
 
 export default function Dashboard() {
-  const { profile } = useOnboarding();
-  const currentFocus = profile.aspiration || 'Deep Work & System Design';
+  const { data: profile } = useIdentityProfile();
+  
+  // Try to parse growth_focus_areas safely, fallback to default if missing
+  let currentFocus = 'Deep Work & System Design';
+  if (profile?.growth_focus_areas && profile.growth_focus_areas.length > 0) {
+    currentFocus = profile.growth_focus_areas[0];
+  }
+
+  // Convert 0-100 confidence score to a 0-10 format for the UI
+  const growthScore = profile?.confidence_score ? (profile.confidence_score / 10).toFixed(1) : '8.6';
 
   return (
     <DashboardLayout>
@@ -58,7 +66,7 @@ export default function Dashboard() {
           />
           <StatCard
             title="Growth Score"
-            value={<div className="text-3xl mt-1 flex items-baseline gap-1">8.6<span className="text-sm text-slate-500 font-sans">/10</span></div>}
+            value={<div className="text-3xl mt-1 flex items-baseline gap-1">{growthScore}<span className="text-sm text-slate-500 font-sans">/10</span></div>}
             subValue="Excellent progress"
             icon={<div className="p-2 bg-indigo-50 rounded-lg"><TrendingUp className="w-5 h-5 text-indigo-500" /></div>}
             footer={
@@ -79,23 +87,17 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-12">
           {/* Left Column */}
           <div className="lg:col-span-6 flex flex-col gap-6">
-            <div className="h-[400px]">
-              <Recommendations />
-            </div>
-            <div className="h-[200px]">
-              <RecentReflection />
-            </div>
+            <Recommendations />
+            <RecentReflection />
           </div>
           
           {/* Right Column */}
           <div className="lg:col-span-6 flex flex-col gap-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[300px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <GrowthPlanTimeline />
               <HabitProgress />
             </div>
-            <div className="h-[180px]">
-               <AIInsights />
-            </div>
+            <AIInsights />
           </div>
         </div>
 
