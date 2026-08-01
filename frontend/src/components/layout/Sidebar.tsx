@@ -13,11 +13,10 @@ const Sidebar = () => {
 
   return (
     <aside className="w-64 border-r border-slate-200 bg-white h-screen fixed left-0 top-0 flex flex-col pt-6 pb-6 overflow-y-auto">
-      {/* Logo */}
       <div className="px-6 mb-8 flex items-center gap-2">
         <div className="text-primary font-bold text-2xl flex items-center gap-2">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          GrowthAI
+          Daskalos
         </div>
       </div>
       <div className="px-6 mb-6">
