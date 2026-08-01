@@ -9,6 +9,9 @@ class OnboardingStartRequest(BaseModel):
     occupation: Optional[str] = None
 
 class OnboardingSaveRequest(BaseModel):
+    full_name: Optional[str] = None
+    age: Optional[int] = None
+    occupation: Optional[str] = None
     aspirations: Optional[List[str]] = None
     interests: Optional[List[str]] = None
     current_skills: Optional[List[str]] = None

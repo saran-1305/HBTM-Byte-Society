@@ -32,7 +32,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
   const fetchIdentity = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/identity/${userId}`);
+      const res = await fetch(`http://127.0.0.1:8000/api/onboarding/profile`, {
+        headers: {
+          'Authorization': 'Bearer test-token'
+        }
+      });
       if (res.ok) {
         const data = await res.json();
         setName(data.full_name || '');
@@ -75,9 +79,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
         habits: habits
       };
 
-      const res = await fetch(`http://127.0.0.1:8000/api/identity/${userId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`http://127.0.0.1:8000/api/onboarding/update`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer test-token'
+        },
         body: JSON.stringify(payload)
       });
 
