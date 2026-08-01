@@ -1,56 +1,70 @@
 import React from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const GrowthPlan = () => {
   const steps = [
-    {
-      title: 'Become a Strong AI Engineer',
-      subtitle: 'Target: Dec 2025',
-      status: 'completed'
-    },
-    {
-      title: 'Master System Design',
-      subtitle: 'In progress • 72%',
-      status: 'active',
-      color: 'bg-blue-500'
-    },
-    {
-      title: 'Build Real World Projects',
-      subtitle: 'In progress • 45%',
-      status: 'active',
-      color: 'bg-amber-500'
-    },
-    {
-      title: 'Contribute to Open Source',
-      subtitle: 'Upcoming',
-      status: 'upcoming'
-    }
+    { title: 'Explore', status: 'completed' },
+    { title: 'Commit', status: 'completed' },
+    { title: 'Struggle', status: 'active', progress: 68 },
+    { title: 'Breakthrough', status: 'upcoming' },
+    { title: 'Integrate', status: 'upcoming' }
   ];
 
   return (
-    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 h-full">
+    <div className="bg-[#131826] p-6 rounded-2xl border border-[#1F2937] h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-white">Your Growth Plan</h2>
-        <a href="#" className="text-indigo-400 text-sm font-semibold hover:text-indigo-300 transition-colors">View full plan</a>
+        <div>
+          <h2 className="text-[18px] font-bold text-white">Your Growth Plan</h2>
+          <p className="text-[13px] text-[#9CA3AF] mt-1">Path to writing weekly</p>
+        </div>
+        <Link to="/growth-plan" className="text-[#6366F1] text-[13px] font-semibold hover:text-indigo-400 transition-colors bg-[#6366F1]/10 px-3 py-1.5 rounded-lg">
+          View full
+        </Link>
       </div>
 
-      <div className="relative pl-3 mt-4 space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
-        {steps.map((step, index) => (
-          <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-            <div className="flex items-center justify-center w-5 h-5 rounded-full border-2 border-[#1E293B] bg-slate-800 text-slate-500 shadow-sm shrink-0 z-10">
-              {step.status === 'completed' && <CheckCircle2 className="w-5 h-5 text-emerald-400 bg-slate-800 rounded-full" />}
-              {step.status === 'active' && <div className={`w-2.5 h-2.5 rounded-full ${step.color} shadow-[0_0_10px_currentColor]`}></div>}
-              {step.status === 'upcoming' && <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>}
-            </div>
-            
-            <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] px-4">
-              <div className="flex flex-col">
-                <h3 className={`font-semibold text-sm ${step.status === 'completed' ? 'text-slate-400' : 'text-white'}`}>{step.title}</h3>
-                <span className="text-xs text-slate-500 mt-1">{step.subtitle}</span>
+      <div className="relative pl-5 mt-2 space-y-6 flex-1 before:absolute before:inset-0 before:ml-[0.95rem] before:h-full before:w-[2px] before:bg-gradient-to-b before:from-transparent before:via-[#1F2937] before:to-transparent">
+        {steps.map((step, index) => {
+          const isCompleted = step.status === 'completed';
+          const isActive = step.status === 'active';
+          const isUpcoming = step.status === 'upcoming';
+
+          return (
+            <div key={index} className="relative flex items-center gap-4">
+              <div className="absolute -left-[27px] flex items-center justify-center w-6 h-6 rounded-full bg-[#131826] border-[2px] border-[#131826] shrink-0 z-10 mt-0.5">
+                {isCompleted && (
+                  <div className="w-full h-full rounded-full bg-[#34D399] flex items-center justify-center">
+                    <Check className="w-3 h-3 text-[#0B0F1A] stroke-[3]" />
+                  </div>
+                )}
+                {isActive && (
+                  <div className="w-full h-full rounded-full bg-[#6366F1] flex items-center justify-center shadow-[0_0_10px_rgba(99,102,241,0.4)]">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white"></div>
+                  </div>
+                )}
+                {isUpcoming && (
+                  <div className="w-full h-full rounded-full border-2 border-[#1F2937] bg-[#0B0F1A]"></div>
+                )}
+              </div>
+              
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <h3 className={`font-medium text-[14px] ${isUpcoming ? 'text-[#9CA3AF]' : 'text-white'}`}>
+                    {step.title}
+                  </h3>
+                  {isActive && (
+                    <span className="text-[11px] font-semibold text-[#6366F1]">{step.progress}%</span>
+                  )}
+                </div>
+                {isActive && (
+                   <div className="w-full h-1 bg-[#1F2937] rounded-full mt-2">
+                     <div className="h-full bg-[#6366F1] rounded-full" style={{ width: `${step.progress}%` }}></div>
+                   </div>
+                )}
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

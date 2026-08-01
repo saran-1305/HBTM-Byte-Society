@@ -37,29 +37,29 @@ const MOCK_PHASES = [
 const GrowthPlanPage = () => {
   return (
     <DashboardLayout>
-      <div className="space-y-10">
+      <div className="space-y-12 pb-20">
         
         {/* Header Block */}
         <div>
           <h1 className="text-[28px] font-bold text-white mb-2">Growth Plan</h1>
-          <p className="text-[15px] text-[#9CA3AF]">Your path toward becoming a writer who publishes weekly.</p>
+          <p className="text-[15px] text-[#999999]">Your path toward becoming a writer who publishes weekly.</p>
         </div>
 
-        {/* Stage Progress Bar */}
-        <div className="bg-[#131826] border border-[#1F2937] rounded-xl p-6">
-          <div className="flex justify-between gap-2 mb-3">
+        {/* Stage Progress Bar (Borderless) */}
+        <div className="w-full">
+          <div className="flex justify-between gap-3 mb-3">
             {STAGES.map((stage, idx) => {
               const isCompleted = idx < CURRENT_STAGE_INDEX;
               const isCurrent = idx === CURRENT_STAGE_INDEX;
               
-              let barStyle = "bg-transparent border border-[#1F2937]"; // upcoming
-              if (isCompleted) barStyle = "bg-[#34D399] border border-[#34D399]";
-              if (isCurrent) barStyle = "bg-[#6366F1] border border-[#6366F1] shadow-[0_0_10px_rgba(99,102,241,0.3)]";
+              let barStyle = "bg-[#222222]"; // upcoming
+              if (isCompleted) barStyle = "bg-white";
+              if (isCurrent) barStyle = "bg-[#666666]";
 
               return (
-                <div key={stage} className="flex-1 flex flex-col items-center">
-                  <div className={`w-full h-2 rounded-full mb-2 ${barStyle}`}></div>
-                  <span className={`text-[12px] font-medium ${isCompleted || isCurrent ? 'text-white' : 'text-[#9CA3AF]'}`}>
+                <div key={stage} className="flex-1 flex flex-col items-center group cursor-default">
+                  <div className={`w-full h-[6px] rounded-full mb-3 ${barStyle} transition-colors group-hover:brightness-110`}></div>
+                  <span className={`text-[12px] font-bold tracking-wide ${isCompleted || isCurrent ? 'text-white' : 'text-[#666666]'}`}>
                     {stage}
                   </span>
                 </div>
@@ -68,57 +68,56 @@ const GrowthPlanPage = () => {
           </div>
         </div>
 
-        {/* Vertical Phase Timeline */}
-        <div className="bg-[#131826] border border-[#1F2937] rounded-xl p-8 relative">
-          
-          <div className="relative pl-6 space-y-10 before:absolute before:inset-0 before:ml-[1.4rem] before:h-full before:w-[2px] before:bg-gradient-to-b before:from-transparent before:via-[#1F2937] before:to-transparent">
+        {/* Vertical Phase Timeline (Borderless) */}
+        <div className="relative pt-4">
+          <div className="relative pl-[1.15rem] space-y-12 before:absolute before:inset-0 before:left-6 before:h-full before:w-[2px] before:bg-[#222222]">
             {MOCK_PHASES.map((phase, idx) => {
               const isCompleted = phase.status === 'completed';
               const isInProgress = phase.status === 'in_progress';
               const isUpcoming = phase.status === 'upcoming';
 
               return (
-                <div key={idx} className="relative flex items-start gap-6">
+                <div key={idx} className="relative flex items-start gap-8">
                   {/* Timeline Marker */}
-                  <div className="absolute -left-[30px] flex items-center justify-center w-7 h-7 rounded-full bg-[#131826] border-[3px] border-[#131826] shrink-0 z-10 mt-0.5">
+                  <div className="absolute -left-[18px] flex items-center justify-center w-8 h-8 rounded-full bg-black border-[4px] border-black shrink-0 z-10 top-0">
                     {isCompleted && (
-                      <div className="w-full h-full rounded-full bg-[#34D399] flex items-center justify-center">
-                        <Check className="w-3.5 h-3.5 text-[#0B0F1A] stroke-[3]" />
+                      <div className="w-full h-full rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                        <Check className="w-3.5 h-3.5 text-black stroke-[4]" />
                       </div>
                     )}
                     {isInProgress && (
-                      <div className="w-full h-full rounded-full bg-[#6366F1] flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-white"></div>
+                      <div className="w-full h-full rounded-full bg-[#333333] flex items-center justify-center">
+                        <div className="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
                       </div>
                     )}
                     {isUpcoming && (
-                      <div className="w-full h-full rounded-full border-2 border-[#1F2937] bg-[#0B0F1A]"></div>
+                      <div className="w-full h-full rounded-full border-2 border-[#333333] bg-black"></div>
                     )}
                   </div>
 
                   {/* Phase Content */}
-                  <div className="flex-1">
-                    <h3 className={`text-[16px] font-medium mb-1 ${isUpcoming ? 'text-[#9CA3AF]' : 'text-white'}`}>
+                  <div className="flex-1 pt-1">
+                    <h3 className={`text-[18px] font-bold mb-1 tracking-tight ${isUpcoming ? 'text-[#666666]' : 'text-white'}`}>
                       {phase.title}
                     </h3>
                     
-                    <div className="flex items-center gap-2 mb-4">
-                      {isCompleted && <span className="text-[13px] text-[#34D399] font-medium">Completed</span>}
-                      {isInProgress && <span className="text-[13px] text-[#6366F1] font-medium">In progress · {phase.progress}%</span>}
-                      {isUpcoming && <span className="text-[13px] text-[#9CA3AF] font-medium">Upcoming</span>}
+                    <div className="flex items-center gap-2 mb-5">
+                      {isCompleted && <span className="text-[13px] text-white/50 font-bold tracking-wide uppercase">Completed</span>}
+                      {isInProgress && <span className="text-[13px] text-white font-bold tracking-wide uppercase">In progress · {phase.progress}%</span>}
+                      {isUpcoming && <span className="text-[13px] text-[#444444] font-bold tracking-wide uppercase">Upcoming</span>}
                     </div>
 
                     {isInProgress && (
-                      <div className="w-full h-1.5 bg-[#1F2937] rounded-full mb-4 max-w-sm">
-                        <div className="h-full bg-[#6366F1] rounded-full" style={{ width: `${phase.progress}%` }}></div>
+                      <div className="w-full h-1 bg-[#222222] rounded-full mb-6 max-w-md overflow-hidden">
+                        <div className="h-full bg-white rounded-full transition-all duration-1000 ease-out" style={{ width: `${phase.progress}%` }}></div>
                       </div>
                     )}
 
-                    <ul className="space-y-2 mt-2">
+                    <ul className="space-y-3 mt-2 max-w-2xl">
                       {phase.topics.map((topic, tIdx) => (
-                        <li key={tIdx} className="flex items-start gap-2">
-                          <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${isUpcoming ? 'bg-[#1F2937]' : 'bg-[#9CA3AF]'}`}></div>
-                          <span className={`text-[13px] leading-relaxed ${isUpcoming ? 'text-[#9CA3AF]/60' : 'text-[#9CA3AF]'}`}>
+                        <li key={tIdx} className="flex items-start gap-3">
+                          <div className={`w-1.5 h-1.5 rounded-full mt-2 shrink-0 ${isUpcoming ? 'bg-[#222222]' : isCompleted ? 'bg-white/20' : 'bg-white/70'}`}></div>
+                          <span className={`text-[14px] leading-relaxed ${isUpcoming ? 'text-[#666666]' : isCompleted ? 'text-[#999999]' : 'text-white'}`}>
                             {topic}
                           </span>
                         </li>
@@ -131,11 +130,11 @@ const GrowthPlanPage = () => {
           </div>
         </div>
 
-        {/* Why this plan Card */}
-        <div className="bg-[#131826] border border-[#1F2937] rounded-xl p-6 md:w-2/3">
-          <h2 className="text-[14px] font-medium text-white mb-2">Why this order</h2>
-          <p className="text-[13px] text-[#9CA3AF] leading-relaxed">
-            DASKALOS sequences phases based on where resistance typically shows up first — habit before craft, craft before exposure. Your plan adjusts if your actual pattern differs.
+        {/* Why this plan Card (Borderless) */}
+        <div className="md:w-2/3 border-t border-[#222222] pt-8 mt-4">
+          <h2 className="text-[13px] uppercase font-bold tracking-widest text-[#666666] mb-3">Why this order</h2>
+          <p className="text-[14px] text-[#999999] leading-relaxed">
+            DASKALOS sequences phases based on where resistance typically shows up first — habit before craft, craft before exposure. Your plan adjusts organically if your actual behavioral pattern differs.
           </p>
         </div>
 

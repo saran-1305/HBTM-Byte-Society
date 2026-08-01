@@ -58,18 +58,6 @@ const OnboardFlow = () => {
     }, 1800);
   };
 
-  // Background color scales from dark slate to a slightly lighter blue/slate
-  const getBackgroundColor = () => {
-    switch (step) {
-      case 1: return 'bg-[#0F172A]';
-      case 2: return 'bg-[#141C34]';
-      case 3: return 'bg-[#182341]';
-      case 4: return 'bg-[#1C2A4D]';
-      case 5: return 'bg-[#1E293B]';
-      default: return 'bg-[#0F172A]';
-    }
-  };
-
   const slideVariants = {
     enter: { opacity: 0, y: 20 },
     center: { opacity: 1, y: 0 },
@@ -77,14 +65,14 @@ const OnboardFlow = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-700 ease-in-out ${getBackgroundColor()} text-white flex flex-col font-sans`}>
+    <div className={`min-h-screen transition-colors duration-700 ease-in-out bg-[#000000] text-white flex flex-col font-sans`}>
       {/* Top Navigation */}
       <div className="pt-8 px-8 flex justify-between items-center max-w-4xl mx-auto w-full h-16">
         <div>
           {step > 1 && step < 5 && (
             <button
               onClick={handlePrev}
-              className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center text-slate-400 hover:text-white"
+              className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center text-[#666666] hover:text-white"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
@@ -98,7 +86,7 @@ const OnboardFlow = () => {
               <div
                 key={i}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === step ? 'bg-indigo-500 w-4' : i < step ? 'bg-white/50' : 'bg-white/10'
+                  i === step ? 'bg-white w-4' : i < step ? 'bg-white/50' : 'bg-white/10'
                 }`}
               />
             ))}
@@ -123,22 +111,22 @@ const OnboardFlow = () => {
             >
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Who are you trying to become?</h1>
-                <p className="text-xl text-slate-400">Not your job title. The version of you that you're working toward.</p>
+                <p className="text-xl text-[#999999]">Not your job title. The version of you that you're working toward.</p>
               </div>
               <textarea
                 value={aspiration}
                 onChange={(e) => setAspiration(e.target.value)}
                 placeholder="A writer who publishes every week"
-                className="w-full bg-transparent border-b-2 border-white/20 text-white placeholder-slate-600 text-3xl md:text-4xl leading-relaxed py-4 focus:outline-none focus:border-indigo-500 transition-colors resize-none overflow-hidden"
+                className="w-full bg-transparent border-b-2 border-[#333333] text-white placeholder-[#666666] text-3xl md:text-4xl leading-relaxed py-4 focus:outline-none focus:border-white transition-colors resize-none overflow-hidden"
                 rows={3}
                 autoFocus
               />
               <button
                 onClick={handleNext}
                 disabled={!aspiration.trim()}
-                className="mt-8 bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 disabled:opacity-50 transition-all"
+                className="mt-8 bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
               >
-                Continue <span className="text-indigo-300 text-sm ml-2 font-normal">Press Enter ↵</span>
+                Continue <span className="text-[#666666] text-sm ml-2 font-bold">Press Enter ↵</span>
               </button>
             </motion.div>
           )}
@@ -160,10 +148,10 @@ const OnboardFlow = () => {
                   <button
                     key={tf}
                     onClick={() => setTimeframe(tf)}
-                    className={`px-8 py-5 rounded-2xl text-xl font-medium border-2 transition-all ${
+                    className={`px-8 py-5 rounded-2xl text-xl font-bold border-2 transition-all ${
                       timeframe === tf
-                        ? 'bg-indigo-600 border-indigo-500 text-white shadow-[0_0_20px_rgba(79,70,229,0.3)] scale-105'
-                        : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20'
+                        ? 'bg-white border-white text-black scale-105'
+                        : 'bg-transparent border-[#333333] text-[#999999] hover:bg-white/10 hover:border-[#666666]'
                     }`}
                   >
                     {tf}
@@ -178,9 +166,9 @@ const OnboardFlow = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
                       onClick={handleNext}
-                      className="bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 transition-all"
+                      className="bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 transition-all"
                     >
-                      Continue <span className="text-indigo-300 text-sm ml-2 font-normal">Press Enter ↵</span>
+                      Continue <span className="text-[#666666] text-sm ml-2 font-bold">Press Enter ↵</span>
                     </motion.button>
                   )}
                 </AnimatePresence>
@@ -201,10 +189,10 @@ const OnboardFlow = () => {
             >
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight">What does your day actually look like right now?</h1>
-                <p className="text-xl text-slate-400">Be honest — this helps us understand the gap.</p>
+                <p className="text-xl text-[#999999]">Be honest — this helps us understand the gap.</p>
               </div>
               
-              <div className="bg-slate-900/50 rounded-2xl border border-white/10 p-4 flex flex-wrap gap-2 items-center min-h-[80px]">
+              <div className="bg-[#121212] rounded-2xl border border-transparent focus-within:border-white transition-colors p-4 flex flex-wrap gap-2 items-center min-h-[80px]">
                 <AnimatePresence>
                   {habits.map((habit) => (
                     <motion.div
@@ -212,10 +200,10 @@ const OnboardFlow = () => {
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.8 }}
-                      className="bg-indigo-500/20 text-indigo-200 border border-indigo-500/30 px-4 py-2 rounded-full flex items-center gap-2 text-lg"
+                      className="bg-white/10 text-white border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 text-lg"
                     >
                       {habit}
-                      <button onClick={() => removeHabit(habit)} className="hover:text-white transition-colors">
+                      <button onClick={() => removeHabit(habit)} className="hover:text-red-400 transition-colors">
                         <X className="w-4 h-4" />
                       </button>
                     </motion.div>
@@ -232,7 +220,7 @@ const OnboardFlow = () => {
                     }
                   }}
                   placeholder={habits.length === 0 ? "Type a habit & press enter..." : "Add another..."}
-                  className="flex-1 bg-transparent border-none text-white placeholder-slate-500 text-xl py-2 focus:outline-none min-w-[200px]"
+                  className="flex-1 bg-transparent border-none text-white placeholder-[#666666] text-xl py-2 focus:outline-none min-w-[200px]"
                 />
               </div>
 
@@ -241,7 +229,7 @@ const OnboardFlow = () => {
                   <button
                     key={placeholder}
                     onClick={() => addHabit(placeholder)}
-                    className="bg-white/5 hover:bg-white/10 text-slate-400 hover:text-slate-200 border border-white/10 px-4 py-2 rounded-full text-sm transition-colors flex items-center gap-2"
+                    className="bg-white/5 hover:bg-white/10 text-[#999999] hover:text-white border border-white/10 px-4 py-2 rounded-full text-sm font-bold transition-colors flex items-center gap-2"
                   >
                     + {placeholder}
                   </button>
@@ -252,7 +240,7 @@ const OnboardFlow = () => {
                 <button
                   onClick={handleNext}
                   disabled={habits.length === 0}
-                  className="bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 disabled:opacity-50 transition-all"
+                  className="bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
                 >
                   Continue
                 </button>
@@ -277,15 +265,15 @@ const OnboardFlow = () => {
                 value={stuckPoint}
                 onChange={(e) => setStuckPoint(e.target.value)}
                 placeholder="Starting is fine, finishing is the problem"
-                className="w-full bg-transparent border-b-2 border-white/20 text-white placeholder-slate-600 text-3xl leading-relaxed py-4 focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full bg-transparent border-b-2 border-[#333333] text-white placeholder-[#666666] text-3xl leading-relaxed py-4 focus:outline-none focus:border-white transition-colors"
                 autoFocus
               />
               <button
                 onClick={submitForm}
                 disabled={!stuckPoint.trim()}
-                className="mt-8 bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 disabled:opacity-50 transition-all"
+                className="mt-8 bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
               >
-                Complete <span className="text-indigo-300 text-sm ml-2 font-normal">Press Enter ↵</span>
+                Complete <span className="text-[#666666] text-sm ml-2 font-bold">Press Enter ↵</span>
               </button>
             </motion.div>
           )}
@@ -303,20 +291,20 @@ const OnboardFlow = () => {
             >
               {isSubmitting ? (
                 <div className="flex flex-col items-center justify-center space-y-6 py-12">
-                  <Loader2 className="w-12 h-12 text-indigo-500 animate-spin" />
-                  <h2 className="text-2xl font-medium text-slate-300">Getting to know you...</h2>
+                  <Loader2 className="w-12 h-12 text-white animate-spin" />
+                  <h2 className="text-2xl font-bold text-white">Getting to know you...</h2>
                 </div>
               ) : (
                 <div className="space-y-8 py-8">
                   <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto">
                     <Check className="w-10 h-10" />
                   </div>
-                  <p className="text-2xl md:text-3xl font-medium leading-relaxed text-slate-200 max-w-2xl mx-auto">
+                  <p className="text-2xl md:text-3xl font-bold leading-relaxed text-white max-w-2xl mx-auto">
                     "{profileSummary}"
                   </p>
                   <button
                     onClick={() => navigate('/profile/setup')}
-                    className="mt-8 bg-white text-slate-900 px-10 py-5 rounded-full font-bold text-xl hover:bg-slate-100 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:scale-105"
+                    className="mt-8 bg-white text-black px-10 py-5 rounded-full font-bold text-xl hover:bg-gray-200 transition-all"
                   >
                     Continue Setup
                   </button>

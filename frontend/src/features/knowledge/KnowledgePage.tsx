@@ -43,33 +43,33 @@ const KnowledgePage = () => {
         {/* Header Block */}
         <div>
           <h1 className="text-[28px] font-bold text-white mb-2">Knowledge</h1>
-          <p className="text-[15px] text-[#9CA3AF]">Concepts DASKALOS has surfaced for you, organized by what you're building toward.</p>
+          <p className="text-[15px] text-[#999999]">Concepts DASKALOS has surfaced for you, organized by what you're building toward.</p>
         </div>
 
         {/* Search Bar */}
         <div className="relative w-full md:max-w-md">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-[#9CA3AF]" />
+            <Search className="h-4 w-4 text-[#666666]" />
           </div>
           <input 
             type="text" 
             placeholder="Search your knowledge..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#0B0F1A] border border-[#1F2937] text-white placeholder-[#9CA3AF] rounded-lg pl-10 pr-12 py-[10px] focus:outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] transition-colors"
+            className="w-full bg-black border border-[#333333] text-white placeholder-[#666666] rounded-lg pl-10 pr-12 py-[10px] focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-colors"
           />
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <span className="text-[10px] font-semibold text-[#9CA3AF] bg-[#131826] border border-[#1F2937] rounded px-1.5 py-0.5">⌘K</span>
+            <span className="text-[10px] font-bold text-[#999999] bg-[#121212] border border-[#333333] rounded px-1.5 py-0.5">⌘K</span>
           </div>
         </div>
 
         {/* Empty State */}
         {isEmpty ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-16 h-16 bg-[#131826] border border-[#1F2937] rounded-full flex items-center justify-center mb-4">
-              <Search className="w-6 h-6 text-[#9CA3AF] opacity-50" />
+            <div className="w-16 h-16 bg-[#121212] rounded-full flex items-center justify-center mb-4">
+              <Search className="w-6 h-6 text-[#666666] opacity-50" />
             </div>
-            <p className="text-[#9CA3AF] text-sm">Your knowledge base will grow as DASKALOS curates for you.</p>
+            <p className="text-[#999999] text-sm">Your knowledge base will grow as DASKALOS curates for you.</p>
           </div>
         ) : (
           /* Domain Groups */
@@ -77,8 +77,8 @@ const KnowledgePage = () => {
             {filteredData.map(group => (
               <section key={group.domain}>
                 <div className="flex items-center gap-3 mb-6">
-                  <h2 className="text-[18px] font-medium text-white">{group.domain}</h2>
-                  <span className="text-xs font-medium bg-[#131826] border border-[#1F2937] text-[#9CA3AF] px-2 py-0.5 rounded-full">
+                  <h2 className="text-[18px] font-bold text-white">{group.domain}</h2>
+                  <span className="text-xs font-bold bg-[#222222] text-[#999999] px-2 py-0.5 rounded-full">
                     {group.items.length}
                   </span>
                 </div>
@@ -87,18 +87,18 @@ const KnowledgePage = () => {
                   {group.items.map((item, idx) => (
                     <div 
                       key={idx}
-                      className="bg-[#131826] border border-[#1F2937] rounded-xl p-5 hover:-translate-y-[2px] hover:border-[#6366F1]/50 transition-all duration-150 ease-out group flex flex-col justify-between min-h-[140px]"
+                      className="bg-[#121212] rounded-xl p-5 hover:-translate-y-[2px] hover:bg-[#1A1A1A] transition-all duration-150 ease-out group flex flex-col justify-between min-h-[140px]"
                     >
                       <div className="mb-4">
-                        <h3 className="text-[16px] font-medium text-white truncate mb-1">{item.title}</h3>
-                        <p className="text-[14px] text-[#9CA3AF] leading-relaxed line-clamp-2">{item.excerpt}</p>
+                        <h3 className="text-[16px] font-bold text-white truncate mb-1">{item.title}</h3>
+                        <p className="text-[14px] text-[#999999] leading-relaxed line-clamp-2">{item.excerpt}</p>
                       </div>
                       
                       <div className="flex justify-between items-center mt-auto">
-                        <span className="bg-[#6366F1]/15 text-[#6366F1] uppercase text-[11px] font-bold rounded-md px-2 py-0.5 tracking-wide">
+                        <span className="bg-white/10 text-white uppercase text-[11px] font-bold rounded-md px-2 py-0.5 tracking-wide">
                           {item.stage}
                         </span>
-                        <span className="text-[12px] text-[#9CA3AF]">{item.date}</span>
+                        <span className="text-[12px] text-[#999999]">{item.date}</span>
                       </div>
                     </div>
                   ))}

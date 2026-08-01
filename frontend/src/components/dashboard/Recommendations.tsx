@@ -1,53 +1,64 @@
 import React from 'react';
+import { Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const MOCK_DATA = [
+  { 
+    id: 1,
+    title: "Designing Data-Intensive Applications", 
+    type: "Book", 
+    source: "Martin Kleppmann", 
+    reasoning: "You're deep in system design right now — this is the foundational text everyone in that stage eventually needs.", 
+    wildcard: false 
+  },
+  { 
+    id: 2,
+    title: "What Marathon Training Teaches About Discipline", 
+    type: "Article", 
+    source: "Runner's World", 
+    reasoning: "This isn't in your usual lane, but the discipline mechanics are identical to what you're building in Deep Work.", 
+    wildcard: true 
+  }
+];
 
 const Recommendations = () => {
-  const items = [
-    {
-      id: 1,
-      title: 'Designing Data-Intensive Applications',
-      author: 'Book • Martin Kleppmann',
-      tag: 'Deep Work',
-      match: '90%',
-      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=200&auto=format&fit=crop'
-    },
-    {
-      id: 2,
-      title: 'System Design Interview in 40 Minutes',
-      author: 'Video • Alex Xu',
-      tag: 'System Design',
-      match: '88%',
-      image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop'
-    },
-    {
-      id: 3,
-      title: 'The Mental Models Every Engineer Should Know',
-      author: 'Article • Farnam Street',
-      tag: 'Mental Models',
-      match: '85%',
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=200&auto=format&fit=crop'
-    }
-  ];
-
   return (
-    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 h-full">
+    <div className="bg-[#131826] p-6 rounded-2xl border border-[#1F2937] h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-white">Today's Top Recommendations</h2>
-        <a href="#" className="text-indigo-400 text-sm font-semibold hover:text-indigo-300 transition-colors">See all</a>
+        <div>
+          <h2 className="text-[18px] font-bold text-white">Curated for you today</h2>
+          <p className="text-[13px] text-[#9CA3AF] mt-1">Matched to your current 'Struggle' phase</p>
+        </div>
+        <Link to="/recommendations" className="text-[#6366F1] text-[13px] font-semibold hover:text-indigo-400 transition-colors bg-[#6366F1]/10 px-3 py-1.5 rounded-lg">
+          View all
+        </Link>
       </div>
       
-      <div className="space-y-6">
-        {items.map(item => (
-          <div key={item.id} className="flex gap-4 group cursor-pointer">
-            <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 relative border border-white/10">
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 opacity-80 group-hover:opacity-100" />
+      <div className="space-y-4 flex-1">
+        {MOCK_DATA.map((item) => (
+          <div 
+            key={item.id}
+            className="bg-[#0B0F1A] border border-[#1F2937] rounded-xl p-4 hover:border-[#6366F1]/50 transition-all duration-150 group"
+          >
+            <div className="flex justify-between items-start mb-2">
+              <span className="bg-[#6366F1]/15 text-[#6366F1] uppercase text-[10px] font-bold rounded-md px-2 py-0.5 tracking-wide">
+                {item.type}
+              </span>
+              
+              {item.wildcard && (
+                <span className="bg-[#F97316]/15 text-[#F97316] uppercase text-[9px] font-bold rounded-md px-2 py-0.5 tracking-wide">
+                   OFF YOUR USUAL PATH
+                </span>
+              )}
             </div>
-            <div className="flex-1 flex flex-col justify-center">
-              <h3 className="font-semibold text-white text-sm mb-1 group-hover:text-indigo-400 transition-colors line-clamp-1">{item.title}</h3>
-              <p className="text-xs text-slate-400 mb-2">{item.author}</p>
-              <div className="flex justify-between items-center">
-                <span className="text-[10px] font-semibold text-indigo-300 bg-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-wider">{item.tag}</span>
-                <span className="text-xs font-semibold text-emerald-400">{item.match} match</span>
-              </div>
+
+            <h3 className="text-[15px] font-medium text-white mb-1 leading-snug">{item.title}</h3>
+            <p className="text-[12px] text-[#9CA3AF] mb-3">{item.source}</p>
+            
+            <div className="border-l-2 border-[#1F2937] pl-3 py-0.5 mb-2">
+              <p className="text-[12px] text-[#9CA3AF] italic leading-relaxed">
+                "{item.reasoning}"
+              </p>
             </div>
           </div>
         ))}
