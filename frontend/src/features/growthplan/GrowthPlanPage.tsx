@@ -74,13 +74,14 @@ const GrowthPlanPage = () => {
               const isCompleted = index < currentStageIndex;
               const isCurrent = index === currentStageIndex;
               const isLocked = index > currentStageIndex;
+              const isFullyDone = isCurrent && progressPercent >= 100;
               
               return (
                 <div key={stage} className={`flex flex-col ${isLocked ? 'opacity-30' : ''}`}>
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-4">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-500 ${isCompleted ? 'bg-green-500/20 border-green-500 text-green-500' : isCurrent ? 'bg-[#E50914]/20 border-[#E50914] text-[#E50914] shadow-[0_0_15px_rgba(229,9,20,0.5)]' : 'border-[#444444] text-transparent'}`}>
-                        {isCompleted ? <IconCheck size={20} /> : <span className="w-2.5 h-2.5 rounded-full bg-current"></span>}
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-500 ${isCompleted || isFullyDone ? 'bg-green-500/20 border-green-500 text-green-500' : isCurrent ? 'bg-[#E50914]/20 border-[#E50914] text-[#E50914] shadow-[0_0_15px_rgba(229,9,20,0.5)]' : 'border-[#444444] text-transparent'}`}>
+                        {isCompleted || isFullyDone ? <IconCheck size={20} /> : <span className="w-2.5 h-2.5 rounded-full bg-current"></span>}
                       </div>
                       <span className={`capitalize text-2xl font-medium tracking-wide ${isCurrent ? 'text-white' : 'text-white/70'}`}>
                         {stage}
@@ -88,7 +89,7 @@ const GrowthPlanPage = () => {
                     </div>
                     
                     {isCurrent && (
-                      <span className="text-[#E50914] font-bold text-lg">
+                      <span className={isFullyDone ? "text-green-500 font-bold text-lg" : "text-[#E50914] font-bold text-lg"}>
                         {Math.floor(progressPercent)}%
                       </span>
                     )}
@@ -98,7 +99,7 @@ const GrowthPlanPage = () => {
                   {isCurrent && (
                     <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden ml-[3.5rem]" style={{ width: 'calc(100% - 3.5rem)' }}>
                       <div 
-                        className="h-full bg-gradient-to-r from-[#E50914] to-red-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(229,9,20,0.8)]"
+                        className={isFullyDone ? "h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(34,197,94,0.8)]" : "h-full bg-gradient-to-r from-[#E50914] to-red-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(229,9,20,0.8)]"}
                         style={{ width: `${progressPercent}%` }}
                       ></div>
                     </div>
@@ -107,6 +108,15 @@ const GrowthPlanPage = () => {
               );
             })}
           </div>
+
+          {currentStageIndex === STAGES.length - 1 && progressPercent >= 100 && (
+            <div className="mt-8 bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center animate-fade-in shadow-[0_0_20px_rgba(34,197,94,0.15)]">
+              <h3 className="text-2xl font-bold text-green-400 mb-2">🎉 Yay! Today's work is completed!</h3>
+              <p className="text-green-500/80 text-lg">
+                Outstanding effort integrating your knowledge. Take a well-deserved break and let this momentum carry you forward.
+              </p>
+            </div>
+          )}
         </div>
 
       </div>

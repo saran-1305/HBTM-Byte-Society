@@ -6,7 +6,7 @@ import DashboardLayout from '../../components/layout/DashboardLayout';
 
 
 
-const FILTER_TYPES = ['All', 'Article', 'Video', 'Book'];
+const FILTER_TYPES = ['All', 'Intern opportunities', 'Hackathon\'s', 'Workshops'];
 
 const RecommendationsPage = () => {
   const [activeFilter, setActiveFilter] = useState('All');
