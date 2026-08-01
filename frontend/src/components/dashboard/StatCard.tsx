@@ -14,26 +14,26 @@ interface StatCardProps {
 
 const StatCard = ({ title, value, subtitle, icon, progress, trend }: StatCardProps) => {
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between hover:shadow-md transition-shadow">
-      <div className="flex items-center gap-3 mb-4 text-sm font-medium text-slate-600">
-        <div className="p-2 rounded-lg bg-slate-50">
+    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 flex flex-col justify-between hover:bg-slate-800/40 transition-colors">
+      <div className="flex items-center gap-3 mb-4 text-sm font-medium text-slate-400">
+        <div className="p-2 rounded-lg bg-slate-800/50">
           {icon}
         </div>
         {title}
       </div>
       
       <div className="mb-4">
-        <div className="text-3xl font-bold text-slate-900 mb-1">{value}</div>
-        <div className="text-sm text-slate-500">{subtitle}</div>
+        <div className="text-3xl font-bold text-white mb-1">{value}</div>
+        <div className="text-sm text-slate-400">{subtitle}</div>
       </div>
 
       {progress && (
-        <div className="w-full bg-slate-100 rounded-full h-1.5 mt-auto">
+        <div className="w-full bg-white/10 rounded-full h-1.5 mt-auto">
           <div 
             className={`h-1.5 rounded-full ${progress.colorClass}`} 
             style={{ width: `${progress.value}%` }}
           ></div>
-          <div className="text-right text-xs font-semibold text-slate-700 mt-2">{progress.value}%</div>
+          <div className="text-right text-xs font-semibold text-slate-300 mt-2">{progress.value}%</div>
         </div>
       )}
 

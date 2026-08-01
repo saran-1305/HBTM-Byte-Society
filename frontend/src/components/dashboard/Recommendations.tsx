@@ -29,24 +29,24 @@ const Recommendations = () => {
   ];
 
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full">
+    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 h-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-slate-900">Today's Top Recommendations</h2>
-        <a href="#" className="text-indigo-600 text-sm font-semibold hover:text-indigo-700">See all</a>
+        <h2 className="text-lg font-bold text-white">Today's Top Recommendations</h2>
+        <a href="#" className="text-indigo-400 text-sm font-semibold hover:text-indigo-300 transition-colors">See all</a>
       </div>
       
       <div className="space-y-6">
         {items.map(item => (
           <div key={item.id} className="flex gap-4 group cursor-pointer">
-            <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 relative border border-slate-200">
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+            <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 relative border border-white/10">
+              <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 opacity-80 group-hover:opacity-100" />
             </div>
             <div className="flex-1 flex flex-col justify-center">
-              <h3 className="font-semibold text-slate-900 text-sm mb-1 group-hover:text-indigo-600 transition-colors line-clamp-1">{item.title}</h3>
-              <p className="text-xs text-slate-500 mb-2">{item.author}</p>
+              <h3 className="font-semibold text-white text-sm mb-1 group-hover:text-indigo-400 transition-colors line-clamp-1">{item.title}</h3>
+              <p className="text-xs text-slate-400 mb-2">{item.author}</p>
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded uppercase tracking-wider">{item.tag}</span>
-                <span className="text-xs font-semibold text-emerald-600">{item.match} match</span>
+                <span className="text-[10px] font-semibold text-indigo-300 bg-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-wider">{item.tag}</span>
+                <span className="text-xs font-semibold text-emerald-400">{item.match} match</span>
               </div>
             </div>
           </div>

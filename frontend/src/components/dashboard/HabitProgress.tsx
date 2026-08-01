@@ -9,10 +9,10 @@ const HabitProgress = () => {
   ];
 
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full flex flex-col">
+    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-slate-900">Habit Progress</h2>
-        <a href="#" className="text-indigo-600 text-sm font-semibold hover:text-indigo-700">See all</a>
+        <h2 className="text-lg font-bold text-white">Habit Progress</h2>
+        <a href="#" className="text-indigo-400 text-sm font-semibold hover:text-indigo-300 transition-colors">See all</a>
       </div>
 
       <div className="flex-1 flex flex-col justify-between space-y-4">
@@ -20,15 +20,15 @@ const HabitProgress = () => {
           const percentage = (habit.current / habit.max) * 100;
           return (
             <div key={idx}>
-              <div className="flex justify-between text-sm font-semibold text-slate-900 mb-2">
+              <div className="flex justify-between text-sm font-semibold text-slate-200 mb-2">
                 <span>{habit.name}</span>
-                <span className="text-slate-500 font-medium text-xs">
+                <span className="text-slate-400 font-medium text-xs">
                   {habit.current} / {habit.max} {habit.unit}
                 </span>
               </div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5">
+              <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
                 <div 
-                  className={`h-1.5 rounded-full ${percentage >= 100 ? 'bg-emerald-500' : 'bg-emerald-400'}`}
+                  className={`h-full rounded-full ${percentage >= 100 ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]' : 'bg-emerald-500'}`}
                   style={{ width: `${percentage}%` }}
                 ></div>
               </div>

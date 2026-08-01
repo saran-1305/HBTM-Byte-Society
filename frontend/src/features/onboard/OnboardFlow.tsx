@@ -315,10 +315,10 @@ const OnboardFlow = () => {
                     "{profileSummary}"
                   </p>
                   <button
-                    onClick={() => navigate('/dashboard')}
+                    onClick={() => navigate('/profile/setup')}
                     className="mt-8 bg-white text-slate-900 px-10 py-5 rounded-full font-bold text-xl hover:bg-slate-100 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:scale-105"
                   >
-                    Enter DASKALOS
+                    Continue Setup
                   </button>
                 </div>
               )}

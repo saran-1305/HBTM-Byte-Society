@@ -7,7 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#6B46C1", // Example purple based on reference
+        primary: "var(--accent-primary)",
+        background: "var(--bg-main)",
+        surface: "var(--bg-surface)",
+        muted: "var(--text-muted)",
+        border: "var(--border-subtle)",
       }
     },
   },
