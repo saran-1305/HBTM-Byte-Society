@@ -1,23 +1,23 @@
-import React from 'react';
-import { Sidebar } from './Sidebar';
-import { Header } from './Header';
+import React, { ReactNode } from 'react';
+import Sidebar from './Sidebar';
+import Header from './Header';
 
 interface DashboardLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-50">
+    <div className="min-h-screen bg-[#F8FAFC]">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="pl-64">
         <Header />
-        <main className="flex-1 overflow-y-auto px-8 pb-8 pt-4">
-          <div className="max-w-6xl mx-auto h-full">
-            {children}
-          </div>
+        <main className="px-8 pb-12 max-w-[1400px] mx-auto">
+          {children}
         </main>
       </div>
     </div>
   );
 };
+
+export default DashboardLayout;
