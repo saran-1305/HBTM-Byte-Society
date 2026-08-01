@@ -20,10 +20,14 @@ import os
 import sys
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
-from backend.config.database import Base
+from backend.config.database import Base, SYNC_DATABASE_URL
+
+config.set_main_option("sqlalchemy.url", SYNC_DATABASE_URL.replace("%", "%%"))
 import backend.models.user
 import backend.models.identity_profile
 import backend.models.recommendation
+import backend.models.profile
+import backend.models.activity
 import backend.models.growth_plan
 import backend.models.habits
 import backend.models.knowledge

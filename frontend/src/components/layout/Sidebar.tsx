@@ -8,7 +8,8 @@ import {
   IconChartBar, 
   IconUser, 
   IconSettings,
-  IconChevronRight
+  IconChevronRight,
+  IconShare
 } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ const Sidebar = ({ onOpenSettings }: SidebarProps) => {
     { icon: IconTarget, label: 'Growth Plan', path: '/growth-plan' },
     { icon: IconMessage2, label: 'Reflection', path: '/reflection' },
     { icon: IconChartBar, label: 'Analytics', path: '/analytics' },
+    { icon: IconShare, label: 'Publishing', path: '/publishing' },
   ];
 
   return (

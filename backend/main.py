@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import routers
-from backend.api import auth, onboarding, identity, recommendations, growth, knowledge, publishing
+from backend.api import auth, onboarding, identity, knowledge, publishing
 from backend.api import recommendation_router, arc_router, curator_router, activity_router
 from backend.publishing.scheduler.core import get_scheduler
 
@@ -26,7 +26,6 @@ app.include_router(auth.router)
 app.include_router(onboarding.router)
 app.include_router(identity.router)
 app.include_router(knowledge.router)
-app.include_router(growth.router, prefix="/api/growth")
 app.include_router(publishing.router)
 
 app.include_router(recommendation_router.router, prefix="/api/recommendation")

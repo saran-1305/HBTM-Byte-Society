@@ -23,15 +23,20 @@ class ArcService:
         profile = result.scalars().first()
         
         if not profile:
-            profile = UserProfile(
-                user_id=user_id,
-                current_stage=StageName.EXPLORE.value,
-                stage_progress=0.0,
-                stage_history=[]
-            )
-            self.db.add(profile)
-            await self.db.commit()
-            await self.db.refresh(profile)
+            try:
+                profile = UserProfile(
+                    user_id=user_id,
+                    current_stage=StageName.EXPLORE.value,
+                    stage_progress=0.0,
+                    stage_history=[]
+                )
+                self.db.add(profile)
+                await self.db.commit()
+                await self.db.refresh(profile)
+            except Exception as e:
+                await self.db.rollback()
+                # If IntegrityError occurs (e.g. foreign key violation), the user doesn't exist
+                raise ValueError(f"User {user_id} does not exist in the system.")
             
         return profile
 
