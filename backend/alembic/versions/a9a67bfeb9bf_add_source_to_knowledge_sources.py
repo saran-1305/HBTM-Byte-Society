@@ -79,8 +79,6 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.drop_table('curated_recommendations')
-    op.drop_index(op.f('ix_apscheduler_jobs_next_run_time'), table_name='apscheduler_jobs')
-    op.drop_table('apscheduler_jobs')
     op.drop_table('knowledge_collections')
     op.add_column('knowledge_sources', sa.Column('source', sa.String(), server_default='Unknown', nullable=False))
     op.add_column('knowledge_sources', sa.Column('domain', sa.String(), nullable=True))
@@ -112,13 +110,7 @@ def downgrade() -> None:
     sa.Column('created_at', postgresql.TIMESTAMP(timezone=True), server_default=sa.text('now()'), autoincrement=False, nullable=True),
     sa.PrimaryKeyConstraint('id', name=op.f('knowledge_collections_pkey'))
     )
-    op.create_table('apscheduler_jobs',
-    sa.Column('id', sa.VARCHAR(length=191), autoincrement=False, nullable=False),
-    sa.Column('next_run_time', sa.DOUBLE_PRECISION(precision=53), autoincrement=False, nullable=True),
-    sa.Column('job_state', postgresql.BYTEA(), autoincrement=False, nullable=False),
-    sa.PrimaryKeyConstraint('id', name=op.f('apscheduler_jobs_pkey'))
-    )
-    op.create_index(op.f('ix_apscheduler_jobs_next_run_time'), 'apscheduler_jobs', ['next_run_time'], unique=False)
+
     op.create_table('curated_recommendations',
     sa.Column('id', sa.UUID(), autoincrement=False, nullable=False),
     sa.Column('user_id', sa.UUID(), autoincrement=False, nullable=False),
