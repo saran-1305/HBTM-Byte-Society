@@ -23,7 +23,7 @@ class GroqProvider(LLMProvider):
             "Content-Type": "application/json"
         }
         data = {
-            "model": "llama3-8b-8192", # Groq model
+            "model": "llama-3.1-8b-instant", # Groq model
             "messages": [
                 {"role": "system", "content": "You are a precise JSON-only AI."},
                 {"role": "user", "content": prompt}

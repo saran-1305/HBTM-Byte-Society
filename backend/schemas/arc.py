@@ -1,15 +1,38 @@
-from pydantic import BaseModel, Field
-from typing import Dict, Any, List
-from backend.data.arc_config import StageName
-from backend.schemas.stage import StageConfigResponse
+from pydantic import BaseModel
+from typing import Dict, Any, List, Optional
+from datetime import datetime
+from uuid import UUID
 
-class ArcResponse(BaseModel):
-    current_stage: StageName
-    progress: float = Field(..., ge=0.0, le=1.0)
-    config: StageConfigResponse
+class ARCProfileResponse(BaseModel):
+    user_id: UUID
+    current_stage: str
+    stage_started_at: datetime
+    current_reasoning: Optional[str]
+    ai_observation: Optional[str]
+    suggested_next_action: Optional[str]
+    last_evaluation_at: Optional[datetime]
 
-class ProgressUpdate(BaseModel):
-    value: float = Field(..., ge=0.0, le=1.0)
+    class Config:
+        from_attributes = True
 
-class ArcConfigResponse(BaseModel):
-    stages: Dict[str, StageConfigResponse]
+class ARCObservationResponse(BaseModel):
+    id: UUID
+    observation_type: str
+    source_module: str
+    title: str
+    description: Optional[str]
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class ARCStageHistoryResponse(BaseModel):
+    id: UUID
+    previous_stage: Optional[str]
+    current_stage: str
+    transition_reason: str
+    ai_summary: Optional[str]
+    transitioned_at: datetime
+
+    class Config:
+        from_attributes = True
