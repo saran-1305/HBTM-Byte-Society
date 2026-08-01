@@ -6,7 +6,7 @@ import HabitProgress from '../components/dashboard/HabitProgress';
 import RecentReflection from '../components/dashboard/RecentReflection';
 import AIInsights from '../components/dashboard/AIInsights';
 import { Target, Flame, Clock, TrendingUp } from 'lucide-react';
-import { useIdentityProfile } from '../../hooks/useIdentityProfile';
+import { useIdentityProfile } from '../hooks/useIdentityProfile';
 
 function DashboardPage() {
   const { data: identity } = useIdentityProfile();
