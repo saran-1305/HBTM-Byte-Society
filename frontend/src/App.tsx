@@ -1,16 +1,21 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { OnboardingProvider } from '@/context/OnboardingContext';
-import Onboarding from '@/pages/Onboarding';
+import WelcomePage from '@/features/onboard/WelcomePage';
+import OnboardFlow from '@/features/onboard/OnboardFlow';
 import Dashboard from '@/pages/Dashboard';
+import Identity from '@/pages/Identity';
+import GrowthPlan from '@/pages/GrowthPlan';
 
 function App() {
   return (
     <Router>
       <OnboardingProvider>
         <Routes>
-          <Route path="/" element={<Navigate to="/onboarding" replace />} />
-          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/onboarding" element={<OnboardFlow />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/identity" element={<Identity />} />
+          <Route path="/growth-plan" element={<GrowthPlan />} />
         </Routes>
       </OnboardingProvider>
     </Router>

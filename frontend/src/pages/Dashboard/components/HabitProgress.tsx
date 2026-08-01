@@ -1,43 +1,46 @@
 import React from 'react';
+import { useOnboarding } from '@/context/OnboardingContext';
 
-interface Habit {
-  id: string;
-  name: string;
-  progress: number;
-  meta: string;
-}
-
-const mockHabits: Habit[] = [
-  { id: '1', name: 'Daily Learning', progress: 75, meta: '45 / 60 min' },
-  { id: '2', name: 'Reading', progress: 66, meta: '20 / 30 min' },
-  { id: '3', name: 'Exercise', progress: 100, meta: '30 / 30 min' },
-  { id: '4', name: 'Meditation', progress: 66, meta: '10 / 15 min' },
-  { id: '5', name: 'Journaling', progress: 50, meta: '15 / 30 min' },
-];
+// Static progress values for onboarding habits (would come from tracking backend later)
+const HABIT_DEFAULTS: Record<string, number> = {
+  Reading: 66,
+  Gym: 80,
+  Meditation: 50,
+  Coding: 90,
+  Journaling: 40,
+};
 
 export const HabitProgress: React.FC = () => {
+  const { profile } = useOnboarding();
+  const habits = profile.habits && profile.habits.length > 0
+    ? profile.habits
+    : ['Reading', 'Coding', 'Meditation', 'Journaling', 'Gym'];
+
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-semibold text-slate-900">Habits today</h2>
-        <button className="text-sm text-indigo-600 font-medium hover:text-indigo-700">See all</button>
+        <button className="text-sm text-indigo-600 font-medium hover:text-indigo-700">Track</button>
       </div>
 
       <div className="flex flex-col gap-5">
-        {mockHabits.map((habit) => (
-          <div key={habit.id}>
-            <div className="flex justify-between text-xs font-medium mb-2">
-              <span className="text-slate-900">{habit.name}</span>
-              <span className="text-slate-500">{habit.meta}</span>
+        {habits.map((habit) => {
+          const progress = HABIT_DEFAULTS[habit] ?? 60;
+          return (
+            <div key={habit}>
+              <div className="flex justify-between text-xs font-medium mb-1.5">
+                <span className="text-slate-900">{habit}</span>
+                <span className="text-slate-500">{progress}%</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-emerald-500 rounded-full"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
             </div>
-            <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-emerald-500 rounded-full"
-                style={{ width: `${habit.progress}%` }}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -1,28 +1,23 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { type OnboardingProfile, OnboardingStep } from '@/types/onboarding';
+import { type OnboardingProfile } from '@/types/onboarding';
 
 interface OnboardingContextType {
-  currentStep: OnboardingStep;
   profile: Partial<OnboardingProfile>;
-  nextStep: () => void;
-  prevStep: () => void;
   updateProfile: (data: Partial<OnboardingProfile>) => void;
-  submitProfile: () => Promise<void>;
-  isSubmitting: boolean;
+  startOnboarding: (name: string) => string;
+  completeOnboarding: (profileSummary: string) => void;
+  isOnboardingComplete: boolean;
 }
 
 const defaultProfile: Partial<OnboardingProfile> = {
-  currentHabits: [],
-  currentChallenges: [],
-  interests: [],
+  habits: [],
 };
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
 
 export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentStep, setCurrentStep] = useState<OnboardingStep>(OnboardingStep.Welcome);
   const [profile, setProfile] = useState<Partial<OnboardingProfile>>(defaultProfile);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
 
   // Load from local storage on mount
   useEffect(() => {
@@ -30,54 +25,46 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.currentStep) setCurrentStep(parsed.currentStep);
         if (parsed.profile) setProfile({ ...defaultProfile, ...parsed.profile });
+        if (parsed.isComplete) setIsOnboardingComplete(true);
       } catch (e) {
         console.error('Failed to parse onboarding state', e);
       }
     }
   }, []);
 
-  // Save to local storage on change
+  // Save to local storage on any change
   useEffect(() => {
-    localStorage.setItem('onboarding_state', JSON.stringify({ currentStep, profile }));
-  }, [currentStep, profile]);
-
-  const nextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, OnboardingStep.Finish));
-  };
-
-  const prevStep = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, OnboardingStep.Welcome));
-  };
+    localStorage.setItem(
+      'onboarding_state',
+      JSON.stringify({ profile, isComplete: isOnboardingComplete })
+    );
+  }, [profile, isOnboardingComplete]);
 
   const updateProfile = (data: Partial<OnboardingProfile>) => {
     setProfile((prev) => ({ ...prev, ...data }));
   };
 
-  const submitProfile = async () => {
-    setIsSubmitting(true);
-    try {
-      // TODO: Replace with actual API call
-      console.log('Submitting profile:', profile);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // Clear local storage after successful submission
-      localStorage.removeItem('onboarding_state');
-    } finally {
-      setIsSubmitting(false);
-    }
+  // Called from WelcomePage: generates a local user_id, no real auth
+  const startOnboarding = (name: string) => {
+    const userId = crypto.randomUUID();
+    setProfile((prev) => ({ ...prev, userId, name }));
+    return userId;
+  };
+
+  const completeOnboarding = (profileSummary: string) => {
+    setProfile((prev) => ({ ...prev, profileSummary }));
+    setIsOnboardingComplete(true);
   };
 
   return (
     <OnboardingContext.Provider
       value={{
-        currentStep,
         profile,
-        nextStep,
-        prevStep,
         updateProfile,
-        submitProfile,
-        isSubmitting,
+        startOnboarding,
+        completeOnboarding,
+        isOnboardingComplete,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
-import React from 'react';
 import { useOnboarding } from '@/context/OnboardingContext';
+import { TIMEFRAME_LABEL } from '@/types/onboarding';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from './components/StatCard';
 import { Recommendations } from './components/Recommendations';
@@ -7,22 +7,23 @@ import { GrowthPlanTimeline } from './components/GrowthPlanTimeline';
 import { HabitProgress } from './components/HabitProgress';
 import { RecentReflection } from './components/RecentReflection';
 import { AIInsights } from './components/AIInsights';
+import { IdentitySnapshot } from './components/IdentitySnapshot';
 
 import { Target, Flame, Clock, TrendingUp } from 'lucide-react';
 
 export default function Dashboard() {
   const { profile } = useOnboarding();
-  const currentFocus = profile.aspiration || 'Deep Work and System Design';
+  const currentFocus = profile.aspiration || 'Set your goal in onboarding';
 
   return (
     <DashboardLayout>
       <div className="flex flex-col gap-6">
-        {/* KPI row: 1 col on mobile, 2 on sm, 4 on lg */}
+        {/* KPI row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             title="Current Focus"
-            value={<div className="text-xl mt-1 line-clamp-2">{currentFocus}</div>}
-            subValue=""
+            value={<div className="text-lg mt-1 line-clamp-2 leading-snug">{currentFocus}</div>}
+            subValue={profile.timeframe ? `Aiming: ${TIMEFRAME_LABEL[profile.timeframe]}` : ''}
             icon={<div className="p-2 bg-indigo-50 rounded-lg"><Target className="w-5 h-5 text-indigo-500" /></div>}
             footer={
               <div className="flex items-center gap-3">
@@ -48,7 +49,7 @@ export default function Dashboard() {
           <StatCard
             title="Learning Time Today"
             value={<div className="text-3xl mt-1">45m</div>}
-            subValue="of 60m goal"
+            subValue="toward today's focus block"
             icon={<div className="p-2 bg-emerald-50 rounded-lg"><Clock className="w-5 h-5 text-emerald-500" /></div>}
             footer={
               <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1">
@@ -78,7 +79,7 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Main content: stacked on mobile, 2-col on lg */}
+        {/* Main content grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pb-12">
           {/* Left column */}
           <div className="flex flex-col gap-4">
@@ -88,7 +89,7 @@ export default function Dashboard() {
 
           {/* Right column */}
           <div className="flex flex-col gap-4">
-            {/* Timeline and habits: side-by-side on sm, stacked below 640px */}
+            <IdentitySnapshot />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <GrowthPlanTimeline />
               <HabitProgress />

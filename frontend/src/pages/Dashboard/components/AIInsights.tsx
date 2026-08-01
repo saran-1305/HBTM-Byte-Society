@@ -1,7 +1,16 @@
 import React from 'react';
 import { Sparkles, ArrowRight } from 'lucide-react';
+import { useOnboarding } from '@/context/OnboardingContext';
+
+const DEFAULT_INSIGHT =
+  'You learn best between 9 and 11 AM. Try scheduling focused study sessions in that window.';
 
 export const AIInsights: React.FC = () => {
+  const { profile } = useOnboarding();
+  const insight = profile.stuckPoint
+    ? `You said "${profile.stuckPoint.toLowerCase()}" is where you get stuck. Try shrinking today's first step until it takes under two minutes.`
+    : DEFAULT_INSIGHT;
+
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 flex flex-col">
       <div className="flex items-center justify-between mb-4">
@@ -16,7 +25,7 @@ export const AIInsights: React.FC = () => {
 
       <div className="bg-amber-50 rounded-xl p-5 border border-amber-100 relative overflow-hidden flex flex-col gap-4">
         <p className="text-sm text-slate-700 leading-relaxed relative z-10 pr-14">
-          You learn best between 9 and 11 AM. Try scheduling focused study sessions in that window.
+          {insight}
         </p>
 
         <div className="relative z-10">
@@ -25,7 +34,6 @@ export const AIInsights: React.FC = () => {
           </button>
         </div>
 
-        {/* Decorative indicator */}
         <div className="absolute bottom-4 right-4 w-10 h-10 bg-amber-200 rounded-full flex items-center justify-center opacity-80">
           <div className="w-6 h-5 bg-slate-800 rounded-md flex items-center justify-center gap-1">
             <div className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />

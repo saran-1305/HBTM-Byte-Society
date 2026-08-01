@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from '@/lib/cn';
 import { 
   LayoutDashboard, 
@@ -17,8 +17,8 @@ import { useOnboarding } from '@/context/OnboardingContext';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Identity', icon: User, path: '#' },
-  { label: 'Growth Plan', icon: Map, path: '#' },
+  { label: 'Identity', icon: User, path: '/identity' },
+  { label: 'Growth Plan', icon: Map, path: '/growth-plan' },
   { label: 'Knowledge', icon: BookOpen, path: '#' },
   { label: 'Recommendations', icon: Sparkles, path: '#' },
   { label: 'Reflection', icon: History, path: '#' },
@@ -43,7 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="font-serif font-bold text-lg text-slate-900 leading-tight">GrowthAI</h1>
+            <h1 className="font-serif font-bold text-lg text-slate-900 leading-tight">Daskalos</h1>
             <p className="text-[10px] text-slate-500 uppercase tracking-wider">Know yourself. Grow from there.</p>
           </div>
         </div>

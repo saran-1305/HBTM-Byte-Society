@@ -1,21 +1,25 @@
-export interface OnboardingProfile {
-  aspiration: string;
-  motivation: string;
-  currentHabits: string[];
-  currentChallenges: string[];
-  interests: string[];
-  learningStyle: string;
-  availableTime: string;
-}
+export type AspirationTimeframe = 'weeks' | 'months' | 'this_year' | 'someday';
 
-export enum OnboardingStep {
-  Welcome = 1,
-  Aspiration = 2,
-  Motivation = 3,
-  Habits = 4,
-  Challenges = 5,
-  Interests = 6,
-  LearningStyle = 7,
-  Time = 8,
-  Finish = 9,
+export const TIMEFRAME_OPTIONS: { value: AspirationTimeframe; label: string }[] = [
+  { value: 'weeks', label: 'Weeks' },
+  { value: 'months', label: 'Months' },
+  { value: 'this_year', label: 'This year' },
+  { value: 'someday', label: 'Someday' },
+];
+
+export const TIMEFRAME_LABEL: Record<AspirationTimeframe, string> = {
+  weeks: 'the next few weeks',
+  months: 'the next few months',
+  this_year: 'this year',
+  someday: 'someday',
+};
+
+export interface OnboardingProfile {
+  userId: string;
+  name: string;
+  aspiration: string;
+  timeframe: AspirationTimeframe | '';
+  habits: string[];
+  stuckPoint: string;
+  profileSummary: string;
 }
