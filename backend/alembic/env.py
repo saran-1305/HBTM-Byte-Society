@@ -23,6 +23,9 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..'
 from backend.config.database import Base
 import backend.models.user
 import backend.models.identity_profile
+import backend.models.recommendation
+import backend.models.growth_plan
+import backend.models.habits
 
 target_metadata = Base.metadata
 

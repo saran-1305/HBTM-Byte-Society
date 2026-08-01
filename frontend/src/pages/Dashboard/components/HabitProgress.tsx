@@ -1,20 +1,11 @@
 import React from 'react';
+import { Loader2 } from 'lucide-react';
+import { useGrowthPlan } from '@/hooks/useGrowthPlan';
 
-interface Habit {
-  id: string;
-  name: string;
-  progress: number; // 0-100
-  meta: string;
-}
+export const HabitProgress = () => {
+  const { data, loading } = useGrowthPlan();
+  const habits = data?.habits || [];
 
-const mockHabits: Habit[] = [
-  { id: '1', name: 'Daily Learning', progress: 75, meta: '45 / 60 min' },
-  { id: '2', name: 'Reading', progress: 66, meta: '20 / 30 min' },
-  { id: '3', name: 'Exercise', progress: 100, meta: '30 / 30 min' },
-  { id: '4', name: 'Meditation', progress: 66, meta: '10 / 15 min' },
-];
-
-export const HabitProgress: React.FC = () => {
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
@@ -22,21 +13,33 @@ export const HabitProgress: React.FC = () => {
         <button className="text-sm text-indigo-600 font-medium hover:text-indigo-700">See all</button>
       </div>
 
-      <div className="flex-1 flex flex-col gap-6">
-        {mockHabits.map((habit) => (
-          <div key={habit.id}>
-            <div className="flex justify-between text-xs font-medium mb-2">
-              <span className="text-slate-900">{habit.name}</span>
-              <span className="text-slate-500">{habit.meta}</span>
-            </div>
-            <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-emerald-500 rounded-full" 
-                style={{ width: `${habit.progress}%` }}
-              />
-            </div>
+      <div className="flex-1 flex flex-col justify-center gap-6">
+        {loading ? (
+          <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-3 py-8">
+             <Loader2 className="w-6 h-6 animate-spin text-indigo-500" />
+             <p className="text-sm animate-pulse text-center">AI Planner is building your routine...</p>
           </div>
-        ))}
+        ) : habits.length === 0 ? (
+          <div className="text-sm text-slate-500 text-center py-4">No habits available yet.</div>
+        ) : (
+          habits.map((habit: any, index: number) => {
+            const percent = Math.min(100, Math.round((habit.completed_minutes / habit.target_minutes) * 100));
+            return (
+              <div key={habit.id || index}>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="font-medium text-slate-800">{habit.name}</span>
+                  <span className="text-slate-500">{habit.completed_minutes} / {habit.target_minutes} min</span>
+                </div>
+                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                    style={{ width: `${percent}%` }}
+                  ></div>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );
