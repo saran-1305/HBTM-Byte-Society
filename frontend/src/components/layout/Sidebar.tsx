@@ -12,7 +12,11 @@ import {
 } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
 
-const Sidebar = () => {
+interface SidebarProps {
+  onOpenSettings?: () => void;
+}
+
+const Sidebar = ({ onOpenSettings }: SidebarProps) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -64,18 +68,17 @@ const Sidebar = () => {
 
       {/* Account Section */}
       <nav className="px-4 space-y-1 flex-1">
-        <Link
-          to="/profile/setup"
-          className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors ${
-            currentPath === '/profile/setup'
-              ? 'bg-[#2A2A2A] text-white' 
-              : 'text-[#9CA3AF] hover:bg-[#1A1A1A] hover:text-white'
-          }`}
+        <button
+          onClick={onOpenSettings}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors text-[#9CA3AF] hover:bg-[#1A1A1A] hover:text-white"
         >
-          <IconUser stroke={currentPath === '/profile/setup' ? 2 : 1.5} className="w-[20px] h-[20px]" />
+          <IconUser stroke={1.5} className="w-[20px] h-[20px]" />
           Identity
-        </Link>
-        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors text-[#9CA3AF] hover:bg-[#1A1A1A] hover:text-white">
+        </button>
+        <button 
+          onClick={onOpenSettings}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors text-[#9CA3AF] hover:bg-[#1A1A1A] hover:text-white"
+        >
           <IconSettings stroke={1.5} className="w-[20px] h-[20px]" />
           Settings
         </button>
@@ -83,7 +86,10 @@ const Sidebar = () => {
 
       {/* Bottom Pinned User Card */}
       <div className="p-4 mt-auto">
-        <button className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-[#1A1A1A] transition-colors group">
+        <button 
+          onClick={onOpenSettings}
+          className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-[#1A1A1A] transition-colors group"
+        >
           <div className="w-9 h-9 rounded-full bg-[#1A1A1A] flex items-center justify-center shrink-0 overflow-hidden">
             <img 
               src={`https://api.dicebear.com/7.x/notionists/svg?seed=${localStorage.getItem('daskalos_user_name') || 'Learner'}&backgroundColor=transparent`}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IconCheck } from '@tabler/icons-react';
+import DashboardLayout from '../../components/layout/DashboardLayout';
 import ReflectionModal from './ReflectionModal';
 
 const TEST_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
@@ -123,9 +124,11 @@ const ArcDashboardPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] text-white flex items-center justify-center">
-        <p className="text-xl tracking-widest animate-pulse font-light">Loading Dashboard...</p>
-      </div>
+      <DashboardLayout>
+        <div className="flex items-center justify-center py-32">
+          <p className="text-xl tracking-widest animate-pulse font-light text-white">Loading Dashboard...</p>
+        </div>
+      </DashboardLayout>
     );
   }
 
@@ -134,7 +137,7 @@ const ArcDashboardPage = () => {
   const progressPercent = arcStatus ? arcStatus.progress : 0;
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white overflow-x-hidden">
+    <DashboardLayout>
       <ReflectionModal 
         isOpen={isModalOpen}
         onClose={() => {
@@ -145,7 +148,7 @@ const ArcDashboardPage = () => {
         isSubmitting={interactionState === 'ANALYZING'}
       />
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto py-4">
         <header className="mb-16">
           <h1 className="text-4xl font-bold mb-2 tracking-tight">
             {getGreeting()}
@@ -155,62 +158,9 @@ const ArcDashboardPage = () => {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
-          {/* Left Column: ARC Visualization */}
-          <div className="lg:col-span-1 space-y-8">
-            <h2 className="text-2xl font-bold tracking-wide">ARC</h2>
-            
-            <div className="space-y-6">
-              {STAGES.map((stage, index) => {
-                const isCompleted = index < currentStageIndex;
-                const isCurrent = index === currentStageIndex;
-                const isLocked = index > currentStageIndex;
-                
-                return (
-                  <div key={stage} className={`flex flex-col ${isLocked ? 'opacity-30' : ''}`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-500 ${isCompleted ? 'bg-green-500/20 border-green-500 text-green-500' : isCurrent ? 'bg-[#E50914]/20 border-[#E50914] text-[#E50914] shadow-[0_0_15px_rgba(229,9,20,0.5)]' : 'border-white/20 text-transparent'}`}>
-                          {isCompleted ? <IconCheck size={16} /> : <span className="w-2 h-2 rounded-full bg-current"></span>}
-                        </div>
-                        <span className={`capitalize text-xl font-medium tracking-wide ${isCurrent ? 'text-white' : 'text-white/70'}`}>
-                          {stage}
-                        </span>
-                      </div>
-                      
-                      {isCurrent && (
-                        <span className="text-[#E50914] font-bold">
-                          {Math.floor(progressPercent)}%
-                        </span>
-                      )}
-                    </div>
-                    
-                    {/* Progress Bar (Only show for current stage) */}
-                    {isCurrent && (
-                      <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden ml-12" style={{ width: 'calc(100% - 3rem)' }}>
-                        <div 
-                          className="h-full bg-gradient-to-r from-[#E50914] to-red-500 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(229,9,20,0.8)]"
-                          style={{ width: `${progressPercent}%` }}
-                        ></div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            
-            {progressAdded !== null && (
-              <div className="bg-green-500/10 border border-green-500/30 text-green-400 p-4 rounded-xl text-center animate-fade-in">
-                +{progressAdded}% Progress Earned!
-              </div>
-            )}
-          </div>
-
-          {/* Right Column */}
-          <div className="lg:col-span-2 space-y-12">
-            
-            {/* Recommendation Engine */}
+        <div className="max-w-4xl mx-auto">
+          {/* Recommendation Engine */}
+          <div className="space-y-12">
             <div>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold tracking-wide text-white">AI Spotlight</h2>
@@ -222,7 +172,7 @@ const ArcDashboardPage = () => {
                 </div>
               ) : (
                 <div className="bg-[#1A1A1A] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative group transition-transform duration-500 hover:-translate-y-1">
-                  <div className="h-56 relative overflow-hidden">
+                  <div className="h-64 relative overflow-hidden">
                     <img 
                       src={recommendation.thumbnail} 
                       alt={recommendation.title} 
@@ -255,7 +205,7 @@ const ArcDashboardPage = () => {
                       </div>
                     </div>
                     
-                    <p className="text-white/80 text-base mb-8 line-clamp-3 leading-relaxed">
+                    <p className="text-white/80 text-base mb-8 leading-relaxed">
                       {recommendation.description}
                     </p>
                     
@@ -333,7 +283,7 @@ const ArcDashboardPage = () => {
                       {interactionState === 'DONE' && (
                         <div className="flex-1 bg-green-500/20 border border-green-500/50 text-green-400 font-bold py-4 text-center rounded-xl flex items-center justify-center gap-2 select-none cursor-default">
                           <IconCheck size={20} />
-                          Reflection Submitted & Progress Added
+                          Reflection Submitted! (+{progressAdded}% Progress)
                         </div>
                       )}
                     </div>
@@ -344,7 +294,7 @@ const ArcDashboardPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
