@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
+from sqlalchemy.orm import relationship
 from backend.config.database import Base
 
 class User(Base):
@@ -11,3 +12,5 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    recommendations = relationship("RecommendationHistory", back_populates="user")

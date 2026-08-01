@@ -40,19 +40,42 @@ const ProfileSetupPage = () => {
 
   const isValid = name.trim() !== '' && aspiration.trim() !== '';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isValid) return;
 
     setIsSubmitting(true);
     
-    // Simulate API POST { name, age, role, aspiration, habits }
-    setTimeout(() => {
-      // Save name in case it changed
+    try {
+      const userId = localStorage.getItem('daskalos_user_id') || '123e4567-e89b-12d3-a456-426614174000';
       localStorage.setItem('daskalos_user_name', name);
+      
+      const payload = {
+        full_name: name,
+        age: age ? parseInt(age) : null,
+        occupation: role,
+        aspirations: [aspiration],
+        habits: habits
+      };
+
+      const response = await fetch(`http://127.0.0.1:8000/api/identity/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.ok) {
+        navigate('/dashboard');
+      } else {
+        console.error("Failed to save profile", await response.text());
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
       setIsSubmitting(false);
-      navigate('/dashboard');
-    }, 800);
+    }
   };
 
   return (

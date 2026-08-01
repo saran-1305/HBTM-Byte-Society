@@ -8,6 +8,7 @@ interface MediaItem {
   subtitle: string;
   badge?: string;
   isWildcard?: boolean;
+  url?: string;
 }
 
 interface MediaGridProps {
@@ -15,6 +16,13 @@ interface MediaGridProps {
   items: MediaItem[];
   viewAllLink?: string;
 }
+
+const getYoutubeVideoId = (url?: string) => {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+};
 
 const MediaGrid: React.FC<MediaGridProps> = ({ title, items, viewAllLink }) => {
   return (
@@ -29,16 +37,27 @@ const MediaGrid: React.FC<MediaGridProps> = ({ title, items, viewAllLink }) => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {items.map((item) => (
-          <div key={item.id} className="group cursor-pointer flex flex-col">
-            
+        {items.map((item) => {
+          const videoId = getYoutubeVideoId(item.url);
+          
+          const content = (
+            <>
             {/* Thumbnail Box */}
             <div className="relative w-full aspect-square rounded-[12px] overflow-hidden bg-[#121212] mb-3 group-hover:-translate-y-[2px] transition-all duration-150 ease-out">
-              <img 
-                src={`https://picsum.photos/seed/${item.id}/400/400`} 
-                alt={item.title}
-                className="w-full h-full object-cover"
-              />
+              {videoId ? (
+                <img 
+                  src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`} 
+                  onError={(e) => { e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`; }}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <img 
+                  src={`https://picsum.photos/seed/${item.id}/400/400`} 
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
+              )}
               
               {/* Play Overlay on Hover */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
@@ -71,9 +90,19 @@ const MediaGrid: React.FC<MediaGridProps> = ({ title, items, viewAllLink }) => {
             <p className="text-[12px] text-[#999999] truncate">
               {item.subtitle}
             </p>
+            </>
+          );
 
-          </div>
-        ))}
+          return item.url ? (
+            <a href={item.url} target="_blank" rel="noopener noreferrer" key={item.id} className="group cursor-pointer flex flex-col block select-none">
+              {content}
+            </a>
+          ) : (
+            <div key={item.id} className="group cursor-pointer flex flex-col select-none">
+              {content}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
-import { Search, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Heart, Loader2 } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 
-const MOCK_DATA = [
-  { title: "Designing Data-Intensive Applications", type: "Book", source: "Martin Kleppmann", reasoning: "You're deep in system design right now — this is the foundational text everyone in that stage eventually needs.", date: "May 20", wildcard: false, resonated: true },
-  { title: "System Design Interview in 40 Minutes", type: "Video", source: "Alex Xu", reasoning: "A fast, concrete walkthrough matched to where you are — less theory, more pattern recognition.", date: "May 18", wildcard: false, resonated: true },
-  { title: "The Mental Models Every Engineer Should Know", type: "Article", source: "Farnam Street", reasoning: "You've been leaning heavily on tactical content — this pulls you back toward thinking frameworks.", date: "May 15", wildcard: false, resonated: false },
-  { title: "What Marathon Training Teaches About Discipline", type: "Article", source: "Runner's World", reasoning: "This isn't in your usual lane, but the discipline mechanics are identical to what you're building in Deep Work.", date: "May 12", wildcard: true, resonated: true },
-  { title: "The Pragmatic Programmer", type: "Book", source: "Hunt & Thomas", reasoning: "A step back from pure system design toward the habits that make any of it sustainable.", date: "May 10", wildcard: false, resonated: false },
-  { title: "How Chefs Practice Under Pressure", type: "Video", source: "Chef's Table clips", reasoning: "A deliberate detour — high-pressure practice routines translate surprisingly well to technical interview prep.", date: "May 8", wildcard: true, resonated: true }
-];
+
+
+
 
 const FILTER_TYPES = ['All', 'Article', 'Video', 'Book'];
 
@@ -17,9 +12,48 @@ const RecommendationsPage = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [showEmptyState, setShowEmptyState] = useState(false);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchRecommendation = async () => {
+      // Fallback to a hardcoded test UUID if the user hasn't logged in yet
+      const userId = localStorage.getItem('daskalos_user_id') || '123e4567-e89b-12d3-a456-426614174000';
+
+      setIsLoading(true);
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/recommendations/${userId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch recommendation');
+        }
+        const data = await response.json();
+        
+        // Format backend response to match our frontend UI structure
+        const formattedRec = {
+          id: data.recommendation.id,
+          title: data.recommendation.title,
+          type: data.recommendation.type,
+          source: "DASKALOS AI",
+          reasoning: data.reasoning.join(" "),
+          date: new Date(data.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          wildcard: false,
+          resonated: false
+        };
+
+        // Put the real recommendation in the state
+        setRecommendations([formattedRec]);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecommendation();
+  }, []);
 
   // Filter logic
-  const filteredData = MOCK_DATA.filter(item => {
+  const filteredData = recommendations.filter(item => {
     const matchesFilter = activeFilter === 'All' || item.type.toLowerCase() === activeFilter.toLowerCase();
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           item.source.toLowerCase().includes(searchQuery.toLowerCase());
@@ -80,6 +114,11 @@ const RecommendationsPage = () => {
               <Search className="w-6 h-6 text-[#666666] opacity-50" />
             </div>
             <p className="text-[#999999] text-sm">Your recommendations will appear here as DASKALOS gets to know you.</p>
+          </div>
+        ) : isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 text-[#666666] animate-spin mb-4" />
+            <p className="text-[#999999] text-sm">Curating your recommendations...</p>
           </div>
         ) : (
           /* Grid */

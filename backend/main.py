@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import routers
-from backend.api import auth, onboarding, identity
+from backend.api import auth, onboarding, identity, recommendations
 
 app = FastAPI(
     title="Personal Growth AI",
@@ -23,7 +23,9 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(onboarding.router)
 app.include_router(identity.router)
+app.include_router(recommendations.router, prefix="/api/recommendations")
 
 @app.get("/")
 async def root():
     return {"message": "Welcome to Personal Growth AI Operating System API"}
+# Reload backend for Groq
