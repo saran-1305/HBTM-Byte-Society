@@ -98,6 +98,7 @@ export default function OnboardFlow() {
     setLoading(true);
     submitOnboarding({
       user_id: profile.userId ?? '',
+      full_name: profile.name ?? '',
       aspiration,
       timeframe: timeframe as AspirationTimeframe,
       habits,

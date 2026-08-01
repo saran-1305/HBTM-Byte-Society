@@ -6,8 +6,9 @@ import { useToast } from '@/context/ToastContext';
 import { useCommandPalette } from '@/context/CommandPaletteContext';
 import { exportUserData } from '@/lib/exportData';
 import { getStageIndex, STAGES } from '@/lib/stage';
+import { logout as logoutSession } from '@/lib/auth';
 import { cn } from '@/lib/cn';
-import { Download, Trash2, User, CalendarDays, Target, Fingerprint } from 'lucide-react';
+import { Download, Trash2, LogOut, User, CalendarDays, Target, Fingerprint } from 'lucide-react';
 
 function AccountCard({ title, icon: Icon, children }: { title: string; icon: typeof User; children: React.ReactNode }) {
   return (
@@ -65,6 +66,12 @@ export default function Account() {
       return;
     }
     resetAll();
+    logoutSession();
+    navigate('/');
+  };
+
+  const handleLogout = () => {
+    logoutSession();
     navigate('/');
   };
 
@@ -136,8 +143,20 @@ export default function Account() {
           <Row label="Member since" description={memberSince}>
             <CalendarDays className="w-4 h-4 text-muted shrink-0" />
           </Row>
-          <Row label="Local user ID" description={profile.userId || '—'}>
-            <span className="text-[10px] font-mono text-muted bg-black/40 px-2 py-1 rounded shrink-0">local only</span>
+          <Row label="Account ID" description={profile.userId || '—'}>
+            <span className="text-[10px] font-mono text-muted bg-black/40 px-2 py-1 rounded shrink-0">server</span>
+          </Row>
+        </AccountCard>
+
+        <AccountCard title="Session" icon={LogOut}>
+          <Row label="Log out" description="Ends your session on this device. Your data stays on the server.">
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-xs font-medium text-white bg-white/10 hover:bg-white/15 px-3 py-1.5 rounded-lg transition-colors shrink-0"
+            >
+              Log out
+            </button>
           </Row>
         </AccountCard>
 
@@ -154,7 +173,7 @@ export default function Account() {
             </Row>
             <Row
               label="Reset profile"
-              description={confirmingReset ? 'Click again to permanently erase your profile, reflections, saves, and preferences.' : 'Erases your profile, reflections, saves, and preferences from this browser and starts over.'}
+              description={confirmingReset ? 'Click again to permanently erase your profile, reflections, saves, and preferences, and log out.' : 'Erases your profile, reflections, saves, and preferences from this browser, and logs you out.'}
             >
               <button
                 type="button"

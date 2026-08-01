@@ -6,6 +6,9 @@ import { useOnboarding } from '@/context/OnboardingContext';
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/TextInput';
 import ColorBends from '@/components/ColorBends';
+import { registerAndLogin, login } from '@/lib/auth';
+import { startOnboardingProfile, getOnboardingProfile } from '@/lib/onboardingApi';
+import { ApiError } from '@/lib/api';
 
 const container: Variants = {
   hidden: {},
@@ -20,16 +23,66 @@ const item: Variants = {
 const prefersReducedMotion =
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+type Mode = 'signup' | 'login';
+
 export default function WelcomePage() {
   const navigate = useNavigate();
-  const { startOnboarding } = useOnboarding();
-  const [showNameInput, setShowNameInput] = useState(false);
+  const { startOnboarding, completeOnboarding } = useOnboarding();
+  const [expanded, setExpanded] = useState(false);
+  const [mode, setMode] = useState<Mode>('signup');
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleContinue = () => {
-    if (!name.trim()) return;
-    startOnboarding(name.trim());
+  const canSubmit = mode === 'signup'
+    ? name.trim() && email.trim() && password.length >= 6
+    : email.trim() && password.length > 0;
+
+  const handleSignup = async () => {
+    const user = await registerAndLogin(email.trim(), password);
+    // Best-effort: a stale local session with the same account may have
+    // already created this row, which is a 400 here — not a real failure.
+    try {
+      await startOnboardingProfile(name.trim());
+    } catch (err) {
+      if (!(err instanceof ApiError && err.status === 400)) throw err;
+    }
+    startOnboarding(name.trim(), user.id);
     navigate('/onboarding');
+  };
+
+  const handleLogin = async () => {
+    const user = await login(email.trim(), password);
+    try {
+      const existing = await getOnboardingProfile();
+      startOnboarding(existing.full_name || email.trim(), user.id);
+      if (existing.onboarding_completed) {
+        completeOnboarding(existing.identity_summary || '');
+        navigate('/dashboard');
+      } else {
+        navigate('/onboarding');
+      }
+    } catch {
+      // No profile yet on this account — start fresh.
+      startOnboarding(email.trim(), user.id);
+      navigate('/onboarding');
+    }
+  };
+
+  const handleContinue = async () => {
+    if (!canSubmit || loading) return;
+    setError('');
+    setLoading(true);
+    try {
+      if (mode === 'signup') await handleSignup();
+      else await handleLogin();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Couldn't reach the server. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,10 +128,10 @@ export default function WelcomePage() {
         </motion.p>
 
         <motion.div variants={item} className="w-full flex flex-col items-center gap-4">
-          {!showNameInput ? (
+          {!expanded ? (
             <Button
               size="lg"
-              onClick={() => setShowNameInput(true)}
+              onClick={() => setExpanded(true)}
               className="w-full sm:w-auto px-10"
               rightIcon={<ArrowRight className="w-5 h-5" />}
             >
@@ -91,25 +144,53 @@ export default function WelcomePage() {
               transition={{ duration: 0.25, ease: 'easeOut' }}
               className="w-full flex flex-col gap-4"
             >
+              {mode === 'signup' && (
+                <TextInput
+                  autoFocus
+                  placeholder="What should we call you?"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="text-center text-xl text-white placeholder:text-white/35 border-white/20 focus:border-white"
+                />
+              )}
               <TextInput
-                autoFocus
-                placeholder="What should we call you?"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="text-center text-xl text-white placeholder:text-white/35 border-white/20 focus:border-white"
+              />
+              <TextInput
+                type="password"
+                placeholder={mode === 'signup' ? 'Password (6+ characters)' : 'Password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleContinue();
                 }}
                 className="text-center text-xl text-white placeholder:text-white/35 border-white/20 focus:border-white"
               />
+
+              {error && <p className="text-sm text-spotlight -mt-1">{error}</p>}
+
               <Button
                 size="lg"
                 onClick={handleContinue}
-                disabled={!name.trim()}
+                disabled={!canSubmit || loading}
+                isLoading={loading}
                 className="w-full"
                 rightIcon={<ArrowRight className="w-5 h-5" />}
               >
-                Continue
+                {mode === 'signup' ? 'Continue' : 'Log in'}
               </Button>
+
+              <button
+                type="button"
+                onClick={() => { setMode((m) => (m === 'signup' ? 'login' : 'signup')); setError(''); }}
+                className="text-sm text-white/50 hover:text-white transition-colors"
+              >
+                {mode === 'signup' ? 'Already have an account? Log in' : "Don't have an account? Sign up"}
+              </button>
             </motion.div>
           )}
         </motion.div>

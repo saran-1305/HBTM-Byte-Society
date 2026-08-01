@@ -5,6 +5,7 @@ interface HeroBannerProps {
   title: string;
   reason: string;
   imageSeed: string;
+  imageUrl?: string; // real thumbnail from the recommendation engine, when available
   onStart: () => void;
   onDismiss: () => void;
 }
@@ -12,11 +13,11 @@ interface HeroBannerProps {
 // The spotlight curation pick: a massive, confident banner that pushes
 // the single best piece of content for the user's current stage, styled
 // like a premium media platform's featured takeover, not a "welcome back" card.
-export function HeroBanner({ meta, title, reason, imageSeed, onStart, onDismiss }: HeroBannerProps) {
+export function HeroBanner({ meta, title, reason, imageSeed, imageUrl, onStart, onDismiss }: HeroBannerProps) {
   return (
     <div className="relative h-[280px] sm:h-[340px] rounded-3xl overflow-hidden bg-spotlight">
       <img
-        src={`https://picsum.photos/seed/${encodeURIComponent(imageSeed)}/1000/700`}
+        src={imageUrl || `https://picsum.photos/seed/${encodeURIComponent(imageSeed)}/1000/700`}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
       />

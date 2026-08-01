@@ -6,6 +6,7 @@ export interface MediaItem {
   title: string;
   meta: string;
   imageSeed: string;
+  thumbnail?: string; // real image URL from the recommendation engine, when available
   duration?: string;
   wildcard?: boolean;
   fit?: number;
@@ -62,7 +63,7 @@ export function MediaGrid({ title, items, onSeeAll, onItemClick, emptyLabel = 'N
 
                 <div className="relative aspect-square rounded-xl overflow-hidden mb-2 bg-surface pointer-events-none">
                   <img
-                    src={`https://picsum.photos/seed/${encodeURIComponent(item.imageSeed)}/400/400`}
+                    src={item.thumbnail || `https://picsum.photos/seed/${encodeURIComponent(item.imageSeed)}/400/400`}
                     alt=""
                     loading="lazy"
                     className="w-full h-full object-cover"

@@ -11,6 +11,8 @@ import { STAGES, STAGE_CONFIG, getStageIndex } from '@/lib/stage';
 import { HeroBanner } from './components/HeroBanner';
 import { RightPanel } from './components/RightPanel';
 import { getRecommendationsFor, ALL_RECOMMENDATIONS, isWildcard, type Recommendation } from '@/lib/recommendations';
+import { getCandidates, getCuratedRecommendation, toFrontendRecommendation, type CuratorReasoning } from '@/lib/recommendationApi';
+import { startActivity } from '@/lib/activityApi';
 import { SEED_THREADS, sortThreads, formatDaysAgo } from '@/lib/community';
 import { ArrowBigUp, MessageSquare, Book, PlayCircle, Headphones, FileText, ArrowRight, type LucideIcon } from 'lucide-react';
 
@@ -26,6 +28,7 @@ const toMediaItem = (rec: Recommendation, aspiration: string | undefined, index:
     title: rec.title,
     meta: `${rec.author}`,
     imageSeed: rec.id,
+    thumbnail: rec.thumbnail,
     duration: rec.duration,
     wildcard,
     fit: rec.fit,
@@ -54,32 +57,62 @@ export default function Dashboard() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Real recommendation engine + curator reasoning, when reachable. Falls
+  // back to the local mock library/template below otherwise — same
+  // resilient pattern as everywhere else in the app.
+  const [realPicks, setRealPicks] = useState<Recommendation[] | null>(null);
+  const [curatorReasoning, setCuratorReasoning] = useState<CuratorReasoning | null>(null);
+
+  useEffect(() => {
+    const userId = profile.userId;
+    if (!userId) return;
+    let cancelled = false;
+
+    getCandidates(userId)
+      .then((res) => {
+        if (cancelled) return;
+        setRealPicks(res.candidates.map((c) => toFrontendRecommendation(c.candidate, c.scores.total)));
+      })
+      .catch(() => { /* no recommendations yet, or backend unreachable — mock library stays authoritative */ });
+
+    getCuratedRecommendation(userId)
+      .then((res) => { if (!cancelled) setCuratorReasoning(res.curator); })
+      .catch(() => { /* narrative enrichment only */ });
+
+    return () => { cancelled = true; };
+  }, [profile.userId]);
+
   const picks = useMemo(
-    () => getRecommendationsFor(profile.aspiration).filter((r) => !dismissedIds.includes(r.id)),
-    [profile.aspiration, dismissedIds]
+    () => (realPicks ?? getRecommendationsFor(profile.aspiration)).filter((r) => !dismissedIds.includes(r.id)),
+    [realPicks, profile.aspiration, dismissedIds]
   );
   const featured = picks[0];
   const feed = picks.slice(1, 9);
+
+  // Real picks might include ids the local mock library doesn't know about
+  // (and vice versa), so "recent" and "continue where you left off" search
+  // both pools.
+  const recentPool = useMemo(() => [...(realPicks ?? []), ...ALL_RECOMMENDATIONS], [realPicks]);
 
   // "Recent" shows what you've actually opened once there's history; before
   // that, it falls back to unexplored library items so the row isn't empty.
   const recentItems = useMemo(() => {
     const viewed = recentlyViewed
-      .map((id) => ALL_RECOMMENDATIONS.find((r) => r.id === id))
+      .map((id) => recentPool.find((r) => r.id === id))
       .filter((r): r is Recommendation => !!r && !dismissedIds.includes(r.id));
     if (viewed.length > 0) return viewed.slice(0, 8);
-    return ALL_RECOMMENDATIONS.filter((r) => !picks.some((p) => p.id === r.id) && !dismissedIds.includes(r.id)).slice(0, 8);
-  }, [recentlyViewed, picks, dismissedIds]);
+    return recentPool.filter((r) => !picks.some((p) => p.id === r.id) && !dismissedIds.includes(r.id)).slice(0, 8);
+  }, [recentlyViewed, picks, dismissedIds, recentPool]);
 
   const lastViewedItem = useMemo(() => {
     const id = recentlyViewed[0];
-    return id ? ALL_RECOMMENDATIONS.find((r) => r.id === id) : undefined;
-  }, [recentlyViewed]);
+    return id ? recentPool.find((r) => r.id === id) : undefined;
+  }, [recentlyViewed, recentPool]);
 
   const stageIndex = getStageIndex(profile, reflectionCount);
   const stageName = STAGES[stageIndex];
   const config = STAGE_CONFIG[stageName];
-  const isInteract = stageName === 'Interact';
+  const isIntegrate = stageName === 'Integrate';
 
   // Fires once per actual transition, not on every reload: lastSeenStageIndex
   // is persisted, so re-visiting the same stage never re-triggers this.
@@ -93,14 +126,16 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageIndex]);
 
-  // Interact's primary_type is community_thread, not media: the engine
+  // Integrate's primary_type is community_thread, not media: the engine
   // stops feeding content and starts pointing outward, so the feed itself
   // has to change shape, not just its label.
   const topThreads = useMemo(() => sortThreads(SEED_THREADS, 'hot').slice(0, 4), []);
   const topThread = topThreads[0];
 
-  const reasoning = isInteract
-    ? `You're in Interact: ${config.feel} Threads below are weighted toward Struggle, since you just lived through it.`
+  const reasoning = isIntegrate
+    ? `You're in Integrate: ${config.feel} Threads below are weighted toward Struggle, since you just lived through it.`
+    : curatorReasoning
+    ? `${curatorReasoning.summary} ${curatorReasoning.why_now}`
     : featured
     ? `You're in the ${stageName} stage, so this ${featured.type} on ${featured.topic.toLowerCase()} is weighted highest: it scored a ${featured.fit}% fit against your stated goal${profile.stuckPoint ? ` and directly addresses "${profile.stuckPoint}"` : ''}.`
     : 'Complete onboarding so your curator has a goal to work from.';
@@ -108,16 +143,17 @@ export default function Dashboard() {
   const openItem = (item: MediaItem) => {
     logView(item.id);
     showToast(`Opening "${item.title}"...`);
+    if (profile.userId) startActivity(profile.userId, item.id).catch(() => { /* best-effort activity log */ });
   };
 
   // What's searchable shifts with the feed itself: threads once you've
-  // reached Interact, your actual picks and recently-viewed items otherwise.
+  // reached Integrate, your actual picks and recently-viewed items otherwise.
   useEffect(() => {
     registerSearch({
-      placeholder: isInteract ? 'Search community threads...' : 'Search your picks...',
+      placeholder: isIntegrate ? 'Search community threads...' : 'Search your picks...',
       getResults: (q) => {
         const search = q.toLowerCase();
-        if (isInteract) {
+        if (isIntegrate) {
           const matches = search ? topThreads.filter((t) => t.title.toLowerCase().includes(search)) : topThreads;
           return matches.map((t) => ({
             id: t.id,
@@ -141,7 +177,7 @@ export default function Dashboard() {
       },
     });
     return () => registerSearch(null);
-  }, [registerSearch, isInteract, topThreads, picks, recentItems, logView, showToast, navigate]);
+  }, [registerSearch, isIntegrate, topThreads, picks, recentItems, logView, showToast, navigate]);
 
   return (
     <DashboardLayout>
@@ -159,11 +195,11 @@ export default function Dashboard() {
                 {Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} className="aspect-square rounded-xl" />)}
               </div>
             </div>
-          ) : isInteract ? (
+          ) : isIntegrate ? (
             <>
               {topThread && (
                 <HeroBanner
-                  meta="You've reached Interact"
+                  meta="You've reached Integrate"
                   title={topThread.title}
                   reason={reasoning}
                   imageSeed={`thread-${topThread.id}`}
@@ -213,7 +249,8 @@ export default function Dashboard() {
                   title={featured.title}
                   reason={reasoning}
                   imageSeed={featured.id}
-                  onStart={() => { logView(featured.id); showToast(`Opening "${featured.title}"...`); }}
+                  imageUrl={featured.thumbnail}
+                  onStart={() => { logView(featured.id); showToast(`Opening "${featured.title}"...`); if (profile.userId) startActivity(profile.userId, featured.id).catch(() => {}); }}
                   onDismiss={() => setHeroDismissed(true)}
                 />
               )}
@@ -221,11 +258,11 @@ export default function Dashboard() {
               {lastViewedItem && (
                 <button
                   type="button"
-                  onClick={() => { logView(lastViewedItem.id); showToast(`Opening "${lastViewedItem.title}"...`); }}
+                  onClick={() => { logView(lastViewedItem.id); showToast(`Opening "${lastViewedItem.title}"...`); if (profile.userId) startActivity(profile.userId, lastViewedItem.id).catch(() => {}); }}
                   className="flex items-center gap-4 bg-surface hover:bg-surface-hover rounded-xl p-4 transition-colors text-left"
                 >
                   <img
-                    src={`https://picsum.photos/seed/${encodeURIComponent(lastViewedItem.id)}/80/80`}
+                    src={lastViewedItem.thumbnail || `https://picsum.photos/seed/${encodeURIComponent(lastViewedItem.id)}/80/80`}
                     alt=""
                     className="w-11 h-11 rounded-lg object-cover shrink-0"
                   />

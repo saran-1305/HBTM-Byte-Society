@@ -18,7 +18,7 @@ export interface Thread {
   comments: ThreadComment[];
 }
 
-// Seeded with a deliberate lean toward Struggle threads: the Interact stage's
+// Seeded with a deliberate lean toward Struggle threads: the Integrate stage's
 // engine config sets thread_bias="struggle", since users arriving here just
 // lived through it and are best placed to answer people still in it.
 export const SEED_THREADS: Thread[] = [

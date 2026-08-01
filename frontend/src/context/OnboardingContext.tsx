@@ -20,7 +20,7 @@ const defaultNotificationPrefs: NotificationPrefs = {
 interface OnboardingContextType {
   profile: Partial<OnboardingProfile>;
   updateProfile: (data: Partial<OnboardingProfile>) => void;
-  startOnboarding: (name: string) => string;
+  startOnboarding: (name: string, userId: string) => string;
   completeOnboarding: (profileSummary: string) => void;
   isOnboardingComplete: boolean;
   reflectionCount: number;
@@ -119,9 +119,9 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     setProfile((prev) => ({ ...prev, ...data }));
   };
 
-  // Called from WelcomePage: generates a local user_id, no real auth
-  const startOnboarding = (name: string) => {
-    const userId = crypto.randomUUID();
+  // Called from WelcomePage once the user has a real backend account —
+  // userId is the actual /api/auth id, not a locally-generated one.
+  const startOnboarding = (name: string, userId: string) => {
     setProfile((prev) => ({ ...prev, userId, name }));
     setStartedAt((prev) => prev ?? new Date().toISOString());
     return userId;

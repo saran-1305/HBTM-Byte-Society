@@ -1,6 +1,8 @@
 import type { OnboardingProfile } from '@/types/onboarding';
 
-export const STAGES = ['Explore', 'Commit', 'Struggle', 'Breakthrough', 'Interact'] as const;
+// Matches backend/data/arc_config.py::StageName exactly (explore, commit,
+// struggle, breakthrough, integrate) — display labels only differ in case.
+export const STAGES = ['Explore', 'Commit', 'Struggle', 'Breakthrough', 'Integrate'] as const;
 export type Stage = (typeof STAGES)[number];
 
 // Mirrors the backend STAGE_CONFIG table: one engine, parameterized by stage,
@@ -49,7 +51,7 @@ export const STAGE_CONFIG: Record<Stage, StageConfig> = {
     driftCheckEnabled: true,
     feel: 'Confident, demanding — you have earned harder content.',
   },
-  Interact: {
+  Integrate: {
     primaryType: 'community_thread',
     typeWeights: { community_thread: 1.0 },
     wildcardFrequency: 0,
@@ -59,11 +61,10 @@ export const STAGE_CONFIG: Record<Stage, StageConfig> = {
   },
 };
 
-// Derived from onboarding signals plus reflection activity, since there's no
-// real engagement backend: no goal yet -> Explore, goal but no named obstacle
-// -> Commit, obstacle named -> Struggle, then reflecting regularly against
-// that obstacle moves through Breakthrough and eventually Interact. This is
-// what makes reflection entries "adjust the user's stage" in practice.
+// Local fallback heuristic, used when the real /api/arc/{user_id} call is
+// unavailable: no goal yet -> Explore, goal but no named obstacle -> Commit,
+// obstacle named -> Struggle, then reflecting regularly against that
+// obstacle moves through Breakthrough and eventually Integrate.
 export const getStageIndex = (profile: Partial<OnboardingProfile>, reflectionCount: number): number => {
   if (!profile.aspiration) return 0;
   if (!profile.stuckPoint) return 1;

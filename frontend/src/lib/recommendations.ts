@@ -6,6 +6,11 @@ export interface Recommendation {
   topic: string;
   fit: number;
   duration?: string; // for video/audio only, e.g. "12:34" or "48 min"
+  // Present when this came from the real recommendation engine
+  // (lib/recommendationApi.ts) rather than the local mock library.
+  thumbnail?: string;
+  url?: string;
+  description?: string;
 }
 
 // Pool of recommendations keyed by topic

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOnboarding } from '@/context/OnboardingContext';
 import { useCommandPalette } from '@/context/CommandPaletteContext';
@@ -6,12 +6,12 @@ import { TIMEFRAME_LABEL } from '@/types/onboarding';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StageTracker } from '@/components/StageTracker';
 import { STAGES, STAGE_CONFIG, getStageIndex, type Stage } from '@/lib/stage';
+import { getArcState, getArcStatus, type StageTransition } from '@/lib/arcApi';
 import { SEED_THREADS } from '@/lib/community';
 import { cn } from '@/lib/cn';
 import {
   Target, Clock, BookOpen, AlertTriangle, Edit3, Sparkles,
-  CheckCircle2, Circle, CircleDashed, Flame, Bookmark, Eye,
-  CalendarDays, Layers, Shuffle, type LucideIcon,
+  CheckCircle2, Circle, CircleDashed, Layers, Shuffle, History,
 } from 'lucide-react';
 
 const TYPE_LABEL: Record<string, string> = {
@@ -39,6 +39,28 @@ function daysSince(iso: string | null): number {
   return Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 86_400_000));
 }
 
+// Local, per-stage fallback used only when the current stage's real server
+// progress (arcState) isn't reachable. Struggle/Breakthrough have a real
+// local signal (reflections against the obstacle); the rest don't, so they
+// get a fixed "you're actively in this stage" estimate rather than a
+// fabricated precise number.
+function localStageProgress(stage: Stage, reflectionCount: number): number {
+  switch (stage) {
+    case 'Explore': return 20;
+    case 'Commit': return 40;
+    case 'Struggle': return Math.round((Math.min(reflectionCount, 3) / 3) * 100);
+    case 'Breakthrough': return Math.round((Math.min(reflectionCount, 7) / 7) * 100);
+    case 'Integrate': return 70;
+  }
+}
+
+// <40 red ("needs work"), 40-70 yellow ("getting there"), >70 green ("strong").
+function completionColor(percent: number) {
+  if (percent < 40) return { bar: 'bg-red-500', text: 'text-red-400', badge: 'bg-red-500/10 text-red-400 border-red-500/30', label: 'Needs work' };
+  if (percent < 70) return { bar: 'bg-amber-500', text: 'text-amber-400', badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30', label: 'Getting there' };
+  return { bar: 'bg-mint-500', text: 'text-mint-400', badge: 'bg-mint-500/10 text-mint-400 border-mint-500/30', label: 'Strong' };
+}
+
 interface StageCard {
   stage: Stage;
   status: 'completed' | 'current' | 'upcoming';
@@ -46,15 +68,42 @@ interface StageCard {
   feel: string;
   weights: string;
   wildcard: string;
-  progress?: { current: number; target: number };
+  completionPercent: number;
 }
 
 export default function Arc() {
-  const { profile, reflectionCount, reflectionStreak, recentlyViewed, savedIds, startedAt } = useOnboarding();
+  const { profile, reflectionCount, startedAt } = useOnboarding();
   const { registerSearch } = useCommandPalette();
   const aspiration = profile.aspiration;
   const habits = useMemo(() => profile.habits || [], [profile.habits]);
   const stuckPoint = profile.stuckPoint;
+
+  // Real server-side stage + progress, when reachable. Falls back to the
+  // local reflection-count heuristic below if the backend has no ARC row
+  // for this user yet (e.g. onboarding never called /api/onboarding/start)
+  // or is simply unreachable.
+  const [arcState, setArcState] = useState<{ stageIndex: number; progress: number } | null>(null);
+  const [stageHistory, setStageHistory] = useState<StageTransition[]>([]);
+
+  useEffect(() => {
+    const userId = profile.userId;
+    if (!userId) return;
+    let cancelled = false;
+
+    getArcState(userId)
+      .then((state) => {
+        if (cancelled) return;
+        const idx = STAGES.findIndex((s) => s.toLowerCase() === state.current_stage.toLowerCase());
+        if (idx !== -1) setArcState({ stageIndex: idx, progress: state.progress });
+      })
+      .catch(() => { /* no ARC row yet, or backend unreachable — local heuristic stays authoritative */ });
+
+    getArcStatus(userId)
+      .then((status) => { if (!cancelled) setStageHistory(status.stage_history); })
+      .catch(() => { /* optional enrichment only */ });
+
+    return () => { cancelled = true; };
+  }, [profile.userId]);
 
   // The habit list, the 5 stages, and what each stage actually means for
   // this user — real, tab-specific content instead of a nav fallback.
@@ -94,7 +143,7 @@ export default function Arc() {
     );
   }
 
-  const stageIndex = getStageIndex(profile, reflectionCount);
+  const stageIndex = arcState?.stageIndex ?? getStageIndex(profile, reflectionCount);
   const daysIn = daysSince(startedAt);
   const struggleThreadCount = SEED_THREADS.filter((t) => t.stageTag === 'Struggle').length;
 
@@ -105,7 +154,6 @@ export default function Arc() {
     const config = STAGE_CONFIG[stage];
     const status: StageCard['status'] = index < stageIndex ? 'completed' : index === stageIndex ? 'current' : 'upcoming';
     let headline = '';
-    let progress: StageCard['progress'];
 
     switch (stage) {
       case 'Explore':
@@ -122,28 +170,30 @@ export default function Arc() {
           : 'Complete onboarding to name your biggest obstacle.';
         break;
       case 'Breakthrough':
-        progress = { current: Math.min(reflectionCount, 7), target: 7 };
         headline = reflectionCount >= 7
           ? `Earned it — ${reflectionCount} reflections logged against "${stuckPoint || 'your obstacle'}."`
           : reflectionCount > 0
-          ? `${reflectionCount} of 7 reflections logged. Consistent reflection against your obstacle is what moves you to Interact.`
+          ? `${reflectionCount} of 7 reflections logged. Consistent reflection against your obstacle is what moves you to Integrate.`
           : 'Log reflections against your obstacle to start building momentum.';
         break;
-      case 'Interact':
+      case 'Integrate':
         headline = `The curator stops feeding content and starts pointing you at people. d/thearc has ${struggleThreadCount} thread${struggleThreadCount === 1 ? '' : 's'} tagged Struggle right now — you'd be well placed to help.`;
         break;
     }
 
-    return { stage, status, headline, feel: config.feel, weights: formatWeights(config.typeWeights), wildcard: wildcardCopy(config.wildcardFrequency), progress };
-  });
+    // Every stage gets a completion score, not just the current one:
+    // already-passed stages read 100, stages you haven't reached yet read 0,
+    // and the current stage uses real server progress when it's reachable.
+    const completionPercent = index < stageIndex
+      ? 100
+      : index > stageIndex
+      ? 0
+      : arcState
+      ? Math.round(arcState.progress * 100)
+      : localStageProgress(stage, reflectionCount);
 
-  const stats: { label: string; value: number; suffix?: string; icon: LucideIcon }[] = [
-    { label: 'Days on your arc', value: daysIn, icon: CalendarDays },
-    { label: 'Reflection streak', value: reflectionStreak, suffix: reflectionStreak === 1 ? ' day' : ' days', icon: Flame },
-    { label: 'Reflections logged', value: reflectionCount, icon: Layers },
-    { label: 'Saved for later', value: savedIds.length, icon: Bookmark },
-    { label: 'Content opened', value: recentlyViewed.length, icon: Eye },
-  ];
+    return { stage, status, headline, feel: config.feel, weights: formatWeights(config.typeWeights), wildcard: wildcardCopy(config.wildcardFrequency), completionPercent };
+  });
 
   return (
     <DashboardLayout>
@@ -167,17 +217,6 @@ export default function Arc() {
         </div>
 
         <StageTracker currentIndex={stageIndex} />
-
-        {/* Journey stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-          {stats.map((s) => (
-            <div key={s.label} className="bg-surface rounded-xl p-4 flex flex-col gap-2">
-              <s.icon className="w-4 h-4 text-spotlight" />
-              <p className="text-xl font-semibold text-white leading-none">{s.value}{s.suffix ?? ''}</p>
-              <p className="text-[11px] text-muted leading-tight">{s.label}</p>
-            </div>
-          ))}
-        </div>
 
         {/* Goal card */}
         <div className="bg-surface rounded-2xl p-6 flex flex-col sm:flex-row sm:items-start gap-4">
@@ -222,6 +261,8 @@ export default function Arc() {
               let iconColor = 'text-white/20';
               if (card.status === 'completed') { Icon = CheckCircle2; iconColor = 'text-white'; }
               else if (card.status === 'current') { Icon = Circle; iconColor = 'text-spotlight'; }
+              const color = completionColor(card.completionPercent);
+              const needsWork = card.completionPercent < 40;
               return (
                 <div key={card.stage} className="relative z-10 flex gap-4">
                   <div className="bg-surface rounded-full mt-0.5 relative shrink-0">
@@ -231,30 +272,32 @@ export default function Arc() {
                     <Icon className={cn('w-5 h-5 relative', iconColor)} strokeWidth={card.status === 'current' ? 3 : 2} />
                   </div>
                   <div className="flex-1 min-w-0 pb-1">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <h3 className={cn('font-medium text-sm', card.status === 'upcoming' ? 'text-white/30' : 'text-white')}>
-                        {index + 1}. {card.stage}
-                      </h3>
-                      {card.status === 'current' && (
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-spotlight border border-spotlight rounded-full px-2 py-0.5">
-                          You are here
-                        </span>
-                      )}
+                    <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className={cn('font-medium text-sm', card.status === 'upcoming' ? 'text-white/30' : 'text-white')}>
+                          {index + 1}. {card.stage}
+                        </h3>
+                        {card.status === 'current' && (
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-spotlight border border-spotlight rounded-full px-2 py-0.5">
+                            You are here
+                          </span>
+                        )}
+                      </div>
+                      <span className={cn('text-[10px] font-semibold uppercase tracking-wide rounded-full px-2 py-0.5 border shrink-0', color.badge, needsWork && 'motion-safe:animate-pulse')}>
+                        {card.completionPercent}% · {color.label}
+                      </span>
                     </div>
                     <p className={cn('text-sm leading-relaxed mb-2', card.status === 'upcoming' ? 'text-white/30' : 'text-white/70')}>
                       {card.headline}
                     </p>
-                    {card.progress && (
-                      <div className="mb-2 max-w-xs">
-                        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
-                          <div
-                            className="h-full bg-spotlight rounded-full transition-all"
-                            style={{ width: `${(card.progress.current / card.progress.target) * 100}%` }}
-                          />
-                        </div>
-                        <p className="text-[11px] text-muted mt-1">{card.progress.current} of {card.progress.target} reflections</p>
+                    <div className="mb-2 max-w-xs">
+                      <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div
+                          className={cn('h-full rounded-full transition-all', color.bar, needsWork && 'motion-safe:animate-pulse')}
+                          style={{ width: `${card.completionPercent}%` }}
+                        />
                       </div>
-                    )}
+                    </div>
                     <p className={cn('text-xs italic mb-1.5', card.status === 'upcoming' ? 'text-white/20' : 'text-muted')}>
                       {card.feel}
                     </p>
@@ -268,6 +311,28 @@ export default function Arc() {
             })}
           </div>
         </div>
+
+        {/* Stage history — only rendered once the server has real transitions */}
+        {stageHistory.length > 0 && (
+          <div className="bg-surface rounded-2xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <History className="w-4 h-4 text-spotlight" />
+              <h2 className="text-base font-medium text-white">Stage history</h2>
+            </div>
+            <div className="flex flex-col gap-3">
+              {stageHistory.map((t, i) => (
+                <div key={i} className="flex items-center justify-between text-sm">
+                  <span className="text-white/70">
+                    <span className="capitalize">{t.from_stage}</span> → <span className="capitalize text-white font-medium">{t.to_stage}</span>
+                  </span>
+                  <span className="text-xs text-muted shrink-0">
+                    {new Date(t.completed_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Habits */}
         <div className="bg-surface rounded-2xl p-6">
