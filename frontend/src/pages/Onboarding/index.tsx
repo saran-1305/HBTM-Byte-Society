@@ -44,14 +44,14 @@ export default function Onboarding() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      <header className="w-full px-6 py-6 flex-shrink-0">
+      <header className="w-full px-4 sm:px-6 py-4 sm:py-6 flex-shrink-0">
         <div className="max-w-2xl mx-auto">
           {currentStep > OnboardingStep.Welcome && currentStep < OnboardingStep.Finish && (
             <ProgressBar currentStep={currentStep - 1} totalSteps={7} />
           )}
         </div>
       </header>
-      <main className="flex-1 flex flex-col px-6 w-full max-w-4xl mx-auto overflow-hidden">
+      <main className="flex-1 flex flex-col px-4 sm:px-6 w-full max-w-4xl mx-auto overflow-hidden">
         {renderStep()}
       </main>
     </div>
