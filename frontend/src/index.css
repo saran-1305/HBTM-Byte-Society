@@ -14,5 +14,14 @@
 
   body {
     @apply text-[var(--text-primary)] bg-[var(--bg-main)] antialiased font-sans;
+    user-select: none; /* Prevents text selection and caret */
+    -webkit-user-select: none;
+    cursor: default;
+  }
+
+  input, textarea, select {
+    user-select: auto;
+    -webkit-user-select: auto;
+    cursor: text;
   }
 }

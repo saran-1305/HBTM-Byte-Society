@@ -1,41 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import HeroCurationBanner from '../components/dashboard/HeroCurationBanner';
 import StageTrackerStrip from '../components/dashboard/StageTrackerStrip';
 import MediaGrid from '../components/dashboard/MediaGrid';
 import RightPanel from '../components/dashboard/RightPanel';
-import { useRecommendations } from '../hooks/useRecommendations';
+import { Loader2 } from 'lucide-react';
 
 function DashboardPage() {
-  const { data: recs, loading } = useRecommendations();
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Map API recs to the MediaItem shape expected by MediaGrid
-  const toMediaItems = (items: any[]) =>
-    items.map((r: any) => ({
-      id: r.id,
-      title: r.source?.title || 'Untitled',
-      subtitle: r.source?.author || '',
-      badge: r.source?.source_type || 'resource',
-      url: r.source?.url || '',
-      thumbnail: r.source?.thumbnail || '',
-      provider: r.source?.provider || '',
-      relevance_score: r.relevance_score,
-    }));
+  useEffect(() => {
+    const fetchRecommendation = async () => {
+      try {
+        const userId = localStorage.getItem('daskalos_user_id') || '123e4567-e89b-12d3-a456-426614174000';
+        const response = await fetch(`http://127.0.0.1:8000/api/recommendations/${userId}`);
+        const data = await response.json();
+        
+        if (data.items && data.items.length > 0) {
+          setRecommendations(data.items);
+        }
+      } catch (err) {
+        console.error("Failed to load recommendation", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchRecommendation();
+  }, []);
 
-  // Split by priority: 1=top, 2=recent, rest=wildcard
-  const topItems = recs?.filter((r: any) => r.priority === 1) || [];
-  const recentItems = recs?.filter((r: any) => r.priority === 2) || [];
-  const wildcardItems = recs?.filter((r: any) => r.priority === 3) || [];
-
-  // Fallback to full list split evenly if priorities aren't available
-  const allItems = recs || [];
-  const chunkSize = Math.ceil(allItems.length / 3);
-  const primaryItems = topItems.length ? toMediaItems(topItems) : toMediaItems(allItems.slice(0, chunkSize));
-  const secondaryItems = recentItems.length ? toMediaItems(recentItems) : toMediaItems(allItems.slice(chunkSize, chunkSize * 2));
-  const tertiaryItems = wildcardItems.length ? toMediaItems(wildcardItems) : toMediaItems(allItems.slice(chunkSize * 2));
-
-  // Top rec for hero banner
-  const heroRec = recs?.[0];
+  const spotlight = recommendations.length > 0 ? recommendations[0] : null;
+  const restOfFeed = recommendations.length > 1 ? recommendations.slice(1).map((item: any) => ({
+    id: item.recommendation.id,
+    title: item.recommendation.title,
+    subtitle: item.recommendation.type,
+    badge: item.recommendation.type.split(' ')[0], // Best effort badge
+    url: item.recommendation.url
+  })) : [];
 
   return (
     <DashboardLayout>
@@ -43,44 +45,39 @@ function DashboardPage() {
         
         {/* Main Feed Column */}
         <div className="xl:col-span-8 flex flex-col">
-          <HeroCurationBanner rec={heroRec} loading={loading} />
-          <StageTrackerStrip />
+          {isLoading ? (
+            <div className="w-full h-[340px] rounded-[24px] bg-[#121212] flex flex-col items-center justify-center border border-[#333333]">
+              <Loader2 className="w-8 h-8 text-[#E50914] animate-spin mb-4" />
+              <p className="text-[#999999] font-medium animate-pulse">DASKALOS is synthesizing your personalized feed (this takes ~15 seconds)...</p>
+            </div>
+          ) : spotlight ? (
+            <HeroCurationBanner 
+              title={spotlight.recommendation.title}
+              subtitle={spotlight.recommendation.type}
+              reasoning={spotlight.reasoning ? spotlight.reasoning[0] : spotlight.recommendation.description}
+              url={spotlight.recommendation.url}
+            />
+          ) : (
+             <div className="w-full h-[340px] rounded-[24px] bg-[#121212] flex flex-col items-center justify-center border border-[#333333]">
+              <p className="text-[#999999] font-medium">No recommendation available.</p>
+            </div>
+          )}
           
-          <div className="mt-2">
-            {loading ? (
-              <div className="flex items-center justify-center py-16 text-[#999999] text-sm animate-pulse">
-                AI Curator is assembling your recommendations...
-              </div>
-            ) : (
-              <>
-                {primaryItems.length > 0 && (
-                  <MediaGrid 
-                    title="Curated for your current focus" 
-                    items={primaryItems} 
-                    viewAllLink="/recommendations"
-                  />
-                )}
-                {secondaryItems.length > 0 && (
-                  <MediaGrid 
-                    title="Recent recommendations" 
-                    items={secondaryItems} 
-                    viewAllLink="/recommendations"
-                  />
-                )}
-                {tertiaryItems.length > 0 && (
-                  <MediaGrid 
-                    title="Suggested by DASKALOS" 
-                    items={tertiaryItems}
-                  />
-                )}
-                {allItems.length === 0 && (
-                  <div className="text-center py-12 text-[#666666]">
-                    <p>No recommendations yet.</p>
-                    <p className="text-sm mt-1">Complete onboarding to get personalized curation.</p>
-                  </div>
-                )}
-              </>
-            )}
+          <div className="mt-8">
+            <StageTrackerStrip />
+          </div>
+          
+          {restOfFeed.length > 0 && (
+            <div className="mt-8">
+              <MediaGrid 
+                title="Matched to your Struggle phase" 
+                items={restOfFeed} 
+              />
+            </div>
+          )}
+          
+          <div className="mt-12 text-center text-[#666666] text-sm">
+            Complete activities to populate your feed with more recommendations.
           </div>
         </div>
 

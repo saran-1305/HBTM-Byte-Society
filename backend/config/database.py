@@ -2,6 +2,9 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 import os
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/hbtm")
 SYNC_DATABASE_URL = DATABASE_URL.replace('postgresql+asyncpg', 'postgresql')

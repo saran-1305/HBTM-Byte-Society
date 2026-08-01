@@ -1,43 +1,36 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-import uuid
-
 from backend.config.database import get_db
-from backend.utils.auth import get_current_user_id
-from backend.repositories.growth_repo import CuratorRepository
-from backend.agents.identity.repository import IdentityRepository
-from backend.agents.curator.controller import curator_agent
+from backend.services.recommendation.recommendation_service import RecommendationService
+from backend.services.recommendation.history_service import HistoryService
+from backend.schemas.recommendation import FeedbackRequest, RecommendationResponse, RecommendationListResponse
+from typing import Dict, Any
 
-router = APIRouter()
+router = APIRouter(tags=["recommendations"])
 
-@router.get("/")
-async def get_recommendations(
-    user_id: str = Depends(get_current_user_id),
-    db: AsyncSession = Depends(get_db)
-):
-    uid = uuid.UUID(user_id)
-    repo = CuratorRepository(db)
+@router.get("/{user_id}", response_model=RecommendationListResponse)
+async def get_recommendation(user_id: str, db: AsyncSession = Depends(get_db)):
+    """
+    Get exactly ONE curated recommendation for the user.
+    """
+    service = RecommendationService(db)
+    try:
+        response = await service.generate_recommendation(user_id)
+        return response
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error generating recommendation: {str(e)}")
+
+@router.post("/{user_id}/feedback")
+async def submit_feedback(user_id: str, request: FeedbackRequest, db: AsyncSession = Depends(get_db)):
+    """
+    Submit feedback for a recommendation.
+    """
+    history_service = HistoryService(db)
+    record = await history_service.update_feedback(request.recommendation_id, request.reaction)
     
-    # Check if we already have recommendations
-    existing = await repo.get_recommendations(uid)
-    if existing:
-        return existing
+    if not record:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Recommendation not found")
         
-    # If not, lazy generate them!
-    id_repo = IdentityRepository(db)
-    profile = await id_repo.get_by_user_id(uid)
-    if not profile:
-        raise HTTPException(status_code=404, detail="Identity profile not found")
-        
-    profile_data = {
-        "identity_summary": profile.identity_summary,
-        "core_motivations": profile.core_motivations,
-        "recommended_learning_approach": profile.recommended_learning_approach,
-        "growth_focus_areas": profile.growth_focus_areas
-    }
-    
-    curator_output = await curator_agent.generate_recommendations(profile_data)
-    await repo.save_recommendations(uid, curator_output.recommendations)
-    
-    # Return newly generated
-    return await repo.get_recommendations(uid)
+    return {"message": "Feedback submitted successfully", "recommendation_id": record.id, "reaction": record.feedback}

@@ -46,79 +46,16 @@ const OnboardFlow = () => {
     setHabits(habits.filter((habit) => habit !== h));
   };
 
-  const submitForm = async () => {
+  const submitForm = () => {
     setStep(5);
     setIsSubmitting(true);
-    try {
-      // 1. Register guest user and get a token
-      const registerRes = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: `${localStorage.getItem('daskalos_user_id')}@daskalos.ai`,
-          password: 'daskalos_default_pw',
-          name: localStorage.getItem('daskalos_user_name') || 'Learner',
-        }),
-      });
-      let token = '';
-      if (registerRes.ok) {
-        const regData = await registerRes.json();
-        token = regData.access_token;
-        localStorage.setItem('token', token);
-      } else {
-        // Already registered, try login
-        const loginRes = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: `${localStorage.getItem('daskalos_user_id')}@daskalos.ai`,
-            password: 'daskalos_default_pw',
-          }),
-        });
-        if (loginRes.ok) {
-          const loginData = await loginRes.json();
-          token = loginData.access_token;
-          localStorage.setItem('token', token);
-        }
-      }
-
-      const authHeaders = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
-
-      // 2. Start onboarding session
-      await fetch('/api/onboarding/start', { method: 'POST', headers: authHeaders });
-
-      // 3. Save answers
-      await fetch('/api/onboarding/save', {
-        method: 'POST',
-        headers: authHeaders,
-        body: JSON.stringify({
-          long_term_goal: aspiration,
-          timeframe,
-          current_habits: habits,
-          stuck_points: stuckPoint,
-          interests: [aspiration],
-        }),
-      });
-
-      // 4. Complete onboarding → triggers AI identity generation
-      const completeRes = await fetch('/api/onboarding/complete', { method: 'POST', headers: authHeaders });
-      if (completeRes.ok) {
-        const completeData = await completeRes.json();
-        setProfileSummary(
-          completeData.identity_summary ||
-          `Got it. A ${timeframe.toLowerCase()} journey to becoming ${aspiration}, despite the challenges of ${habits.length ? habits[0] : 'daily distractions'}.`
-        );
-      } else {
-        setProfileSummary(
-          `Got it. A ${timeframe.toLowerCase()} journey to becoming ${aspiration || 'your best self'}, despite ${habits.length ? habits[0] : 'daily distractions'}.`
-        );
-      }
-    } catch (err) {
-      console.error('Onboarding error:', err);
-      setProfileSummary(`A ${timeframe.toLowerCase()} journey to becoming ${aspiration || 'your best self'}.`);
-    } finally {
+    // Simulate API Call
+    setTimeout(() => {
+      setProfileSummary(
+        `Got it. A ${timeframe.toLowerCase()} journey to becoming a ${aspiration.split(' ')[0] || 'better version of yourself'}, despite the challenges of ${habits.length ? habits[0] : 'daily distractions'}.`
+      );
       setIsSubmitting(false);
-    }
+    }, 1800);
   };
 
   const slideVariants = {

@@ -1,20 +1,26 @@
-from sqlalchemy import Column, String, DateTime, ForeignKey, Integer
-from sqlalchemy.dialects.postgresql import UUID
 import uuid
+from datetime import datetime
+from sqlalchemy import Column, String, DateTime, JSON, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 from backend.config.database import Base
-from sqlalchemy.sql import func
 
-class Recommendation(Base):
-    __tablename__ = "recommendations"
+class RecommendationHistory(Base):
+    __tablename__ = "recommendation_history"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    
-    type = Column(String, nullable=False) # 'book', 'video', 'article'
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
+    content_id = Column(String, nullable=False)
     title = Column(String, nullable=False)
-    author = Column(String, nullable=False)
-    tag = Column(String, nullable=False)
-    match_percentage = Column(Integer, nullable=False)
-    image_url = Column(String, nullable=True)
-    
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    type = Column(String, nullable=False)
+    stage = Column(String, nullable=True) # Added for Phase 2
+    domain = Column(String, nullable=True) # Added for Phase 2
+    reasoning = Column(JSON, nullable=True)  # Legacy AI field, nullable
+    expected_outcome = Column(String, nullable=True)
+    reflection_prompt = Column(String, nullable=True)
+    feedback = Column(String, nullable=True)  # 'resonated', 'already_knew', etc.
+    url = Column(String, nullable=True) # AI generated URL
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
+
+    # Relationships
+    user = relationship("User", back_populates="recommendations")

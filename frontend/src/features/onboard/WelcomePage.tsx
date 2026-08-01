@@ -11,7 +11,8 @@ const WelcomePage = () => {
   const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
+      // Use a standard UUID for PostgreSQL compatibility
+      const userId = crypto.randomUUID ? crypto.randomUUID() : '123e4567-e89b-12d3-a456-426614174000';
       localStorage.setItem('daskalos_user_id', userId);
       localStorage.setItem('daskalos_user_name', name);
       // Navigate to the questions flow (placeholder route for now)

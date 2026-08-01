@@ -2,90 +2,94 @@ import React from 'react';
 import { IconPlayerPlay } from '@tabler/icons-react';
 
 interface HeroCurationBannerProps {
-  rec?: any;
-  loading?: boolean;
+  title: string;
+  subtitle: string;
+  reasoning: string;
+  url?: string;
 }
 
-const HeroCurationBanner = ({ rec, loading }: HeroCurationBannerProps) => {
-  const src = rec?.source || null;
-  const isYouTube = src?.provider === 'youtube';
-  const getYouTubeId = (url: string) => url?.split('v=')[1]?.split('&')[0] || '';
-  const videoId = isYouTube ? getYouTubeId(src?.url || '') : '';
-  const thumbnail = src?.thumbnail || (videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null);
+const getYoutubeVideoId = (url?: string) => {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+};
+
+const HeroCurationBanner = ({ title, subtitle, reasoning, url }: HeroCurationBannerProps) => {
+  const isVideo = subtitle?.toLowerCase().includes("video") || url?.includes("youtube") || url?.includes("youtu.be");
+  const videoId = getYoutubeVideoId(url);
 
   return (
-    <div className="w-full h-[340px] rounded-[24px] overflow-hidden relative bg-[#E50914] flex flex-col md:flex-row">
+    <div className="w-full h-[340px] rounded-[24px] overflow-hidden relative bg-[#E50914] flex flex-col md:flex-row select-none">
       
       {/* Left Content Half */}
-      <div className="flex-1 p-10 flex flex-col justify-center relative z-10">
+      <div className="flex-1 p-10 flex flex-col justify-center relative z-10 bg-gradient-to-r from-[#E50914] via-[#E50914]/90 to-transparent">
         <span className="text-[14px] font-bold tracking-wide mb-4 text-white inline-flex items-center gap-1">
-          {loading ? 'Loading...' : 'Spotlight ✦'}
+          AI Spotlight <span className="text-[12px] border border-white/40 rounded-full w-4 h-4 inline-flex items-center justify-center -translate-y-px">↑</span>
         </span>
         
-        <p className="text-[15px] text-white/90 mb-4 max-w-sm leading-relaxed">
-          {loading
-            ? 'AI Curator is finding your top pick...'
-            : rec?.recommendation_reason || "Your AI curator has selected this specifically for your current stage of growth."}
+        <p className="text-[15px] text-white/90 mb-8 max-w-sm leading-relaxed line-clamp-4">
+          {reasoning}
         </p>
-
-        {src && (
-          <div className="mb-6">
-            <h2 className="text-[22px] font-bold text-white line-clamp-2 mb-1">{src.title}</h2>
-            <p className="text-white/70 text-[13px]">{src.author}</p>
-          </div>
-        )}
         
         <div className="flex items-center gap-4 mt-auto">
-          {src?.url && (
+          {url ? (
             <a 
-              href={src.url} 
+              href={url} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-white text-black text-[14px] font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform"
+              className="bg-white text-black text-[14px] font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform inline-block text-center shadow-lg"
             >
-              {isYouTube ? '▶ Watch Now' : 'Open Resource'}
+              Start Now
             </a>
+          ) : (
+            <button className="bg-white text-black text-[14px] font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform shadow-lg">
+              Start Now
+            </button>
           )}
-          {!src && !loading && (
-            <a 
-              href="/recommendations" 
-              className="bg-white text-black text-[14px] font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform"
-            >
-              View Recommendations
-            </a>
-          )}
-          <span className="text-white/70 text-sm font-bold">
-            {rec?.relevance_score ? `${rec.relevance_score}% match` : ''}
-          </span>
+          <button className="bg-transparent text-white text-[14px] font-bold px-6 py-3 rounded-full hover:bg-white/10 transition-colors">
+            Dismiss
+          </button>
         </div>
       </div>
 
       {/* Right Media Half */}
-      {(thumbnail || !loading) && (
-        <div className="flex-1 relative h-full group cursor-pointer">
-          {thumbnail ? (
-            <img 
-              src={thumbnail}
-              alt={src?.title || 'Recommendation'} 
-              className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-            />
-          ) : (
-            <div className="w-full h-full bg-[#c00810] flex items-center justify-center">
-              <div className="text-white/20 text-9xl font-black">D</div>
-            </div>
-          )}
-          {/* Subtle gradient to blend into red */}
-          <div className="absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-[#E50914] to-transparent"></div>
-          
-          {isYouTube && videoId && (
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20">
-                <IconPlayerPlay className="w-7 h-7 text-white fill-white ml-1" stroke={1.5} />
-              </div>
-            </div>
-          )}
+      <a 
+        href={url || "#"} 
+        target={url ? "_blank" : "_self"} 
+        rel="noopener noreferrer"
+        className="flex-1 relative h-full group block overflow-hidden cursor-pointer"
+      >
+        {videoId ? (
+          <img 
+            src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`} 
+            onError={(e) => { e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`; }}
+            alt="YouTube Thumbnail" 
+            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+          />
+        ) : (
+          <img 
+            src="https://picsum.photos/seed/curation_hero/800/600" 
+            alt="Thumbnail" 
+            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+          />
+        )}
+        
+        {/* Subtle gradient to blend into red */}
+        <div className="absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-[#E50914] to-transparent"></div>
+        
+        {/* Bottom Title Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-6 left-8 right-8">
+            <p className="text-[24px] font-bold text-white truncate">
+              {title}
+            </p>
+            <p className="text-[14px] font-medium text-white/80 mt-1">
+              {subtitle}
+            </p>
+          </div>
         </div>
-      )}
+      </a>
     </div>
   );
 };
