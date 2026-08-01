@@ -1,134 +1,59 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { Button } from "../../components/Button";
-import { Input } from "../../components/Input";
-import { Progress } from "../../components/Progress";
+import React from 'react';
+import { useOnboarding } from '@/context/OnboardingContext';
+import { ProgressBar } from '@/components/ProgressBar';
+import { OnboardingStep } from '@/types/onboarding';
 
-// Basic fetch logic for our API
-const startOnboarding = async (data: any) => {
-  const res = await fetch("/api/onboarding/start", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("token")}`
-    },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error("Failed to start onboarding");
-  return res.json();
-};
-
-const saveOnboarding = async (data: any) => {
-  const res = await fetch("/api/onboarding/save", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("token")}`
-    },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error("Failed to save onboarding");
-  return res.json();
-};
-
-const completeOnboarding = async () => {
-  const res = await fetch("/api/onboarding/complete", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${localStorage.getItem("token")}`
-    }
-  });
-  if (!res.ok) throw new Error("Failed to complete onboarding");
-  return res.json();
-};
+// Steps
+import { Step1Welcome } from './steps/Step1Welcome';
+import { Step2Aspiration } from './steps/Step2Aspiration';
+import { Step3Motivation } from './steps/Step3Motivation';
+import { Step4Habits } from './steps/Step4Habits';
+import { Step5Challenges } from './steps/Step5Challenges';
+import { Step6Interests } from './steps/Step6Interests';
+import { Step7LearningStyle } from './steps/Step7LearningStyle';
+import { Step8Time } from './steps/Step8Time';
+import { Step9Finish } from './steps/Step9Finish';
 
 export default function Onboarding() {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    full_name: "",
-    age: "",
-    occupation: "",
-    aspirations: "",
-    learning_style: "",
-  });
-  const navigate = useNavigate();
+  const { currentStep } = useOnboarding();
 
-  const startMutation = useMutation({
-    mutationFn: startOnboarding,
-    onSuccess: () => setStep(2),
-  });
-
-  const saveMutation = useMutation({
-    mutationFn: saveOnboarding,
-    onSuccess: () => setStep(3),
-  });
-
-  const completeMutation = useMutation({
-    mutationFn: completeOnboarding,
-    onSuccess: () => {
-      navigate("/dashboard");
-    },
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleNext = () => {
-    if (step === 1) {
-      startMutation.mutate({
-        full_name: formData.full_name,
-        age: parseInt(formData.age),
-        occupation: formData.occupation
-      });
-    } else if (step === 2) {
-      // Split comma separated lists
-      saveMutation.mutate({
-        aspirations: formData.aspirations.split(",").map(s => s.trim()),
-        learning_style: formData.learning_style
-      });
-    } else if (step === 3) {
-      completeMutation.mutate();
+  const renderStep = () => {
+    switch (currentStep) {
+      case OnboardingStep.Welcome:
+        return <Step1Welcome />;
+      case OnboardingStep.Aspiration:
+        return <Step2Aspiration />;
+      case OnboardingStep.Motivation:
+        return <Step3Motivation />;
+      case OnboardingStep.Habits:
+        return <Step4Habits />;
+      case OnboardingStep.Challenges:
+        return <Step5Challenges />;
+      case OnboardingStep.Interests:
+        return <Step6Interests />;
+      case OnboardingStep.LearningStyle:
+        return <Step7LearningStyle />;
+      case OnboardingStep.Time:
+        return <Step8Time />;
+      case OnboardingStep.Finish:
+        return <Step9Finish />;
+      default:
+        return <Step1Welcome />;
     }
   };
 
-  const isLoading = startMutation.isPending || saveMutation.isPending || completeMutation.isPending;
-  const isError = startMutation.isError || saveMutation.isError || completeMutation.isError;
-
   return (
-    <div className="max-w-xl mx-auto mt-20 p-6 bg-white rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">Onboarding (Step {step}/3)</h1>
-      <Progress value={(step / 3) * 100} className="mb-6" />
-      
-      {isError && <p className="text-red-500 mb-4">An error occurred. Please try again.</p>}
-      
-      {step === 1 && (
-        <div className="space-y-4">
-          <Input name="full_name" placeholder="Full Name" onChange={handleChange} />
-          <Input name="age" type="number" placeholder="Age" onChange={handleChange} />
-          <Input name="occupation" placeholder="Occupation" onChange={handleChange} />
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <header className="w-full px-6 py-6 flex-shrink-0">
+        <div className="max-w-2xl mx-auto">
+          {currentStep > OnboardingStep.Welcome && currentStep < OnboardingStep.Finish && (
+            <ProgressBar currentStep={currentStep - 1} totalSteps={7} />
+          )}
         </div>
-      )}
-
-      {step === 2 && (
-        <div className="space-y-4">
-          <Input name="aspirations" placeholder="Aspirations (comma separated)" onChange={handleChange} />
-          <Input name="learning_style" placeholder="Preferred Learning Style" onChange={handleChange} />
-        </div>
-      )}
-
-      {step === 3 && (
-        <div className="space-y-4">
-          <p>You're all set! Click below to let our AI generate your personalized Identity Summary.</p>
-        </div>
-      )}
-
-      <div className="mt-8 flex justify-end">
-        <Button onClick={handleNext} disabled={isLoading}>
-          {isLoading ? "Loading..." : (step === 3 ? "Complete & Generate Profile" : "Next")}
-        </Button>
-      </div>
+      </header>
+      <main className="flex-1 flex flex-col px-6 w-full max-w-4xl mx-auto overflow-hidden">
+        {renderStep()}
+      </main>
     </div>
   );
 }
