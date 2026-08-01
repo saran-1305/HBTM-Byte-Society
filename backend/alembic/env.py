@@ -26,6 +26,9 @@ import backend.models.identity_profile
 import backend.models.recommendation
 import backend.models.growth_plan
 import backend.models.habits
+import backend.models.knowledge
+import backend.models.growth_content
+import backend.models.publishing
 
 target_metadata = Base.metadata
 

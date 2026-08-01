@@ -1,33 +1,43 @@
 import os
 import json
+import random
 from litellm import acompletion
 
 class LLMProvider:
     def __init__(self):
-        # We will use Groq primarily, and fallback to OpenRouter
-        self.primary_model = "groq/llama-3.3-70b-versatile" # updated groq model
-        self.fallback_model = "openrouter/anthropic/claude-3-haiku"
+        # We will load balance between Groq and OpenRouter
+        self.model_groq = "groq/llama-3.3-70b-versatile"
+        self.model_or = "openrouter/anthropic/claude-3-haiku"
 
     async def generate_json(self, system_prompt: str, user_prompt: str) -> dict:
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
         ]
+        
+        # 50/50 Split
+        if random.random() < 0.5:
+            primary_model = self.model_groq
+            fallback_model = self.model_or
+        else:
+            primary_model = self.model_or
+            fallback_model = self.model_groq
+            
         try:
             # LiteLLM acompletion handles the async call
             response = await acompletion(
-                model=self.primary_model,
+                model=primary_model,
                 messages=messages,
                 response_format={"type": "json_object"}
             )
             content = response.choices[0].message.content
             return json.loads(content)
         except Exception as e:
-            print(f"Primary model failed: {e}. Falling back...")
+            print(f"Primary model ({primary_model}) failed: {e}. Falling back to {fallback_model}...")
             # Fallback
             try:
                 response = await acompletion(
-                    model=self.fallback_model,
+                    model=fallback_model,
                     messages=messages,
                     response_format={"type": "json_object"}
                 )

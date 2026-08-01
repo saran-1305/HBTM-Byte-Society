@@ -59,11 +59,11 @@ class IdentityService:
         
         # Clear old AI generated data so it gets regenerated on next dashboard visit
         from sqlalchemy.future import select
-        from backend.models.recommendation import Recommendation
+        from backend.models.knowledge import CuratedRecommendation
         from backend.models.growth_plan import GrowthMilestone
         from backend.models.habits import Habit
         
-        res_r = await self.repo.db.execute(select(Recommendation).where(Recommendation.user_id == uid))
+        res_r = await self.repo.db.execute(select(CuratedRecommendation).where(CuratedRecommendation.user_id == uid))
         for r in res_r.scalars().all():
             await self.repo.db.delete(r)
             

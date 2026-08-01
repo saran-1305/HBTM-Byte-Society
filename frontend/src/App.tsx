@@ -9,6 +9,8 @@ import RecommendationsPage from './features/recommendations/RecommendationsPage'
 import AnalyticsPage from './features/analytics/AnalyticsPage';
 import ReflectionPage from './features/reflection/ReflectionPage';
 import GrowthPlanPage from './features/growthplan/GrowthPlanPage';
+import PublishingPage from './pages/Publishing/PublishingPage';
+import PublishingCallback from './pages/Publishing/PublishingCallback';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
       <Route path="/analytics" element={<AnalyticsPage />} />
       <Route path="/reflection" element={<ReflectionPage />} />
       <Route path="/growth-plan" element={<GrowthPlanPage />} />
+      <Route path="/publishing" element={<PublishingPage />} />
+      <Route path="/publishing/callback" element={<PublishingCallback />} />
     </Routes>
   );
 }

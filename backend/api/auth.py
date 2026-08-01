@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 from datetime import timedelta
 import uuid
 
@@ -21,6 +22,11 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+    name: Optional[str] = None
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 class Token(BaseModel):
     access_token: str
@@ -33,7 +39,7 @@ class UserResponse(BaseModel):
     class Config:
         from_attributes = True
 
-@router.post("/register", response_model=UserResponse)
+@router.post("/register", response_model=Token)
 async def register(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.email == user_data.email))
     existing_user = result.scalars().first()
@@ -47,7 +53,28 @@ async def register(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
     await db.commit()
     await db.refresh(new_user)
     
-    return new_user
+    # Return token immediately after registration
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": str(new_user.id)}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+@router.post("/login-json", response_model=Token)
+async def login_json(credentials: UserLogin, db: AsyncSession = Depends(get_db)):
+    """JSON-based login endpoint (for frontend use)."""
+    result = await db.execute(select(User).where(User.email == credentials.email))
+    user = result.scalars().first()
+    if not user or not verify_password(credentials.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": str(user.id)}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/login", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_db)):

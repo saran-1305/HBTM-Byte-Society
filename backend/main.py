@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import routers
-from backend.api import auth, onboarding, identity, recommendations, growth
+from backend.api import auth, onboarding, identity, recommendations, growth, knowledge, publishing
+from backend.publishing.scheduler.core import get_scheduler
 
 app = FastAPI(
     title="Personal Growth AI",
@@ -23,8 +24,19 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(onboarding.router)
 app.include_router(identity.router)
-app.include_router(recommendations.router, prefix="/api/recommendations")
+app.include_router(knowledge.router)
 app.include_router(growth.router, prefix="/api/growth")
+app.include_router(publishing.router)
+
+@app.on_event("startup")
+async def startup_event():
+    scheduler = get_scheduler()
+    scheduler.start()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    scheduler = get_scheduler()
+    scheduler.shutdown()
 
 @app.get("/")
 async def root():
