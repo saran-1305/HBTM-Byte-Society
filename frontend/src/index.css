@@ -3,7 +3,16 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-main: #000000;
+    --bg-surface: #121212;
+    --text-primary: #FFFFFF;
+    --text-muted: #999999;
+    --border-subtle: #222222;
+    --accent-primary: #E50914;
+  }
+
   body {
-    @apply text-slate-900 bg-slate-50 antialiased font-sans;
+    @apply text-[var(--text-primary)] bg-[var(--bg-main)] antialiased font-sans;
   }
 }

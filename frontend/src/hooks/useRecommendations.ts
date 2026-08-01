@@ -9,7 +9,7 @@ export function useRecommendations() {
     async function fetchRecs() {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('/api/recommendations/', {
+        const res = await fetch('/api/knowledge/recommendations', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!res.ok) throw new Error("Failed to fetch recommendations");

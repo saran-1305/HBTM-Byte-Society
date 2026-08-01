@@ -1,81 +1,94 @@
+import React from 'react';
 import DashboardLayout from '../components/layout/DashboardLayout';
-import StatCard from '../components/dashboard/StatCard';
-import Recommendations from '../components/dashboard/Recommendations';
-import GrowthPlan from '../components/dashboard/GrowthPlan';
-import HabitProgress from '../components/dashboard/HabitProgress';
-import RecentReflection from '../components/dashboard/RecentReflection';
-import AIInsights from '../components/dashboard/AIInsights';
-import { Target, Flame, Clock, TrendingUp } from 'lucide-react';
-import { useIdentityProfile } from '../hooks/useIdentityProfile';
+import HeroCurationBanner from '../components/dashboard/HeroCurationBanner';
+import StageTrackerStrip from '../components/dashboard/StageTrackerStrip';
+import MediaGrid from '../components/dashboard/MediaGrid';
+import RightPanel from '../components/dashboard/RightPanel';
+import { useRecommendations } from '../hooks/useRecommendations';
 
 function DashboardPage() {
-  const { data: identity } = useIdentityProfile();
+  const { data: recs, loading } = useRecommendations();
 
-  const currentFocus = identity?.growth_focus_areas?.[0] || 'Loading...';
-  const score = identity?.confidence_score || '8.6';
+  // Map API recs to the MediaItem shape expected by MediaGrid
+  const toMediaItems = (items: any[]) =>
+    items.map((r: any) => ({
+      id: r.id,
+      title: r.source?.title || 'Untitled',
+      subtitle: r.source?.author || '',
+      badge: r.source?.source_type || 'resource',
+      url: r.source?.url || '',
+      thumbnail: r.source?.thumbnail || '',
+      provider: r.source?.provider || '',
+      relevance_score: r.relevance_score,
+    }));
+
+  // Split by priority: 1=top, 2=recent, rest=wildcard
+  const topItems = recs?.filter((r: any) => r.priority === 1) || [];
+  const recentItems = recs?.filter((r: any) => r.priority === 2) || [];
+  const wildcardItems = recs?.filter((r: any) => r.priority === 3) || [];
+
+  // Fallback to full list split evenly if priorities aren't available
+  const allItems = recs || [];
+  const chunkSize = Math.ceil(allItems.length / 3);
+  const primaryItems = topItems.length ? toMediaItems(topItems) : toMediaItems(allItems.slice(0, chunkSize));
+  const secondaryItems = recentItems.length ? toMediaItems(recentItems) : toMediaItems(allItems.slice(chunkSize, chunkSize * 2));
+  const tertiaryItems = wildcardItems.length ? toMediaItems(wildcardItems) : toMediaItems(allItems.slice(chunkSize * 2));
+
+  // Top rec for hero banner
+  const heroRec = recs?.[0];
 
   return (
     <DashboardLayout>
-      {/* Top Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <StatCard 
-          title="Current Focus"
-          icon={<Target className="w-5 h-5 text-indigo-600" />}
-          value={currentFocus}
-          subtitle={null}
-          progress={{ value: 72, colorClass: 'bg-indigo-500' }}
-        />
-        <StatCard 
-          title="Daily Streak"
-          icon={<Flame className="w-5 h-5 text-orange-500" />}
-          value="1"
-          subtitle="day in a row"
-          trend={<span className="text-orange-500 text-xs font-bold flex items-center gap-1">🔥 Just started!</span>}
-        />
-        <StatCard 
-          title="Learning Time Today"
-          icon={<Clock className="w-5 h-5 text-emerald-500" />}
-          value="0m"
-          subtitle="of your daily goal"
-          progress={{ value: 5, colorClass: 'bg-emerald-500' }}
-        />
-        <StatCard 
-          title="AI Growth Score"
-          icon={<TrendingUp className="w-5 h-5 text-blue-500" />}
-          value={<span>{score}<span className="text-lg text-slate-400">/100</span></span>}
-          subtitle="Based on onboarding"
-          trend={
-            <div className="h-8 mt-2 opacity-50 relative overflow-hidden">
-               <svg className="w-full h-full text-indigo-500" viewBox="0 0 100 30" preserveAspectRatio="none">
-                 <path d="M0 30 Q 10 20 20 25 T 40 20 T 60 25 T 80 15 T 100 5 L 100 30 Z" fill="currentColor" opacity="0.2"/>
-                 <path d="M0 30 Q 10 20 20 25 T 40 20 T 60 25 T 80 15 T 100 5" fill="none" stroke="currentColor" strokeWidth="2"/>
-               </svg>
-            </div>
-          }
-        />
-      </div>
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 mb-12">
+        
+        {/* Main Feed Column */}
+        <div className="xl:col-span-8 flex flex-col">
+          <HeroCurationBanner rec={heroRec} loading={loading} />
+          <StageTrackerStrip />
+          
+          <div className="mt-2">
+            {loading ? (
+              <div className="flex items-center justify-center py-16 text-[#999999] text-sm animate-pulse">
+                AI Curator is assembling your recommendations...
+              </div>
+            ) : (
+              <>
+                {primaryItems.length > 0 && (
+                  <MediaGrid 
+                    title="Curated for your current focus" 
+                    items={primaryItems} 
+                    viewAllLink="/recommendations"
+                  />
+                )}
+                {secondaryItems.length > 0 && (
+                  <MediaGrid 
+                    title="Recent recommendations" 
+                    items={secondaryItems} 
+                    viewAllLink="/recommendations"
+                  />
+                )}
+                {tertiaryItems.length > 0 && (
+                  <MediaGrid 
+                    title="Suggested by DASKALOS" 
+                    items={tertiaryItems}
+                  />
+                )}
+                {allItems.length === 0 && (
+                  <div className="text-center py-12 text-[#666666]">
+                    <p>No recommendations yet.</p>
+                    <p className="text-sm mt-1">Complete onboarding to get personalized curation.</p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
 
-      {/* Middle Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
-        <div className="lg:col-span-5">
-          <Recommendations />
+        {/* Right Sidebar Panel */}
+        <div className="xl:col-span-4">
+          <RightPanel />
         </div>
-        <div className="lg:col-span-4">
-          <GrowthPlan />
-        </div>
-        <div className="lg:col-span-3">
-          <HabitProgress />
-        </div>
-      </div>
 
-      {/* Bottom Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-5">
-          <RecentReflection identitySummary={identity?.identity_summary} />
-        </div>
-        <div className="lg:col-span-7">
-          <AIInsights learningApproach={identity?.recommended_learning_approach} />
-        </div>
       </div>
     </DashboardLayout>
   );

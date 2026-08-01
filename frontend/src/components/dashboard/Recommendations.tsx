@@ -1,55 +1,67 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
-import { useRecommendations } from '../../hooks/useRecommendations';
+import { Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const MOCK_DATA = [
+  { 
+    id: 1,
+    title: "Designing Data-Intensive Applications", 
+    type: "Book", 
+    source: "Martin Kleppmann", 
+    reasoning: "You're deep in system design right now — this is the foundational text everyone in that stage eventually needs.", 
+    wildcard: false 
+  },
+  { 
+    id: 2,
+    title: "What Marathon Training Teaches About Discipline", 
+    type: "Article", 
+    source: "Runner's World", 
+    reasoning: "This isn't in your usual lane, but the discipline mechanics are identical to what you're building in Deep Work.", 
+    wildcard: true 
+  }
+];
 
 const Recommendations = () => {
-  const { data: recs, loading } = useRecommendations();
-
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full flex flex-col">
+    <div className="bg-[#131826] p-6 rounded-2xl border border-[#1F2937] h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-slate-900">Today's Top Recommendations</h2>
-        <a href="#" className="text-indigo-600 text-sm font-semibold hover:text-indigo-700">See all</a>
+        <div>
+          <h2 className="text-[18px] font-bold text-white">Curated for you today</h2>
+          <p className="text-[13px] text-[#9CA3AF] mt-1">Matched to your current 'Struggle' phase</p>
+        </div>
+        <Link to="/recommendations" className="text-[#6366F1] text-[13px] font-semibold hover:text-indigo-400 transition-colors bg-[#6366F1]/10 px-3 py-1.5 rounded-lg">
+          View all
+        </Link>
       </div>
       
-      <div className="space-y-6 flex-1 flex flex-col justify-center">
-        {loading ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-3 py-8">
-             <Loader2 className="w-6 h-6 animate-spin text-indigo-500" />
-             <p className="text-sm animate-pulse text-center">AI Curator is finding the perfect materials...</p>
+      <div className="space-y-4 flex-1">
+        {MOCK_DATA.map((item) => (
+          <div 
+            key={item.id}
+            className="bg-[#0B0F1A] border border-[#1F2937] rounded-xl p-4 hover:border-[#6366F1]/50 transition-all duration-150 group"
+          >
+            <div className="flex justify-between items-start mb-2">
+              <span className="bg-[#6366F1]/15 text-[#6366F1] uppercase text-[10px] font-bold rounded-md px-2 py-0.5 tracking-wide">
+                {item.type}
+              </span>
+              
+              {item.wildcard && (
+                <span className="bg-[#F97316]/15 text-[#F97316] uppercase text-[9px] font-bold rounded-md px-2 py-0.5 tracking-wide">
+                   OFF YOUR USUAL PATH
+                </span>
+              )}
+            </div>
+
+            <h3 className="text-[15px] font-medium text-white mb-1 leading-snug">{item.title}</h3>
+            <p className="text-[12px] text-[#9CA3AF] mb-3">{item.source}</p>
+            
+            <div className="border-l-2 border-[#1F2937] pl-3 py-0.5 mb-2">
+              <p className="text-[12px] text-[#9CA3AF] italic leading-relaxed">
+                "{item.reasoning}"
+              </p>
+            </div>
           </div>
-        ) : recs && recs.length > 0 ? (
-          recs.map((item: any) => {
-            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(item.title + ' ' + item.author)}`;
-            return (
-              <a 
-                href={searchUrl} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                key={item.id} 
-                className="flex gap-4 group cursor-pointer"
-              >
-                <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 relative border border-slate-200 bg-slate-100 flex items-center justify-center">
-                  {item.image_url ? (
-                    <img src={item.image_url} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                  ) : (
-                    <div className="text-slate-400 font-bold text-xl">{item.type.charAt(0).toUpperCase()}</div>
-                  )}
-                </div>
-                <div className="flex-1 flex flex-col justify-center">
-                  <h3 className="font-semibold text-slate-900 text-sm mb-1 group-hover:text-indigo-600 transition-colors line-clamp-1">{item.title}</h3>
-                  <p className="text-xs text-slate-500 mb-2 capitalize">{item.type} • {item.author}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded uppercase tracking-wider">{item.tag}</span>
-                    <span className="text-xs font-semibold text-emerald-600">{item.match_percentage}% match</span>
-                  </div>
-                </div>
-              </a>
-            );
-          })
-        ) : (
-          <div className="text-sm text-slate-500 text-center py-4">No recommendations available yet.</div>
-        )}
+        ))}
       </div>
     </div>
   );
