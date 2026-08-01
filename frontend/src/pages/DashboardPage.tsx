@@ -6,8 +6,14 @@ import HabitProgress from '../components/dashboard/HabitProgress';
 import RecentReflection from '../components/dashboard/RecentReflection';
 import AIInsights from '../components/dashboard/AIInsights';
 import { Target, Flame, Clock, TrendingUp } from 'lucide-react';
+import { useIdentityProfile } from '../../hooks/useIdentityProfile';
 
 function DashboardPage() {
+  const { data: identity } = useIdentityProfile();
+
+  const currentFocus = identity?.growth_focus_areas?.[0] || 'Loading...';
+  const score = identity?.confidence_score || '8.6';
+
   return (
     <DashboardLayout>
       {/* Top Stats Row */}
@@ -15,29 +21,29 @@ function DashboardPage() {
         <StatCard 
           title="Current Focus"
           icon={<Target className="w-5 h-5 text-indigo-600" />}
-          value="Deep Work & System Design"
+          value={currentFocus}
           subtitle={null}
           progress={{ value: 72, colorClass: 'bg-indigo-500' }}
         />
         <StatCard 
           title="Daily Streak"
           icon={<Flame className="w-5 h-5 text-orange-500" />}
-          value="12"
-          subtitle="days in a row"
-          trend={<span className="text-orange-500 text-xs font-bold flex items-center gap-1">🔥 Keep it going!</span>}
+          value="1"
+          subtitle="day in a row"
+          trend={<span className="text-orange-500 text-xs font-bold flex items-center gap-1">🔥 Just started!</span>}
         />
         <StatCard 
           title="Learning Time Today"
           icon={<Clock className="w-5 h-5 text-emerald-500" />}
-          value="45m"
-          subtitle="of 60m goal"
-          progress={{ value: 75, colorClass: 'bg-emerald-500' }}
+          value="0m"
+          subtitle="of your daily goal"
+          progress={{ value: 5, colorClass: 'bg-emerald-500' }}
         />
         <StatCard 
-          title="Growth Score"
+          title="AI Growth Score"
           icon={<TrendingUp className="w-5 h-5 text-blue-500" />}
-          value={<span>8.6<span className="text-lg text-slate-400">/10</span></span>}
-          subtitle="Excellent progress"
+          value={<span>{score}<span className="text-lg text-slate-400">/100</span></span>}
+          subtitle="Based on onboarding"
           trend={
             <div className="h-8 mt-2 opacity-50 relative overflow-hidden">
                <svg className="w-full h-full text-indigo-500" viewBox="0 0 100 30" preserveAspectRatio="none">
@@ -65,10 +71,10 @@ function DashboardPage() {
       {/* Bottom Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-5">
-          <RecentReflection />
+          <RecentReflection identitySummary={identity?.identity_summary} />
         </div>
         <div className="lg:col-span-7">
-          <AIInsights />
+          <AIInsights learningApproach={identity?.recommended_learning_approach} />
         </div>
       </div>
     </DashboardLayout>
