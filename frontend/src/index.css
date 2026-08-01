@@ -4,23 +4,23 @@
 
 @layer base {
   :root {
-    --text: #475569; /* slate-600 */
-    --text-h: #0F172A; /* slate-900 */
-    --bg: #F8FAFC; /* slate-50 */
-    --border: #E2E8F0; /* slate-200 */
+    --text: #999999; /* muted */
+    --text-h: #FFFFFF; /* primary text */
+    --bg: #000000; /* true black canvas */
+    --border: #1A1A1A; /* hover surface, used as a hairline where needed */
   }
 
   body {
-    @apply bg-slate-50 text-slate-600 font-sans antialiased;
+    @apply bg-black text-muted font-sans antialiased;
     margin: 0;
   }
-  
+
   #root {
     @apply min-h-screen flex flex-col;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply text-slate-900 font-serif;
+    @apply text-white font-sans tracking-[-0.02em];
   }
 }
 
@@ -33,8 +33,8 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full;
+  @apply bg-surface-hover rounded-full;
 }
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400;
+  @apply bg-navactive;
 }

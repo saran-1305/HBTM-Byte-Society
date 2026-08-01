@@ -1,28 +1,29 @@
 import React from 'react';
 import { cn } from '@/lib/cn';
-import { 
-  LayoutDashboard, 
-  User, 
-  Map, 
-  BookOpen, 
-  Sparkles, 
-  History, 
-  BarChart2,
-  ArrowRight,
-  X,
-  Menu
-} from 'lucide-react';
+import {
+  IconLayoutDashboard,
+  IconUser,
+  IconBook,
+  IconSparkles,
+  IconHistory,
+  IconChartBar,
+  IconUsers,
+  IconArrowRight,
+  IconX,
+  IconMenu2,
+} from '@tabler/icons-react';
 import { useLocation, Link } from 'react-router-dom';
 import { useOnboarding } from '@/context/OnboardingContext';
+import { UserMenu } from '@/components/UserMenu';
 
 const NAV_ITEMS = [
-  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Identity', icon: User, path: '/identity' },
-  { label: 'Growth Plan', icon: Map, path: '/growth-plan' },
-  { label: 'Knowledge', icon: BookOpen, path: '#' },
-  { label: 'Recommendations', icon: Sparkles, path: '#' },
-  { label: 'Reflection', icon: History, path: '#' },
-  { label: 'Analytics', icon: BarChart2, path: '#' },
+  { label: 'Dashboard', icon: IconLayoutDashboard, path: '/dashboard' },
+  { label: 'Identity', icon: IconUser, path: '/identity' },
+  { label: 'Knowledge', icon: IconBook, path: '/knowledge' },
+  { label: 'Recommendations', icon: IconSparkles, path: '/recommendations' },
+  { label: 'Reflection', icon: IconHistory, path: '/reflection' },
+  { label: 'Community', icon: IconUsers, path: '/community' },
+  { label: 'Analytics', icon: IconChartBar, path: '/analytics' },
 ];
 
 interface SidebarProps {
@@ -37,28 +38,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   const content = (
     <div className="flex flex-col h-full p-4">
       {/* Logo */}
-      <div className="mb-8 px-2 flex items-center justify-between">
+      <div className="mb-6 px-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-indigo-500 text-white flex items-center justify-center shrink-0">
-            <Sparkles className="w-5 h-5" />
+          <div className="w-8 h-8 rounded bg-spotlight text-white flex items-center justify-center shrink-0">
+            <IconSparkles className="w-5 h-5" stroke={1.5} />
           </div>
-          <div>
-            <h1 className="font-serif font-bold text-lg text-slate-900 leading-tight">Daskalos</h1>
-            <p className="text-[10px] text-slate-500 uppercase tracking-wider">Know yourself. Grow from there.</p>
-          </div>
+          <h1 className="text-[18px] font-semibold text-white leading-none tracking-[-0.02em]">Daskalos</h1>
         </div>
         {/* Close button on mobile */}
         <button
           onClick={onClose}
-          className="lg:hidden p-1 rounded text-slate-400 hover:text-slate-600"
+          className="lg:hidden p-1 rounded text-muted hover:text-white"
           aria-label="Close menu"
         >
-          <X className="w-5 h-5" />
+          <IconX className="w-5 h-5" stroke={1.5} />
         </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1">
+      <nav className="flex-1 space-y-0.5">
         {NAV_ITEMS.map((item) => {
           const isActive = location.pathname === item.path;
           return (
@@ -69,11 +67,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                 isActive
-                  ? 'bg-indigo-50 text-indigo-700'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'bg-navactive text-white'
+                  : 'text-muted hover:bg-white/5 hover:text-white'
               )}
             >
-              <item.icon className={cn('w-4 h-4', isActive ? 'text-indigo-600' : 'text-slate-400')} />
+              <item.icon className="w-[18px] h-[18px]" stroke={isActive ? 2 : 1.5} />
               {item.label}
             </Link>
           );
@@ -81,36 +79,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
       </nav>
 
       {/* AI Curator note */}
-      <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 mb-4">
-        <div className="flex items-center gap-2 text-amber-700 mb-2">
-          <Sparkles className="w-4 h-4" />
+      <div className="bg-surface rounded-xl p-4 mb-4">
+        <div className="flex items-center gap-2 text-white mb-2">
+          <IconSparkles className="w-4 h-4" stroke={1.5} />
           <span className="font-semibold text-sm">AI Curator</span>
         </div>
-        <p className="text-xs text-slate-600 mb-3 leading-relaxed">
+        <p className="text-[13px] text-muted mb-3 leading-relaxed">
           Your curator updates daily based on what you read, skip, and save.
         </p>
-        <button className="text-xs font-semibold text-amber-700 flex items-center gap-1 hover:text-amber-800 transition-colors">
-          View activity <ArrowRight className="w-3 h-3" />
+        <button className="text-[13px] font-semibold text-white flex items-center gap-1 hover:text-muted transition-colors">
+          View activity <IconArrowRight className="w-3.5 h-3.5" stroke={1.5} />
         </button>
       </div>
 
       {/* User Profile */}
-      <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-        <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-medium shrink-0">
-          U
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-slate-900 truncate">Karthik R.</p>
-          <p className="text-xs text-slate-500 truncate">{profile.aspiration || 'Learner'}</p>
-        </div>
-      </div>
+      <UserMenu profile={profile} onNavigate={onClose} />
     </div>
   );
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <aside className="hidden lg:flex w-64 bg-slate-50 border-r border-slate-200 h-screen flex-col shrink-0">
+      {/* Desktop sidebar: borderless, bleeds into the black canvas */}
+      <aside className="hidden lg:flex w-[240px] bg-black h-screen flex-col shrink-0">
         {content}
       </aside>
 
@@ -118,11 +108,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
       {open && (
         <div className="lg:hidden fixed inset-0 z-40 flex">
           <div
-            className="absolute inset-0 bg-black/40"
+            className="absolute inset-0 bg-black/60"
             onClick={onClose}
             aria-hidden="true"
           />
-          <aside className="relative z-50 w-72 max-w-[85vw] bg-slate-50 h-full shadow-xl flex flex-col">
+          <aside className="relative z-50 w-72 max-w-[85vw] bg-black h-full shadow-xl flex flex-col">
             {content}
           </aside>
         </div>
@@ -134,9 +124,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
 export const SidebarTrigger: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   <button
     onClick={onClick}
-    className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+    className="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors"
     aria-label="Open menu"
   >
-    <Menu className="w-5 h-5" />
+    <IconMenu2 className="w-5 h-5" stroke={1.5} />
   </button>
 );
+
+export default Sidebar;

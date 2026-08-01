@@ -12,8 +12,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
         <input
           ref={ref}
           className={cn(
-            'w-full bg-transparent border-0 border-b-2 border-slate-200 py-3 text-2xl font-serif text-slate-900 placeholder:text-slate-300 transition-colors focus:ring-0 focus:border-indigo-500 focus:outline-none',
-            error && 'border-red-500 focus:border-red-500',
+            'w-full bg-transparent border-0 border-b-2 border-white/20 py-3 text-2xl font-sans text-white placeholder:text-white/30 transition-colors focus:ring-0 focus:border-spotlight focus:outline-none',
+            error && 'border-spotlight focus:border-spotlight',
             className
           )}
           {...props}

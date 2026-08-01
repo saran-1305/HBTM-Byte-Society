@@ -10,58 +10,60 @@ import { submitOnboarding } from './onboardApi';
 
 const EXAMPLE_HABITS = ['scrolling social media', 'long commute', 'late nights'];
 
+// True-black canvas throughout, stepping through elevated grey surfaces
+// rather than hue, matching the rest of the app's dark system.
 const STEP_THEME = [
   {
-    bg: 'bg-slate-900',
+    bg: 'bg-black',
     heading: 'text-white',
-    body: 'text-slate-400',
+    body: 'text-white/55',
     dot: 'bg-white',
     dotIdle: 'bg-white/20',
     iconBtn: 'text-white/60 hover:text-white',
-    cta: 'bg-white text-slate-900 hover:bg-slate-100 disabled:bg-white/20 disabled:text-white/40',
-    chipIdle: '',
-    chipActive: '',
-  },
-  {
-    bg: 'bg-slate-800',
-    heading: 'text-white',
-    body: 'text-slate-400',
-    dot: 'bg-white',
-    dotIdle: 'bg-white/20',
-    iconBtn: 'text-white/60 hover:text-white',
-    cta: 'bg-white text-slate-900 hover:bg-slate-100 disabled:bg-white/20 disabled:text-white/40',
-    chipIdle: 'border-white/15 bg-white/5 text-white hover:border-white/30',
-    chipActive: 'border-white bg-white text-slate-900',
-  },
-  {
-    bg: 'bg-slate-600',
-    heading: 'text-white',
-    body: 'text-slate-300',
-    dot: 'bg-white',
-    dotIdle: 'bg-white/25',
-    iconBtn: 'text-white/70 hover:text-white',
-    cta: 'bg-white text-slate-900 hover:bg-slate-100 disabled:bg-white/20 disabled:text-white/40',
-    chipIdle: '',
-    chipActive: '',
-  },
-  {
-    bg: 'bg-slate-200',
-    heading: 'text-slate-900',
-    body: 'text-slate-600',
-    dot: 'bg-slate-900',
-    dotIdle: 'bg-slate-400',
-    iconBtn: 'text-slate-500 hover:text-slate-900',
     cta: '',
     chipIdle: '',
     chipActive: '',
   },
   {
-    bg: 'bg-slate-50',
-    heading: 'text-slate-900',
-    body: 'text-slate-500',
-    dot: 'bg-indigo-500',
-    dotIdle: 'bg-slate-300',
-    iconBtn: 'text-slate-500 hover:text-slate-900',
+    bg: 'bg-surface',
+    heading: 'text-white',
+    body: 'text-white/55',
+    dot: 'bg-white',
+    dotIdle: 'bg-white/20',
+    iconBtn: 'text-white/60 hover:text-white',
+    cta: '',
+    chipIdle: 'border-white/15 bg-white/5 text-white hover:border-white/30',
+    chipActive: 'border-white bg-white text-black',
+  },
+  {
+    bg: 'bg-[#1A1A1A]',
+    heading: 'text-white',
+    body: 'text-white/70',
+    dot: 'bg-white',
+    dotIdle: 'bg-white/25',
+    iconBtn: 'text-white/70 hover:text-white',
+    cta: '',
+    chipIdle: '',
+    chipActive: '',
+  },
+  {
+    bg: 'bg-[#242424]',
+    heading: 'text-white',
+    body: 'text-white/70',
+    dot: 'bg-white',
+    dotIdle: 'bg-white/25',
+    iconBtn: 'text-white/70 hover:text-white',
+    cta: '',
+    chipIdle: '',
+    chipActive: '',
+  },
+  {
+    bg: 'bg-black',
+    heading: 'text-white',
+    body: 'text-muted',
+    dot: 'bg-spotlight',
+    dotIdle: 'bg-white/20',
+    iconBtn: 'text-white/60 hover:text-white',
     cta: '',
     chipIdle: '',
     chipActive: '',
@@ -172,7 +174,7 @@ export default function OnboardFlow() {
       case 1:
         return (
           <div>
-            <h1 className={cn('text-3xl sm:text-5xl font-serif font-bold mb-4 leading-tight', theme.heading)}>
+            <h1 className={cn('text-3xl sm:text-5xl font-sans font-bold tracking-[-0.02em] mb-4 leading-tight', theme.heading)}>
               Who are you trying to become?
             </h1>
             <p className={cn('text-base sm:text-lg mb-8 leading-relaxed max-w-xl', theme.body)}>
@@ -185,7 +187,7 @@ export default function OnboardFlow() {
               onChange={(e) => setAspiration(e.target.value)}
               placeholder="A writer who publishes every week"
               className={cn(
-                'w-full bg-transparent border-0 border-b-2 border-white/20 py-3 text-xl sm:text-2xl font-serif leading-relaxed resize-none placeholder:text-white/30 focus:outline-none focus:ring-0 focus:border-white transition-colors',
+                'w-full bg-transparent border-0 border-b-2 border-white/20 py-3 text-xl sm:text-2xl font-sans leading-relaxed resize-none placeholder:text-white/30 focus:outline-none focus:ring-0 focus:border-white transition-colors',
                 theme.heading
               )}
             />
@@ -194,7 +196,7 @@ export default function OnboardFlow() {
       case 2:
         return (
           <div>
-            <h1 className={cn('text-3xl sm:text-5xl font-serif font-bold mb-8 sm:mb-10 leading-tight', theme.heading)}>
+            <h1 className={cn('text-3xl sm:text-5xl font-sans font-bold tracking-[-0.02em] mb-8 sm:mb-10 leading-tight', theme.heading)}>
               How far out are you imagining this?
             </h1>
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
@@ -217,7 +219,7 @@ export default function OnboardFlow() {
       case 3:
         return (
           <div>
-            <h1 className={cn('text-3xl sm:text-5xl font-serif font-bold mb-4 leading-tight', theme.heading)}>
+            <h1 className={cn('text-3xl sm:text-5xl font-sans font-bold tracking-[-0.02em] mb-4 leading-tight', theme.heading)}>
               What does your day actually look like right now?
             </h1>
             <p className={cn('text-base sm:text-lg mb-8 leading-relaxed max-w-xl', theme.body)}>
@@ -227,7 +229,7 @@ export default function OnboardFlow() {
               {habits.map((habit) => (
                 <span
                   key={habit}
-                  className="inline-flex items-center gap-1.5 pl-3 pr-2 py-1.5 rounded-full text-sm font-medium bg-white text-slate-900"
+                  className="inline-flex items-center gap-1.5 pl-3 pr-2 py-1.5 rounded-full text-sm font-medium bg-white text-black"
                 >
                   {habit}
                   <button
@@ -269,7 +271,7 @@ export default function OnboardFlow() {
       case 4:
         return (
           <div>
-            <h1 className={cn('text-3xl sm:text-5xl font-serif font-bold mb-8 leading-tight', theme.heading)}>
+            <h1 className={cn('text-3xl sm:text-5xl font-sans font-bold tracking-[-0.02em] mb-8 leading-tight', theme.heading)}>
               Where do you get stuck most?
             </h1>
             <input
@@ -278,7 +280,7 @@ export default function OnboardFlow() {
               onChange={(e) => setStuckPoint(e.target.value)}
               placeholder="Starting is fine, finishing is the problem"
               className={cn(
-                'w-full bg-transparent border-0 border-b-2 border-slate-400 py-3 text-xl sm:text-2xl font-serif placeholder:text-slate-400 focus:outline-none focus:ring-0 focus:border-slate-900 transition-colors',
+                'w-full bg-transparent border-0 border-b-2 border-white/20 py-3 text-xl sm:text-2xl font-sans placeholder:text-white/30 focus:outline-none focus:ring-0 focus:border-white transition-colors',
                 theme.heading
               )}
             />
@@ -289,15 +291,15 @@ export default function OnboardFlow() {
           <div className="text-center flex flex-col items-center">
             {loading ? (
               <>
-                <div className="w-14 h-14 rounded-full border-2 border-slate-300 border-t-slate-900 animate-spin mb-6" />
-                <p className="text-lg sm:text-xl font-serif text-slate-600">Getting to know you...</p>
+                <div className="w-14 h-14 rounded-full border-2 border-white/15 border-t-white animate-spin mb-6" />
+                <p className="text-lg sm:text-xl font-sans text-muted">Getting to know you...</p>
               </>
             ) : (
               <>
-                <div className="w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center mb-6">
-                  <Sparkles className="w-7 h-7 text-emerald-500" />
+                <div className="w-14 h-14 rounded-full bg-surface flex items-center justify-center mb-6">
+                  <Sparkles className="w-7 h-7 text-spotlight" />
                 </div>
-                <p className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 mb-8 max-w-xl leading-snug">
+                <p className="text-2xl sm:text-3xl font-sans font-bold tracking-[-0.02em] text-white mb-8 max-w-xl leading-snug">
                   Got it. {summary}
                 </p>
                 <Button size="lg" onClick={() => navigate('/dashboard')} rightIcon={<ArrowRight className="w-5 h-5" />}>

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, type Variants } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useOnboarding } from '@/context/OnboardingContext';
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/TextInput';
+import ColorBends from '@/components/ColorBends';
 
 const container: Variants = {
   hidden: {},
@@ -15,6 +16,9 @@ const item: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
 };
+
+const prefersReducedMotion =
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function WelcomePage() {
   const navigate = useNavigate();
@@ -29,28 +33,44 @@ export default function WelcomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center px-5 sm:px-6 text-center">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-5 sm:px-6 text-center relative overflow-hidden">
+      {!prefersReducedMotion && (
+        <div className="absolute inset-0 pointer-events-none">
+          <ColorBends
+            rotation={90}
+            speed={0.2}
+            colors={['#ff2727', '#ff9f9f', '#ff6767']}
+            transparent
+            autoRotate={0}
+            scale={1}
+            frequency={1}
+            warpStrength={1}
+            mouseInfluence={1}
+            parallax={0.5}
+            noise={0.15}
+            iterations={1}
+            intensity={1.5}
+            bandWidth={6}
+          />
+        </div>
+      )}
+      {/* Scrim so the shader adds atmosphere without fighting text legibility */}
+      <div className="absolute inset-0 bg-black/55 pointer-events-none" />
+
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="w-full max-w-md flex flex-col items-center"
+        className="relative z-10 w-full max-w-md flex flex-col items-center"
       >
-        <motion.div
-          variants={item}
-          className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mb-8"
-        >
-          <Sparkles className="w-7 h-7 text-white" />
-        </motion.div>
-
         <motion.h1
           variants={item}
-          className="text-4xl sm:text-5xl font-serif font-bold text-white mb-4 leading-tight"
+          className="text-4xl sm:text-5xl font-sans font-bold tracking-[-0.02em] text-white mb-4 leading-tight"
         >
           Welcome to Daskalos
         </motion.h1>
 
-        <motion.p variants={item} className="text-base sm:text-lg text-slate-400 mb-10 leading-relaxed">
+        <motion.p variants={item} className="text-base sm:text-lg text-white/55 mb-10 leading-relaxed">
           Your AI companion for becoming who you're trying to be.
         </motion.p>
 
@@ -59,7 +79,7 @@ export default function WelcomePage() {
             <Button
               size="lg"
               onClick={() => setShowNameInput(true)}
-              className="w-full sm:w-auto px-10 bg-white text-slate-900 hover:bg-slate-100"
+              className="w-full sm:w-auto px-10"
               rightIcon={<ArrowRight className="w-5 h-5" />}
             >
               Get started
@@ -79,13 +99,13 @@ export default function WelcomePage() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleContinue();
                 }}
-                className="text-center text-xl text-white placeholder:text-slate-500 border-slate-700 focus:border-white"
+                className="text-center text-xl text-white placeholder:text-white/35 border-white/20 focus:border-white"
               />
               <Button
                 size="lg"
                 onClick={handleContinue}
                 disabled={!name.trim()}
-                className="w-full bg-white text-slate-900 hover:bg-slate-100 disabled:bg-white/20 disabled:text-white/40"
+                className="w-full"
                 rightIcon={<ArrowRight className="w-5 h-5" />}
               >
                 Continue
