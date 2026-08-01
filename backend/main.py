@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import routers
-from backend.api import auth, onboarding, identity, recommendations
+from backend.api import auth, onboarding, identity, recommendation_router, arc_router, curator_router, activity_router
 
 app = FastAPI(
     title="Personal Growth AI",
@@ -23,7 +23,10 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(onboarding.router)
 app.include_router(identity.router)
-app.include_router(recommendations.router, prefix="/api/recommendations")
+app.include_router(recommendation_router.router, prefix="/api/recommendation")
+app.include_router(arc_router.router, prefix="/api/arc")
+app.include_router(curator_router.router, prefix="/api/curator")
+app.include_router(activity_router.router, prefix="/api/activity")
 
 @app.get("/")
 async def root():

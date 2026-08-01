@@ -13,7 +13,9 @@ class RecommendationHistory(Base):
     content_id = Column(String, nullable=False)
     title = Column(String, nullable=False)
     type = Column(String, nullable=False)
-    reasoning = Column(JSON, nullable=False)  # Storing the generated reasoning points
+    stage = Column(String, nullable=True) # Added for Phase 2
+    domain = Column(String, nullable=True) # Added for Phase 2
+    reasoning = Column(JSON, nullable=True)  # Legacy AI field, nullable
     expected_outcome = Column(String, nullable=True)
     reflection_prompt = Column(String, nullable=True)
     feedback = Column(String, nullable=True)  # 'resonated', 'already_knew', etc.

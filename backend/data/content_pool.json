@@ -1,0 +1,1154 @@
+[
+    {
+        "id": "book001",
+        "title": "Atomic Habits",
+        "author": "James Clear",
+        "content_type": "book",
+        "domain": "productivity",
+        "stage": "commit",
+        "url": "https://example.com/content/1",
+        "thumbnail": "https://picsum.photos/seed/atomic/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "28m",
+        "description": "An easy and proven way to build good habits and break bad ones.",
+        "tags": [
+            "productivity",
+            "struggle",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_002_struggle",
+        "title": "The Ultimate Guide to Business (Part 2)",
+        "author": "Lex Fridman",
+        "content_type": "article",
+        "domain": "business",
+        "stage": "struggle",
+        "url": "https://example.com/content/2",
+        "thumbnail": "https://picsum.photos/seed/2/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "86m",
+        "description": "An in-depth article on business specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "business",
+            "struggle",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_003_struggle",
+        "title": "The Ultimate Guide to Psychology (Part 3)",
+        "author": "Lex Fridman",
+        "content_type": "book",
+        "domain": "psychology",
+        "stage": "struggle",
+        "url": "https://example.com/content/3",
+        "thumbnail": "https://picsum.photos/seed/3/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "17m",
+        "description": "An in-depth book on psychology specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "psychology",
+            "struggle",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_004_breakthrough",
+        "title": "The Ultimate Guide to Productivity (Part 4)",
+        "author": "Cal Newport",
+        "content_type": "course",
+        "domain": "productivity",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/4",
+        "thumbnail": "https://picsum.photos/seed/4/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "47m",
+        "description": "An in-depth course on productivity specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "productivity",
+            "breakthrough",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_005_struggle",
+        "title": "The Ultimate Guide to Philosophy (Part 5)",
+        "author": "James Clear",
+        "content_type": "podcast",
+        "domain": "philosophy",
+        "stage": "struggle",
+        "url": "https://example.com/content/5",
+        "thumbnail": "https://picsum.photos/seed/5/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "98m",
+        "description": "An in-depth podcast on philosophy specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "philosophy",
+            "struggle",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_006_breakthrough",
+        "title": "The Ultimate Guide to Business (Part 6)",
+        "author": "Andrew Huberman",
+        "content_type": "article",
+        "domain": "business",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/6",
+        "thumbnail": "https://picsum.photos/seed/6/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "43m",
+        "description": "An in-depth article on business specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "business",
+            "breakthrough",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_007_integrate",
+        "title": "The Ultimate Guide to Psychology (Part 7)",
+        "author": "Paul Graham",
+        "content_type": "article",
+        "domain": "psychology",
+        "stage": "integrate",
+        "url": "https://example.com/content/7",
+        "thumbnail": "https://picsum.photos/seed/7/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "21m",
+        "description": "An in-depth article on psychology specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "psychology",
+            "integrate",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_008_breakthrough",
+        "title": "The Ultimate Guide to Philosophy (Part 8)",
+        "author": "Paul Graham",
+        "content_type": "article",
+        "domain": "philosophy",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/8",
+        "thumbnail": "https://picsum.photos/seed/8/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "83m",
+        "description": "An in-depth article on philosophy specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "philosophy",
+            "breakthrough",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_009_struggle",
+        "title": "The Ultimate Guide to Philosophy (Part 9)",
+        "author": "Cal Newport",
+        "content_type": "podcast",
+        "domain": "philosophy",
+        "stage": "struggle",
+        "url": "https://example.com/content/9",
+        "thumbnail": "https://picsum.photos/seed/9/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "111m",
+        "description": "An in-depth podcast on philosophy specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "philosophy",
+            "struggle",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_010_struggle",
+        "title": "The Ultimate Guide to Engineering (Part 10)",
+        "author": "Paul Graham",
+        "content_type": "course",
+        "domain": "engineering",
+        "stage": "struggle",
+        "url": "https://example.com/content/10",
+        "thumbnail": "https://picsum.photos/seed/10/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "74m",
+        "description": "An in-depth course on engineering specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "engineering",
+            "struggle",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_011_struggle",
+        "title": "The Ultimate Guide to Engineering (Part 11)",
+        "author": "Cal Newport",
+        "content_type": "book",
+        "domain": "engineering",
+        "stage": "struggle",
+        "url": "https://example.com/content/11",
+        "thumbnail": "https://picsum.photos/seed/11/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "83m",
+        "description": "An in-depth book on engineering specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "engineering",
+            "struggle",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_012_integrate",
+        "title": "The Ultimate Guide to Engineering (Part 12)",
+        "author": "Paul Graham",
+        "content_type": "podcast",
+        "domain": "engineering",
+        "stage": "integrate",
+        "url": "https://example.com/content/12",
+        "thumbnail": "https://picsum.photos/seed/12/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "38m",
+        "description": "An in-depth podcast on engineering specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "engineering",
+            "integrate",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_013_integrate",
+        "title": "The Ultimate Guide to Business (Part 13)",
+        "author": "James Clear",
+        "content_type": "article",
+        "domain": "business",
+        "stage": "integrate",
+        "url": "https://example.com/content/13",
+        "thumbnail": "https://picsum.photos/seed/13/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "104m",
+        "description": "An in-depth article on business specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "business",
+            "integrate",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_014_commit",
+        "title": "The Ultimate Guide to Psychology (Part 14)",
+        "author": "Lex Fridman",
+        "content_type": "podcast",
+        "domain": "psychology",
+        "stage": "commit",
+        "url": "https://example.com/content/14",
+        "thumbnail": "https://picsum.photos/seed/14/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "35m",
+        "description": "An in-depth podcast on psychology specifically curated for the commit stage of your journey.",
+        "tags": [
+            "psychology",
+            "commit",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_015_struggle",
+        "title": "The Ultimate Guide to Engineering (Part 15)",
+        "author": "Lex Fridman",
+        "content_type": "course",
+        "domain": "engineering",
+        "stage": "struggle",
+        "url": "https://example.com/content/15",
+        "thumbnail": "https://picsum.photos/seed/15/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "105m",
+        "description": "An in-depth course on engineering specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "engineering",
+            "struggle",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_016_breakthrough",
+        "title": "The Ultimate Guide to Psychology (Part 16)",
+        "author": "Cal Newport",
+        "content_type": "course",
+        "domain": "psychology",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/16",
+        "thumbnail": "https://picsum.photos/seed/16/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "61m",
+        "description": "An in-depth course on psychology specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "psychology",
+            "breakthrough",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_017_integrate",
+        "title": "The Ultimate Guide to Productivity (Part 17)",
+        "author": "Andrew Huberman",
+        "content_type": "book",
+        "domain": "productivity",
+        "stage": "integrate",
+        "url": "https://example.com/content/17",
+        "thumbnail": "https://picsum.photos/seed/17/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "20m",
+        "description": "An in-depth book on productivity specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "productivity",
+            "integrate",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_018_integrate",
+        "title": "The Ultimate Guide to Engineering (Part 18)",
+        "author": "Naval Ravikant",
+        "content_type": "book",
+        "domain": "engineering",
+        "stage": "integrate",
+        "url": "https://example.com/content/18",
+        "thumbnail": "https://picsum.photos/seed/18/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "115m",
+        "description": "An in-depth book on engineering specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "engineering",
+            "integrate",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_019_struggle",
+        "title": "The Ultimate Guide to Design (Part 19)",
+        "author": "Andrew Huberman",
+        "content_type": "video",
+        "domain": "design",
+        "stage": "struggle",
+        "url": "https://example.com/content/19",
+        "thumbnail": "https://picsum.photos/seed/19/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "30m",
+        "description": "An in-depth video on design specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "design",
+            "struggle",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_020_commit",
+        "title": "The Ultimate Guide to Design (Part 20)",
+        "author": "James Clear",
+        "content_type": "podcast",
+        "domain": "design",
+        "stage": "commit",
+        "url": "https://example.com/content/20",
+        "thumbnail": "https://picsum.photos/seed/20/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "67m",
+        "description": "An in-depth podcast on design specifically curated for the commit stage of your journey.",
+        "tags": [
+            "design",
+            "commit",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_021_explore",
+        "title": "The Ultimate Guide to Philosophy (Part 21)",
+        "author": "Andrew Huberman",
+        "content_type": "course",
+        "domain": "philosophy",
+        "stage": "explore",
+        "url": "https://example.com/content/21",
+        "thumbnail": "https://picsum.photos/seed/21/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "113m",
+        "description": "An in-depth course on philosophy specifically curated for the explore stage of your journey.",
+        "tags": [
+            "philosophy",
+            "explore",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_022_struggle",
+        "title": "The Ultimate Guide to Philosophy (Part 22)",
+        "author": "Lex Fridman",
+        "content_type": "article",
+        "domain": "philosophy",
+        "stage": "struggle",
+        "url": "https://example.com/content/22",
+        "thumbnail": "https://picsum.photos/seed/22/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "70m",
+        "description": "An in-depth article on philosophy specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "philosophy",
+            "struggle",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_023_breakthrough",
+        "title": "The Ultimate Guide to Engineering (Part 23)",
+        "author": "Paul Graham",
+        "content_type": "article",
+        "domain": "engineering",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/23",
+        "thumbnail": "https://picsum.photos/seed/23/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "15m",
+        "description": "An in-depth article on engineering specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "engineering",
+            "breakthrough",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_024_integrate",
+        "title": "The Ultimate Guide to Philosophy (Part 24)",
+        "author": "Cal Newport",
+        "content_type": "book",
+        "domain": "philosophy",
+        "stage": "integrate",
+        "url": "https://example.com/content/24",
+        "thumbnail": "https://picsum.photos/seed/24/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "47m",
+        "description": "An in-depth book on philosophy specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "philosophy",
+            "integrate",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_025_commit",
+        "title": "The Ultimate Guide to Business (Part 25)",
+        "author": "Paul Graham",
+        "content_type": "article",
+        "domain": "business",
+        "stage": "commit",
+        "url": "https://example.com/content/25",
+        "thumbnail": "https://picsum.photos/seed/25/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "111m",
+        "description": "An in-depth article on business specifically curated for the commit stage of your journey.",
+        "tags": [
+            "business",
+            "commit",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_026_breakthrough",
+        "title": "The Ultimate Guide to Engineering (Part 26)",
+        "author": "Paul Graham",
+        "content_type": "book",
+        "domain": "engineering",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/26",
+        "thumbnail": "https://picsum.photos/seed/26/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "83m",
+        "description": "An in-depth book on engineering specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "engineering",
+            "breakthrough",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_027_integrate",
+        "title": "The Ultimate Guide to Productivity (Part 27)",
+        "author": "Andrew Huberman",
+        "content_type": "book",
+        "domain": "productivity",
+        "stage": "integrate",
+        "url": "https://example.com/content/27",
+        "thumbnail": "https://picsum.photos/seed/27/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "108m",
+        "description": "An in-depth book on productivity specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "productivity",
+            "integrate",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_028_commit",
+        "title": "The Ultimate Guide to Psychology (Part 28)",
+        "author": "Cal Newport",
+        "content_type": "article",
+        "domain": "psychology",
+        "stage": "commit",
+        "url": "https://example.com/content/28",
+        "thumbnail": "https://picsum.photos/seed/28/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "23m",
+        "description": "An in-depth article on psychology specifically curated for the commit stage of your journey.",
+        "tags": [
+            "psychology",
+            "commit",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_029_struggle",
+        "title": "The Ultimate Guide to Engineering (Part 29)",
+        "author": "Andrew Huberman",
+        "content_type": "book",
+        "domain": "engineering",
+        "stage": "struggle",
+        "url": "https://example.com/content/29",
+        "thumbnail": "https://picsum.photos/seed/29/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "31m",
+        "description": "An in-depth book on engineering specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "engineering",
+            "struggle",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_030_commit",
+        "title": "The Ultimate Guide to Philosophy (Part 30)",
+        "author": "Naval Ravikant",
+        "content_type": "course",
+        "domain": "philosophy",
+        "stage": "commit",
+        "url": "https://example.com/content/30",
+        "thumbnail": "https://picsum.photos/seed/30/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "40m",
+        "description": "An in-depth course on philosophy specifically curated for the commit stage of your journey.",
+        "tags": [
+            "philosophy",
+            "commit",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_031_integrate",
+        "title": "The Ultimate Guide to Productivity (Part 31)",
+        "author": "Lex Fridman",
+        "content_type": "book",
+        "domain": "productivity",
+        "stage": "integrate",
+        "url": "https://example.com/content/31",
+        "thumbnail": "https://picsum.photos/seed/31/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "80m",
+        "description": "An in-depth book on productivity specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "productivity",
+            "integrate",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_032_breakthrough",
+        "title": "The Ultimate Guide to Business (Part 32)",
+        "author": "Andrew Huberman",
+        "content_type": "book",
+        "domain": "business",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/32",
+        "thumbnail": "https://picsum.photos/seed/32/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "19m",
+        "description": "An in-depth book on business specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "business",
+            "breakthrough",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_033_integrate",
+        "title": "The Ultimate Guide to Business (Part 33)",
+        "author": "Naval Ravikant",
+        "content_type": "video",
+        "domain": "business",
+        "stage": "integrate",
+        "url": "https://example.com/content/33",
+        "thumbnail": "https://picsum.photos/seed/33/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "98m",
+        "description": "An in-depth video on business specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "business",
+            "integrate",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_034_struggle",
+        "title": "The Ultimate Guide to Productivity (Part 34)",
+        "author": "Lex Fridman",
+        "content_type": "course",
+        "domain": "productivity",
+        "stage": "struggle",
+        "url": "https://example.com/content/34",
+        "thumbnail": "https://picsum.photos/seed/34/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "35m",
+        "description": "An in-depth course on productivity specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "productivity",
+            "struggle",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_035_commit",
+        "title": "The Ultimate Guide to Business (Part 35)",
+        "author": "Paul Graham",
+        "content_type": "course",
+        "domain": "business",
+        "stage": "commit",
+        "url": "https://example.com/content/35",
+        "thumbnail": "https://picsum.photos/seed/35/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "56m",
+        "description": "An in-depth course on business specifically curated for the commit stage of your journey.",
+        "tags": [
+            "business",
+            "commit",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_036_breakthrough",
+        "title": "The Ultimate Guide to Philosophy (Part 36)",
+        "author": "Lex Fridman",
+        "content_type": "podcast",
+        "domain": "philosophy",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/36",
+        "thumbnail": "https://picsum.photos/seed/36/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "18m",
+        "description": "An in-depth podcast on philosophy specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "philosophy",
+            "breakthrough",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_037_integrate",
+        "title": "The Ultimate Guide to Psychology (Part 37)",
+        "author": "Naval Ravikant",
+        "content_type": "podcast",
+        "domain": "psychology",
+        "stage": "integrate",
+        "url": "https://example.com/content/37",
+        "thumbnail": "https://picsum.photos/seed/37/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "56m",
+        "description": "An in-depth podcast on psychology specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "psychology",
+            "integrate",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_038_commit",
+        "title": "The Ultimate Guide to Design (Part 38)",
+        "author": "James Clear",
+        "content_type": "book",
+        "domain": "design",
+        "stage": "commit",
+        "url": "https://example.com/content/38",
+        "thumbnail": "https://picsum.photos/seed/38/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "106m",
+        "description": "An in-depth book on design specifically curated for the commit stage of your journey.",
+        "tags": [
+            "design",
+            "commit",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_039_breakthrough",
+        "title": "The Ultimate Guide to Philosophy (Part 39)",
+        "author": "Andrew Huberman",
+        "content_type": "book",
+        "domain": "philosophy",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/39",
+        "thumbnail": "https://picsum.photos/seed/39/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "81m",
+        "description": "An in-depth book on philosophy specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "philosophy",
+            "breakthrough",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_040_breakthrough",
+        "title": "The Ultimate Guide to Psychology (Part 40)",
+        "author": "Cal Newport",
+        "content_type": "article",
+        "domain": "psychology",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/40",
+        "thumbnail": "https://picsum.photos/seed/40/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "30m",
+        "description": "An in-depth article on psychology specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "psychology",
+            "breakthrough",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_041_explore",
+        "title": "The Ultimate Guide to Engineering (Part 41)",
+        "author": "James Clear",
+        "content_type": "video",
+        "domain": "engineering",
+        "stage": "explore",
+        "url": "https://example.com/content/41",
+        "thumbnail": "https://picsum.photos/seed/41/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "66m",
+        "description": "An in-depth video on engineering specifically curated for the explore stage of your journey.",
+        "tags": [
+            "engineering",
+            "explore",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_042_struggle",
+        "title": "The Ultimate Guide to Business (Part 42)",
+        "author": "Naval Ravikant",
+        "content_type": "podcast",
+        "domain": "business",
+        "stage": "struggle",
+        "url": "https://example.com/content/42",
+        "thumbnail": "https://picsum.photos/seed/42/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "39m",
+        "description": "An in-depth podcast on business specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "business",
+            "struggle",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_043_breakthrough",
+        "title": "The Ultimate Guide to Engineering (Part 43)",
+        "author": "Cal Newport",
+        "content_type": "course",
+        "domain": "engineering",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/43",
+        "thumbnail": "https://picsum.photos/seed/43/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "119m",
+        "description": "An in-depth course on engineering specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "engineering",
+            "breakthrough",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_044_integrate",
+        "title": "The Ultimate Guide to Philosophy (Part 44)",
+        "author": "Paul Graham",
+        "content_type": "article",
+        "domain": "philosophy",
+        "stage": "integrate",
+        "url": "https://example.com/content/44",
+        "thumbnail": "https://picsum.photos/seed/44/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "97m",
+        "description": "An in-depth article on philosophy specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "philosophy",
+            "integrate",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_045_explore",
+        "title": "The Ultimate Guide to Engineering (Part 45)",
+        "author": "James Clear",
+        "content_type": "book",
+        "domain": "engineering",
+        "stage": "explore",
+        "url": "https://example.com/content/45",
+        "thumbnail": "https://picsum.photos/seed/45/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "36m",
+        "description": "An in-depth book on engineering specifically curated for the explore stage of your journey.",
+        "tags": [
+            "engineering",
+            "explore",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_046_explore",
+        "title": "The Ultimate Guide to Business (Part 46)",
+        "author": "James Clear",
+        "content_type": "book",
+        "domain": "business",
+        "stage": "explore",
+        "url": "https://example.com/content/46",
+        "thumbnail": "https://picsum.photos/seed/46/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "33m",
+        "description": "An in-depth book on business specifically curated for the explore stage of your journey.",
+        "tags": [
+            "business",
+            "explore",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_047_explore",
+        "title": "The Ultimate Guide to Engineering (Part 47)",
+        "author": "James Clear",
+        "content_type": "video",
+        "domain": "engineering",
+        "stage": "explore",
+        "url": "https://example.com/content/47",
+        "thumbnail": "https://picsum.photos/seed/47/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "115m",
+        "description": "An in-depth video on engineering specifically curated for the explore stage of your journey.",
+        "tags": [
+            "engineering",
+            "explore",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_048_integrate",
+        "title": "The Ultimate Guide to Business (Part 48)",
+        "author": "Naval Ravikant",
+        "content_type": "podcast",
+        "domain": "business",
+        "stage": "integrate",
+        "url": "https://example.com/content/48",
+        "thumbnail": "https://picsum.photos/seed/48/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "44m",
+        "description": "An in-depth podcast on business specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "business",
+            "integrate",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_049_integrate",
+        "title": "The Ultimate Guide to Business (Part 49)",
+        "author": "Naval Ravikant",
+        "content_type": "article",
+        "domain": "business",
+        "stage": "integrate",
+        "url": "https://example.com/content/49",
+        "thumbnail": "https://picsum.photos/seed/49/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "36m",
+        "description": "An in-depth article on business specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "business",
+            "integrate",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_050_explore",
+        "title": "The Ultimate Guide to Engineering (Part 50)",
+        "author": "Cal Newport",
+        "content_type": "video",
+        "domain": "engineering",
+        "stage": "explore",
+        "url": "https://example.com/content/50",
+        "thumbnail": "https://picsum.photos/seed/50/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "62m",
+        "description": "An in-depth video on engineering specifically curated for the explore stage of your journey.",
+        "tags": [
+            "engineering",
+            "explore",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_051_integrate",
+        "title": "The Ultimate Guide to Productivity (Part 51)",
+        "author": "James Clear",
+        "content_type": "book",
+        "domain": "productivity",
+        "stage": "integrate",
+        "url": "https://example.com/content/51",
+        "thumbnail": "https://picsum.photos/seed/51/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "12m",
+        "description": "An in-depth book on productivity specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "productivity",
+            "integrate",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_052_breakthrough",
+        "title": "The Ultimate Guide to Philosophy (Part 52)",
+        "author": "Lex Fridman",
+        "content_type": "video",
+        "domain": "philosophy",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/52",
+        "thumbnail": "https://picsum.photos/seed/52/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "109m",
+        "description": "An in-depth video on philosophy specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "philosophy",
+            "breakthrough",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_053_commit",
+        "title": "The Ultimate Guide to Engineering (Part 53)",
+        "author": "Andrew Huberman",
+        "content_type": "video",
+        "domain": "engineering",
+        "stage": "commit",
+        "url": "https://example.com/content/53",
+        "thumbnail": "https://picsum.photos/seed/53/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "94m",
+        "description": "An in-depth video on engineering specifically curated for the commit stage of your journey.",
+        "tags": [
+            "engineering",
+            "commit",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_054_breakthrough",
+        "title": "The Ultimate Guide to Philosophy (Part 54)",
+        "author": "Andrew Huberman",
+        "content_type": "article",
+        "domain": "philosophy",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/54",
+        "thumbnail": "https://picsum.photos/seed/54/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "115m",
+        "description": "An in-depth article on philosophy specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "philosophy",
+            "breakthrough",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_055_breakthrough",
+        "title": "The Ultimate Guide to Psychology (Part 55)",
+        "author": "Paul Graham",
+        "content_type": "video",
+        "domain": "psychology",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/55",
+        "thumbnail": "https://picsum.photos/seed/55/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "98m",
+        "description": "An in-depth video on psychology specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "psychology",
+            "breakthrough",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_056_breakthrough",
+        "title": "The Ultimate Guide to Design (Part 56)",
+        "author": "Lex Fridman",
+        "content_type": "article",
+        "domain": "design",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/56",
+        "thumbnail": "https://picsum.photos/seed/56/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "92m",
+        "description": "An in-depth article on design specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "design",
+            "breakthrough",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_057_commit",
+        "title": "The Ultimate Guide to Productivity (Part 57)",
+        "author": "Andrew Huberman",
+        "content_type": "podcast",
+        "domain": "productivity",
+        "stage": "commit",
+        "url": "https://example.com/content/57",
+        "thumbnail": "https://picsum.photos/seed/57/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "54m",
+        "description": "An in-depth podcast on productivity specifically curated for the commit stage of your journey.",
+        "tags": [
+            "productivity",
+            "commit",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_058_integrate",
+        "title": "The Ultimate Guide to Business (Part 58)",
+        "author": "Cal Newport",
+        "content_type": "video",
+        "domain": "business",
+        "stage": "integrate",
+        "url": "https://example.com/content/58",
+        "thumbnail": "https://picsum.photos/seed/58/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "15m",
+        "description": "An in-depth video on business specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "business",
+            "integrate",
+            "video"
+        ]
+    },
+    {
+        "id": "rec_059_struggle",
+        "title": "The Ultimate Guide to Design (Part 59)",
+        "author": "Andrew Huberman",
+        "content_type": "course",
+        "domain": "design",
+        "stage": "struggle",
+        "url": "https://example.com/content/59",
+        "thumbnail": "https://picsum.photos/seed/59/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "43m",
+        "description": "An in-depth course on design specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "design",
+            "struggle",
+            "course"
+        ]
+    },
+    {
+        "id": "rec_060_struggle",
+        "title": "The Ultimate Guide to Design (Part 60)",
+        "author": "James Clear",
+        "content_type": "podcast",
+        "domain": "design",
+        "stage": "struggle",
+        "url": "https://example.com/content/60",
+        "thumbnail": "https://picsum.photos/seed/60/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "26m",
+        "description": "An in-depth podcast on design specifically curated for the struggle stage of your journey.",
+        "tags": [
+            "design",
+            "struggle",
+            "podcast"
+        ]
+    },
+    {
+        "id": "rec_061_explore",
+        "title": "The Ultimate Guide to Engineering (Part 61)",
+        "author": "Andrew Huberman",
+        "content_type": "book",
+        "domain": "engineering",
+        "stage": "explore",
+        "url": "https://example.com/content/61",
+        "thumbnail": "https://picsum.photos/seed/61/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "40m",
+        "description": "An in-depth book on engineering specifically curated for the explore stage of your journey.",
+        "tags": [
+            "engineering",
+            "explore",
+            "book"
+        ]
+    },
+    {
+        "id": "rec_062_breakthrough",
+        "title": "The Ultimate Guide to Philosophy (Part 62)",
+        "author": "Andrew Huberman",
+        "content_type": "article",
+        "domain": "philosophy",
+        "stage": "breakthrough",
+        "url": "https://example.com/content/62",
+        "thumbnail": "https://picsum.photos/seed/62/800/600",
+        "difficulty": "advanced",
+        "estimated_time": "65m",
+        "description": "An in-depth article on philosophy specifically curated for the breakthrough stage of your journey.",
+        "tags": [
+            "philosophy",
+            "breakthrough",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_063_explore",
+        "title": "The Ultimate Guide to Productivity (Part 63)",
+        "author": "Cal Newport",
+        "content_type": "article",
+        "domain": "productivity",
+        "stage": "explore",
+        "url": "https://example.com/content/63",
+        "thumbnail": "https://picsum.photos/seed/63/800/600",
+        "difficulty": "beginner",
+        "estimated_time": "119m",
+        "description": "An in-depth article on productivity specifically curated for the explore stage of your journey.",
+        "tags": [
+            "productivity",
+            "explore",
+            "article"
+        ]
+    },
+    {
+        "id": "rec_064_integrate",
+        "title": "The Ultimate Guide to Psychology (Part 64)",
+        "author": "Paul Graham",
+        "content_type": "course",
+        "domain": "psychology",
+        "stage": "integrate",
+        "url": "https://example.com/content/64",
+        "thumbnail": "https://picsum.photos/seed/64/800/600",
+        "difficulty": "intermediate",
+        "estimated_time": "74m",
+        "description": "An in-depth course on psychology specifically curated for the integrate stage of your journey.",
+        "tags": [
+            "psychology",
+            "integrate",
+            "course"
+        ]
+    }
+]
