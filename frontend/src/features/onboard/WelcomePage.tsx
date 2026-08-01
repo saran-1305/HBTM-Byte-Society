@@ -7,14 +7,40 @@ const WelcomePage = () => {
   const [name, setName] = useState('');
   const navigate = useNavigate();
 
-  const handleContinue = (e: React.FormEvent) => {
+  const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
-      localStorage.setItem('daskalos_user_id', userId);
       localStorage.setItem('daskalos_user_name', name);
-      // Navigate to the questions flow (placeholder route for now)
-      navigate('/onboard/questions');
+      const email = `${name.toLowerCase().replace(/[^a-z0-9]/g, '')}@daskalos.ai`;
+      const password = "default_password";
+      
+      try {
+        // Try to register
+        await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        
+        // Login to get token
+        const formData = new URLSearchParams();
+        formData.append('username', email);
+        formData.append('password', password);
+        const loginRes = await fetch('/api/auth/login', {
+          method: 'POST',
+          body: formData
+        });
+        const loginData = await loginRes.json();
+        
+        if (loginData.access_token) {
+          localStorage.setItem('token', loginData.access_token);
+          navigate('/onboard/questions');
+        } else {
+          console.error("Login failed:", loginData);
+        }
+      } catch (err) {
+        console.error("Auth error:", err);
+      }
     }
   };
 

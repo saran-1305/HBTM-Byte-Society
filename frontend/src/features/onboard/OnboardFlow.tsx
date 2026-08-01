@@ -46,16 +46,51 @@ const OnboardFlow = () => {
     setHabits(habits.filter((habit) => habit !== h));
   };
 
-  const submitForm = () => {
+  const submitForm = async () => {
     setStep(5);
     setIsSubmitting(true);
-    // Simulate API Call
-    setTimeout(() => {
-      setProfileSummary(
-        `Got it. A ${timeframe.toLowerCase()} journey to becoming a ${aspiration.split(' ')[0] || 'better version of yourself'}, despite the challenges of ${habits.length ? habits[0] : 'daily distractions'}.`
-      );
+    
+    try {
+      const token = localStorage.getItem('token');
+      const name = localStorage.getItem('daskalos_user_name') || 'User';
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+
+      // 1. Start onboarding
+      await fetch('/api/onboarding/start', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ full_name: name })
+      });
+
+      // 2. Save data
+      await fetch('/api/onboarding/save', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          aspirations: [aspiration],
+          available_time: timeframe,
+          habits: habits,
+          challenges: [stuckPoint]
+        })
+      });
+
+      // 3. Complete and generate AI Identity
+      const res = await fetch('/api/onboarding/complete', {
+        method: 'POST',
+        headers
+      });
+      const data = await res.json();
+      
+      setProfileSummary(data.identity_summary || "Welcome to Daskalos. Your AI profile is ready.");
+    } catch (err) {
+      console.error(err);
+      setProfileSummary("Failed to generate AI profile. Please try again.");
+    } finally {
       setIsSubmitting(false);
-    }, 1800);
+    }
   };
 
   // Background color scales from dark slate to a slightly lighter blue/slate
