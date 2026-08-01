@@ -6,6 +6,9 @@ import ProfileSetupPage from './features/profile/ProfileSetupPage';
 import DashboardPage from './pages/DashboardPage';
 import KnowledgePage from './features/knowledge/KnowledgePage';
 import RecommendationsPage from './features/recommendations/RecommendationsPage';
+import AnalyticsPage from './features/analytics/AnalyticsPage';
+import ReflectionPage from './features/reflection/ReflectionPage';
+import GrowthPlanPage from './features/growthplan/GrowthPlanPage';
 
 function App() {
   return (
@@ -17,6 +20,9 @@ function App() {
       <Route path="/curate" element={<DashboardPage />} />
       <Route path="/knowledge" element={<KnowledgePage />} />
       <Route path="/recommendations" element={<RecommendationsPage />} />
+      <Route path="/analytics" element={<AnalyticsPage />} />
+      <Route path="/reflection" element={<ReflectionPage />} />
+      <Route path="/growth-plan" element={<GrowthPlanPage />} />
     </Routes>
   );
 }
