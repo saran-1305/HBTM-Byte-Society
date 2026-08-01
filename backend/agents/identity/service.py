@@ -57,6 +57,26 @@ class IdentityService:
         update_data = agent_output.model_dump()
         update_data["onboarding_completed"] = True
         
+        # Clear old AI generated data so it gets regenerated on next dashboard visit
+        from sqlalchemy.future import select
+        from backend.models.recommendation import Recommendation
+        from backend.models.growth_plan import GrowthMilestone
+        from backend.models.habits import Habit
+        
+        res_r = await self.repo.db.execute(select(Recommendation).where(Recommendation.user_id == uid))
+        for r in res_r.scalars().all():
+            await self.repo.db.delete(r)
+            
+        res_m = await self.repo.db.execute(select(GrowthMilestone).where(GrowthMilestone.user_id == uid))
+        for m in res_m.scalars().all():
+            await self.repo.db.delete(m)
+            
+        res_h = await self.repo.db.execute(select(Habit).where(Habit.user_id == uid))
+        for h in res_h.scalars().all():
+            await self.repo.db.delete(h)
+            
+        await self.repo.db.commit()
+        
         return await self.repo.update_profile(uid, update_data)
 
     async def get_profile(self, user_id: str):
