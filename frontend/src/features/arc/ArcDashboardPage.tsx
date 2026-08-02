@@ -208,145 +208,8 @@ const ArcDashboardPage = () => {
         </header>
 
         <div className="max-w-4xl mx-auto">
-          {/* ARC Growth Status */}
-          {arcEvaluation && (
-            <div className="mb-12 space-y-6">
-              <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <span className="bg-[#E50914]/80 px-3 py-1 rounded-full text-xs font-bold capitalize text-white">
-                      {arcEvaluation.stage}
-                    </span>
-                    <span className="text-white/40 text-xs uppercase tracking-widest">Current ARC Stage</span>
-                  </div>
-                </div>
-                <p className="text-white/80 text-base leading-relaxed mb-2">{arcEvaluation.reasoning}</p>
-                {arcEvaluation.ai_observation && (
-                  <p className="text-white/50 text-sm leading-relaxed">{arcEvaluation.ai_observation}</p>
-                )}
-              </div>
-
-              {(arcEvaluation.evidence_used?.length > 0 || arcEvaluation.strengths?.length > 0 || arcEvaluation.weaknesses?.length > 0) && (
-                <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6 space-y-5">
-                  {arcEvaluation.evidence_used?.length > 0 && (
-                    <div>
-                      <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-2">Evidence Used</h3>
-                      <ul className="space-y-1.5">
-                        {arcEvaluation.evidence_used.map((point, idx) => (
-                          <li key={idx} className="text-sm text-white/70 flex gap-2">
-                            <span className="text-white/30">•</span>{point}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {arcEvaluation.recent_changes && (
-                    <div className="pt-3 border-t border-white/5">
-                      <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-1.5">Recent Changes</h3>
-                      <p className="text-sm text-white/70 leading-relaxed">{arcEvaluation.recent_changes}</p>
-                    </div>
-                  )}
-
-                  {(arcEvaluation.strengths?.length > 0 || arcEvaluation.weaknesses?.length > 0) && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-3 border-t border-white/5">
-                      {arcEvaluation.strengths?.length > 0 && (
-                        <div>
-                          <h3 className="text-xs font-bold uppercase tracking-widest text-green-500/80 mb-1.5">Strengths</h3>
-                          <ul className="space-y-1">
-                            {arcEvaluation.strengths.map((s, idx) => (
-                              <li key={idx} className="text-sm text-white/70">• {s}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                      {arcEvaluation.weaknesses?.length > 0 && (
-                        <div>
-                          <h3 className="text-xs font-bold uppercase tracking-widest text-orange-400/80 mb-1.5">Weaknesses</h3>
-                          <ul className="space-y-1">
-                            {arcEvaluation.weaknesses.map((w, idx) => (
-                              <li key={idx} className="text-sm text-white/70">• {w}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {arcEvaluation.suggested_actions?.length > 0 && (
-                <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <IconBulb size={18} className="text-green-500" />
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-white/60">Suggested Next Actions</h3>
-                  </div>
-                  <div className="space-y-3">
-                    {arcEvaluation.suggested_actions.map((sa, idx) => (
-                      <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/5">
-                        <p className="text-white font-medium text-sm mb-1">{sa.action}</p>
-                        {sa.why && <p className="text-white/50 text-xs leading-relaxed">{sa.why}</p>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {timeline.length > 0 && (
-                <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <IconClock size={18} className="text-purple-400" />
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-white/60">Recent AI Decisions</h3>
-                  </div>
-                  <div className="space-y-3">
-                    {timeline.slice(0, 6).map((item, idx) => (
-                      <div key={idx} className="flex gap-3 text-sm border-l-2 border-white/10 pl-4">
-                        <div className="flex-1">
-                          {item.type === 'transition' ? (
-                            <p className="text-white/80">
-                              <span className="text-[#E50914] font-bold capitalize">Transitioned</span>{' '}
-                              {item.previous_stage} → {item.current_stage}: {item.transition_reason}
-                            </p>
-                          ) : (
-                            <p className="text-white/60">
-                              <span className="capitalize font-medium text-white/80">{item.stage}</span>{' '}
-                              ({item.decision === 'CHANGE' ? 'transitioned' : 'stayed'}) — {item.ai_observation}
-                            </p>
-                          )}
-                          <p className="text-white/30 text-xs mt-0.5">{new Date(item.timestamp).toLocaleString()}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {observations.length > 0 && (
-                <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <IconActivity size={18} className="text-blue-400" />
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-white/60">Observation Feed</h3>
-                  </div>
-                  <div className="space-y-3">
-                    {observations.slice(0, 8).map((obs) => (
-                      <div key={obs.id} className="flex gap-3 text-sm border-l-2 border-white/10 pl-4">
-                        <div className="flex-1">
-                          <p className="text-white/70">
-                            <span className="text-blue-400/80 font-medium">[{obs.source_module}]</span>{' '}
-                            {obs.title}
-                          </p>
-                          <p className="text-white/30 text-xs mt-0.5">{new Date(obs.created_at).toLocaleString()}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Recommendation Engine */}
-          <div className="space-y-12">
+          <div className="space-y-12 mb-12">
             <div>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold tracking-wide text-white">AI Spotlight</h2>
@@ -538,6 +401,143 @@ const ArcDashboardPage = () => {
               )}
             </div>
           </div>
+          {/* ARC Growth Status */}
+          {arcEvaluation && (
+            <div className="mb-12 space-y-6">
+              <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-[#E50914]/80 px-3 py-1 rounded-full text-xs font-bold capitalize text-white">
+                      {arcEvaluation.stage}
+                    </span>
+                    <span className="text-white/40 text-xs uppercase tracking-widest">Current ARC Stage</span>
+                  </div>
+                </div>
+                <p className="text-white/80 text-base leading-relaxed mb-2">{arcEvaluation.reasoning}</p>
+                {arcEvaluation.ai_observation && (
+                  <p className="text-white/50 text-sm leading-relaxed">{arcEvaluation.ai_observation}</p>
+                )}
+              </div>
+
+              {(arcEvaluation.evidence_used?.length > 0 || arcEvaluation.strengths?.length > 0 || arcEvaluation.weaknesses?.length > 0) && (
+                <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6 space-y-5">
+                  {arcEvaluation.evidence_used?.length > 0 && (
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-2">Evidence Used</h3>
+                      <ul className="space-y-1.5">
+                        {arcEvaluation.evidence_used.map((point, idx) => (
+                          <li key={idx} className="text-sm text-white/70 flex gap-2">
+                            <span className="text-white/30">•</span>{point}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {arcEvaluation.recent_changes && (
+                    <div className="pt-3 border-t border-white/5">
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-1.5">Recent Changes</h3>
+                      <p className="text-sm text-white/70 leading-relaxed">{arcEvaluation.recent_changes}</p>
+                    </div>
+                  )}
+
+                  {(arcEvaluation.strengths?.length > 0 || arcEvaluation.weaknesses?.length > 0) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-3 border-t border-white/5">
+                      {arcEvaluation.strengths?.length > 0 && (
+                        <div>
+                          <h3 className="text-xs font-bold uppercase tracking-widest text-green-500/80 mb-1.5">Strengths</h3>
+                          <ul className="space-y-1">
+                            {arcEvaluation.strengths.map((s, idx) => (
+                              <li key={idx} className="text-sm text-white/70">• {s}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {arcEvaluation.weaknesses?.length > 0 && (
+                        <div>
+                          <h3 className="text-xs font-bold uppercase tracking-widest text-orange-400/80 mb-1.5">Weaknesses</h3>
+                          <ul className="space-y-1">
+                            {arcEvaluation.weaknesses.map((w, idx) => (
+                              <li key={idx} className="text-sm text-white/70">• {w}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {arcEvaluation.suggested_actions?.length > 0 && (
+                <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <IconBulb size={18} className="text-green-500" />
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-white/60">Suggested Next Actions</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {arcEvaluation.suggested_actions.map((sa, idx) => (
+                      <div key={idx} className="bg-white/5 rounded-xl p-4 border border-white/5">
+                        <p className="text-white font-medium text-sm mb-1">{sa.action}</p>
+                        {sa.why && <p className="text-white/50 text-xs leading-relaxed">{sa.why}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {timeline.length > 0 && (
+                <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <IconClock size={18} className="text-purple-400" />
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-white/60">Recent AI Decisions</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {timeline.slice(0, 6).map((item, idx) => (
+                      <div key={idx} className="flex gap-3 text-sm border-l-2 border-white/10 pl-4">
+                        <div className="flex-1">
+                          {item.type === 'transition' ? (
+                            <p className="text-white/80">
+                              <span className="text-[#E50914] font-bold capitalize">Transitioned</span>{' '}
+                              {item.previous_stage} → {item.current_stage}: {item.transition_reason}
+                            </p>
+                          ) : (
+                            <p className="text-white/60">
+                              <span className="capitalize font-medium text-white/80">{item.stage}</span>{' '}
+                              ({item.decision === 'CHANGE' ? 'transitioned' : 'stayed'}) — {item.ai_observation}
+                            </p>
+                          )}
+                          <p className="text-white/30 text-xs mt-0.5">{new Date(item.timestamp).toLocaleString()}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {observations.length > 0 && (
+                <div className="bg-[#1A1A1A] rounded-2xl border border-white/10 p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <IconActivity size={18} className="text-blue-400" />
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-white/60">Observation Feed</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {observations.slice(0, 8).map((obs) => (
+                      <div key={obs.id} className="flex gap-3 text-sm border-l-2 border-white/10 pl-4">
+                        <div className="flex-1">
+                          <p className="text-white/70">
+                            <span className="text-blue-400/80 font-medium">[{obs.source_module}]</span>{' '}
+                            {obs.title}
+                          </p>
+                          <p className="text-white/30 text-xs mt-0.5">{new Date(obs.created_at).toLocaleString()}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
         </div>
       </div>
     </DashboardLayout>
