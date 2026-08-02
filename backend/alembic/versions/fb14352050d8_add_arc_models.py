@@ -62,8 +62,6 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_user_profiles_user_id'), 'user_profiles', ['user_id'], unique=True)
-    op.drop_index(op.f('ix_apscheduler_jobs_next_run_time'), table_name='apscheduler_jobs')
-    op.drop_table('apscheduler_jobs')
     op.drop_table('recommendations')
     op.add_column('recommendation_history', sa.Column('stage', sa.String(), nullable=True))
     op.add_column('recommendation_history', sa.Column('domain', sa.String(), nullable=True))

@@ -79,8 +79,6 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.drop_table('curated_recommendations')
-    op.drop_index(op.f('ix_apscheduler_jobs_next_run_time'), table_name='apscheduler_jobs')
-    op.drop_table('apscheduler_jobs')
     op.drop_table('knowledge_collections')
     op.add_column('knowledge_sources', sa.Column('source', sa.String(), server_default='Unknown', nullable=False))
     op.add_column('knowledge_sources', sa.Column('domain', sa.String(), nullable=True))

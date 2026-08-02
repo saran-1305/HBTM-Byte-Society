@@ -62,8 +62,6 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_arc_stage_history_user_id'), 'arc_stage_history', ['user_id'], unique=False)
-    op.drop_index(op.f('ix_apscheduler_jobs_next_run_time'), table_name='apscheduler_jobs')
-    op.drop_table('apscheduler_jobs')
     # ### end Alembic commands ###
 
 

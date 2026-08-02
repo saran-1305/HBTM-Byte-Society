@@ -71,8 +71,6 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_opportunity_history_id'), 'opportunity_history', ['id'], unique=False)
     op.create_index(op.f('ix_opportunity_history_user_id'), 'opportunity_history', ['user_id'], unique=False)
-    op.drop_index(op.f('ix_apscheduler_jobs_next_run_time'), table_name='apscheduler_jobs')
-    op.drop_table('apscheduler_jobs')
     # ### end Alembic commands ###
 
 
