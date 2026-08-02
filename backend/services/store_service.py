@@ -50,13 +50,8 @@ class StoreService:
         }}
         """
 
-        messages = [
-            {"role": "system", "content": "You output strictly valid JSON."},
-            {"role": "user", "content": prompt}
-        ]
-
         # 3. Call LLM
-        response_text = await self.provider.generate_response(messages)
+        provider_name, response_text = await self.provider.generate_json(prompt)
         
         # Clean response
         if "```json" in response_text:
@@ -68,16 +63,46 @@ class StoreService:
             data = json.loads(response_text)
             products = data.get("products", [])
         except json.JSONDecodeError:
-            # Fallback products if LLM fails
+            products = []
+
+        # Fallback products if LLM fails or returns no products
+        if not products:
             products = [
                 {
                     "title": "Atomic Habits",
                     "description": "Build better habits as you explore new possibilities.",
                     "price": "$21.99",
                     "brand": "James Clear",
-                    "image_url": "",
+                    "image_url": "https://source.unsplash.com/400x400/?book,habit",
                     "store_link": "https://www.amazon.com/s?k=atomic+habits",
                     "match_percentage": 98
+                },
+                {
+                    "title": "Minimalist Desk Lamp",
+                    "description": "Clean workspace, clear mind. Perfect for late night learning.",
+                    "price": "$45.00",
+                    "brand": "Lumina",
+                    "image_url": "https://source.unsplash.com/400x400/?desk,lamp",
+                    "store_link": "https://www.amazon.com/s?k=minimalist+desk+lamp",
+                    "match_percentage": 92
+                },
+                {
+                    "title": "Insulated Water Bottle",
+                    "description": "Stay hydrated, stay focused on your journey.",
+                    "price": "$32.99",
+                    "brand": "HydroFlow",
+                    "image_url": "https://source.unsplash.com/400x400/?water,bottle,black",
+                    "store_link": "https://www.amazon.com/s?k=insulated+water+bottle",
+                    "match_percentage": 90
+                },
+                {
+                    "title": "Blue Light Glasses",
+                    "description": "Reduce eye strain during long study or screen time.",
+                    "price": "$29.99",
+                    "brand": "OpticShield",
+                    "image_url": "https://source.unsplash.com/400x400/?glasses",
+                    "store_link": "https://www.amazon.com/s?k=blue+light+glasses",
+                    "match_percentage": 88
                 }
             ]
 
