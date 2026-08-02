@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IconShoppingCart, IconHeart, IconChevronDown, IconFilter, IconCheck, IconActivity } from '@tabler/icons-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
+import { useCart } from '../../context/CartContext';
 
 const FALLBACK_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
 
@@ -19,6 +20,7 @@ const LifestylePage = () => {
   const [products, setProducts] = useState<StoreProduct[]>([]);
   const [stage, setStage] = useState('Explore');
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchStore = async () => {
@@ -124,15 +126,22 @@ const LifestylePage = () => {
                     {p.match_percentage}% Match
                   </div>
 
-                  <a 
-                    href={p.store_link}
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addToCart({
+                        title: p.title,
+                        price: p.price,
+                        image_url: p.image_url,
+                        store_link: p.store_link,
+                        brand: p.brand || undefined
+                      });
+                    }}
                     className="w-full bg-[#1A1A1A] hover:bg-black text-white text-sm font-medium py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md mt-auto"
                   >
                     <IconShoppingCart size={16} stroke={1.5} />
-                    Add to wishlist
-                  </a>
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             ))}

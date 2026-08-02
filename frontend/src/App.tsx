@@ -14,6 +14,7 @@ import CommunityPage from './features/community/CommunityPage';
 import PublishingPage from './pages/Publishing/PublishingPage';
 import LifestylePage from './features/lifestyle/LifestylePage';
 import PublishingCallback from './pages/Publishing/PublishingCallback';
+import CartPage from './features/cart/CartPage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
       <Route path="/community" element={<CommunityPage />} />
       <Route path="/publishing" element={<PublishingPage />} />
       <Route path="/lifestyle" element={<LifestylePage />} />
+      <Route path="/cart" element={<CartPage />} />
       <Route path="/publishing/callback" element={<PublishingCallback />} />
     </Routes>
   );
