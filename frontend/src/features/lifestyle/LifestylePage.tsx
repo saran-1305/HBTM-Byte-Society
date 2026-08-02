@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IconShoppingCart, IconHeart, IconChevronDown, IconFilter, IconCheck, IconActivity } from '@tabler/icons-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import { useCart } from '../../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 const FALLBACK_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
 
@@ -20,7 +21,8 @@ const LifestylePage = () => {
   const [products, setProducts] = useState<StoreProduct[]>([]);
   const [stage, setStage] = useState('Explore');
   const [loading, setLoading] = useState(true);
-  const { addToCart } = useCart();
+  const { addToCart, itemCount } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStore = async () => {
@@ -58,6 +60,20 @@ const LifestylePage = () => {
             </button>
             <button className="flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-full text-sm font-medium shadow-sm hover:bg-gray-50 transition-colors">
               Featured <IconChevronDown size={16} />
+            </button>
+
+            {/* Cart Button — sits naturally in the filter row, right side */}
+            <button
+              onClick={() => navigate('/cart')}
+              className="relative flex items-center justify-center w-10 h-10 bg-[#111111] text-white rounded-full shadow-md hover:bg-black transition-colors"
+              title="View Cart"
+            >
+              <IconShoppingCart size={18} stroke={1.8} />
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full shadow">
+                  {itemCount}
+                </span>
+              )}
             </button>
           </div>
         </div>

@@ -11,11 +11,9 @@ import {
   IconChevronRight,
   IconShare,
   IconUsers,
-  IconHanger,
-  IconShoppingCart
+  IconHanger
 } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useCart } from '../../context/CartContext';
 
 interface SidebarProps {
   onOpenSettings?: () => void;
@@ -24,7 +22,6 @@ interface SidebarProps {
 const Sidebar = ({ onOpenSettings }: SidebarProps) => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { itemCount } = useCart();
 
   const navItems = [
     { icon: IconHome, label: 'Today', path: '/dashboard' },
@@ -68,26 +65,6 @@ const Sidebar = ({ onOpenSettings }: SidebarProps) => {
             </Link>
           );
         })}
-        
-        {/* Cart Link with Badge */}
-        <Link
-          to="/cart"
-          className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors ${
-            currentPath === '/cart' 
-              ? 'bg-[#2A2A2A] text-white' 
-              : 'text-[#9CA3AF] hover:bg-[#1A1A1A] hover:text-white'
-          }`}
-        >
-          <div className="flex items-center gap-3">
-            <IconShoppingCart stroke={currentPath === '/cart' ? 2 : 1.5} className="w-[20px] h-[20px]" />
-            Cart
-          </div>
-          {itemCount > 0 && (
-            <span className="bg-white text-black text-[10px] font-bold px-2 py-0.5 rounded-full">
-              {itemCount}
-            </span>
-          )}
-        </Link>
       </nav>
 
       {/* Divider */}
