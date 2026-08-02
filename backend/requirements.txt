@@ -12,3 +12,4 @@ litellm
 redis
 apscheduler
 email-validator
+duckduckgo-search
