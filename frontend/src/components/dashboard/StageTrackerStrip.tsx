@@ -14,7 +14,7 @@ const StageTrackerStrip = () => {
 
         if (isCompleted) {
           return (
-            <div key={stage} className="flex-1 bg-white rounded-xl py-2.5 px-4 flex items-center justify-between transition-all hover:-translate-y-[2px]">
+            <div key={stage} className="flex-1 bg-white rounded-full py-2.5 px-4 flex items-center justify-between transition-all hover:-translate-y-[2px]">
               <span className="text-[13px] font-bold text-black">{stage}</span>
               <IconCheck className="w-4 h-4 text-black" stroke={3} />
             </div>
@@ -23,9 +23,9 @@ const StageTrackerStrip = () => {
 
         if (isCurrent) {
           return (
-            <div key={stage} className="flex-1 bg-[#222222] rounded-xl py-2.5 px-4 flex flex-col justify-center relative overflow-hidden transition-all hover:-translate-y-[2px]">
+            <div key={stage} className="flex-1 bg-[#222222] rounded-full py-2.5 px-4 flex flex-col justify-center relative overflow-hidden transition-all hover:-translate-y-[2px]">
               <div className="flex justify-between items-center relative z-10 mb-1">
-                <span className="text-[13px] font-bold text-white">{stage}</span>
+                <span className="text-[13px] font-bold text-[#3A2E27]">{stage}</span>
                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
               </div>
               {/* Progress bar inside the active block */}
@@ -38,7 +38,7 @@ const StageTrackerStrip = () => {
 
         if (isUpcoming) {
           return (
-            <div key={stage} className="flex-1 rounded-xl py-2.5 px-4 flex items-center justify-center bg-[#121212] transition-all hover:-translate-y-[2px] hover:bg-[#1A1A1A]">
+            <div key={stage} className="flex-1 rounded-full py-2.5 px-4 flex items-center justify-center bg-white transition-all hover:-translate-y-[2px] hover:bg-white">
               <span className="text-[13px] font-medium text-[#666666]">{stage}</span>
             </div>
           );
@@ -51,3 +51,6 @@ const StageTrackerStrip = () => {
 };
 
 export default StageTrackerStrip;
+
+
+

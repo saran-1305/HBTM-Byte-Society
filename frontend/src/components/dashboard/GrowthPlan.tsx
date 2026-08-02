@@ -12,13 +12,13 @@ const GrowthPlan = () => {
   ];
 
   return (
-    <div className="bg-[#131826] p-6 rounded-2xl border border-[#1F2937] h-full flex flex-col">
+    <div className="bg-[#131826] p-6 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#1F2937] h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-[18px] font-bold text-white">Your Growth Plan</h2>
+          <h2 className="text-[18px] font-bold text-[#3A2E27]">Your Growth Plan</h2>
           <p className="text-[13px] text-[#9CA3AF] mt-1">Path to writing weekly</p>
         </div>
-        <Link to="/growth-plan" className="text-[#6366F1] text-[13px] font-semibold hover:text-indigo-400 transition-colors bg-[#6366F1]/10 px-3 py-1.5 rounded-lg">
+        <Link to="/growth-plan" className="text-[#6366F1] text-[13px] font-semibold hover:text-[#1FA35A]/400 transition-colors bg-[#6366F1]/10 px-3 py-1.5 rounded-full">
           View full
         </Link>
       </div>
@@ -49,7 +49,7 @@ const GrowthPlan = () => {
               
               <div className="flex-1">
                 <div className="flex justify-between items-center">
-                  <h3 className={`font-medium text-[14px] ${isUpcoming ? 'text-[#9CA3AF]' : 'text-white'}`}>
+                  <h3 className={`font-medium text-[14px] ${isUpcoming ? 'text-[#9CA3AF]' : 'text-[#3A2E27]'}`}>
                     {step.title}
                   </h3>
                   {isActive && (
@@ -71,3 +71,7 @@ const GrowthPlan = () => {
 };
 
 export default GrowthPlan;
+
+
+
+

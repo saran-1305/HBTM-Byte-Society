@@ -14,10 +14,10 @@ const Header = () => {
   return (
     <header className="flex justify-between items-start mb-8 pt-8 px-8">
       <div>
-        <h1 className="text-3xl font-bold text-white flex items-center gap-2 mb-2">
+        <h1 className="text-3xl font-bold text-[#3A2E27] flex items-center gap-2 mb-2">
           Good morning, {userName}! <span className="text-2xl">👋</span>
         </h1>
-        <p className="text-slate-400">Your AI curator has prepared your personalized growth roadmap.</p>
+        <p className="text-[#5C5C52] font-medium">Your AI curator has prepared your personalized growth roadmap.</p>
       </div>
 
       <div className="flex items-center gap-4">
@@ -29,17 +29,17 @@ const Header = () => {
           <input 
             type="text" 
             placeholder="Search anything..." 
-            className="pl-10 pr-12 py-2.5 border border-white/10 rounded-full w-64 bg-slate-900/50 text-white placeholder-slate-500 focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent transition-all text-sm"
+            className="pl-10 pr-12 py-2.5 border-[1.5px] border-[#3A2E27] rounded-full w-64 bg-white text-[#3A2E27] placeholder:text-[#5C5C52] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#1FA35A]/30 focus:border-[#1FA35A] transition-all text-sm font-medium"
           />
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <span className="text-xs font-semibold text-slate-500 bg-slate-800 border border-white/10 rounded px-1.5 py-0.5">⌘K</span>
+            <span className="text-xs font-bold text-[#5C5C52] bg-black/5 border border-[#3A2E27]/20 rounded px-1.5 py-0.5">⌘K</span>
           </div>
         </div>
 
         {/* Notifications */}
-        <button className="relative p-2.5 rounded-full border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 transition-colors bg-slate-900/50">
+        <button className="relative p-2.5 rounded-full border-[1.5px] border-[#3A2E27] text-[#3A2E27] hover:bg-black/5 transition-colors bg-white shadow-[2px_2px_0px_#3A2E27]">
           <Bell className="w-5 h-5" />
-          <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-bold text-white border-2 border-[#0F172A]">
+          <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#1FA35A] text-[10px] font-bold text-white border-2 border-white">
             3
           </span>
         </button>
@@ -49,3 +49,7 @@ const Header = () => {
 };
 
 export default Header;
+
+
+
+

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import DashboardLayout from '../../components/layout/DashboardLayout';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 const FALLBACK_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
@@ -43,9 +42,8 @@ const ordinal = (n: number) => {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 };
 
-const AnalyticsPage = () => {
-  const userId = localStorage.getItem('daskalos_user_id') || FALLBACK_USER_ID;
-
+const AnalyticsTab = ({ userId }: { userId: string }) => {
+  
   const [currentStage, setCurrentStage] = useState<string | null>(null);
   const [confidence, setConfidence] = useState<string | null>(null);
   const [history, setHistory] = useState<StageHistoryItem[]>([]);
@@ -78,11 +76,11 @@ const AnalyticsPage = () => {
 
   if (loading) {
     return (
-      <DashboardLayout>
+      <div className="animate-fade-in">
         <div className="flex items-center justify-center py-32">
           <p className="text-xl tracking-widest animate-pulse font-light text-[#3A2E27]">Loading Analytics...</p>
         </div>
-      </DashboardLayout>
+      </div>
     );
   }
 
@@ -106,7 +104,7 @@ const AnalyticsPage = () => {
   const sourceColors = ['bg-white', 'bg-[#999999]', 'bg-[#666666]', 'bg-[#333333]', 'bg-[#3A2E27] text-white'];
 
   return (
-    <DashboardLayout>
+    <div className="animate-fade-in">
       <div className="space-y-8">
         {/* Header */}
         <div>
@@ -231,11 +229,12 @@ const AnalyticsPage = () => {
         </div>
 
       </div>
-    </DashboardLayout>
+    </div>
   );
 };
 
-export default AnalyticsPage;
+export default AnalyticsTab;
+
 
 
 

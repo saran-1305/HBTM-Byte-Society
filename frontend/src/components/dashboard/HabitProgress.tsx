@@ -9,10 +9,10 @@ const HabitProgress = () => {
   ];
 
   return (
-    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 h-full flex flex-col">
+    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#3A2E27] h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-bold text-white">Habit Progress</h2>
-        <a href="#" className="text-indigo-400 text-sm font-semibold hover:text-indigo-300 transition-colors">See all</a>
+        <h2 className="text-lg font-bold text-[#3A2E27]">Habit Progress</h2>
+        <a href="#" className="text-[#1FA35A]/400 text-sm font-semibold hover:text-[#1FA35A]/300 transition-colors">See all</a>
       </div>
 
       <div className="flex-1 flex flex-col justify-between space-y-4">
@@ -41,3 +41,8 @@ const HabitProgress = () => {
 };
 
 export default HabitProgress;
+
+
+
+
+

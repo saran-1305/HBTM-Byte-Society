@@ -28,9 +28,9 @@ const MediaGrid: React.FC<MediaGridProps> = ({ title, items, viewAllLink }) => {
   return (
     <div className="mb-10">
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-[16px] font-medium text-white">{title}</h2>
+        <h2 className="text-[16px] font-medium text-[#3A2E27]">{title}</h2>
         {viewAllLink && (
-          <Link to={viewAllLink} className="text-[13px] font-medium text-[#999999] hover:text-white transition-colors">
+          <Link to={viewAllLink} className="text-[13px] font-medium text-[#5C5C52] hover:text-[#3A2E27] transition-colors">
             View all
           </Link>
         )}
@@ -43,7 +43,7 @@ const MediaGrid: React.FC<MediaGridProps> = ({ title, items, viewAllLink }) => {
           const content = (
             <>
             {/* Thumbnail Box */}
-            <div className="relative w-full aspect-square rounded-[12px] overflow-hidden bg-[#121212] mb-3 group-hover:-translate-y-[2px] transition-all duration-150 ease-out">
+            <div className="relative w-full aspect-square rounded-[12px] overflow-hidden bg-white mb-3 group-hover:-translate-y-[2px] transition-all duration-150 ease-out">
               {videoId ? (
                 <img 
                   src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`} 
@@ -62,21 +62,21 @@ const MediaGrid: React.FC<MediaGridProps> = ({ title, items, viewAllLink }) => {
               {/* Play Overlay on Hover */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                 <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20">
-                  <IconPlayerPlay className="w-5 h-5 text-white fill-white ml-0.5" stroke={1.5} />
+                  <IconPlayerPlay className="w-5 h-5 text-[#3A2E27] fill-white ml-0.5" stroke={1.5} />
                 </div>
               </div>
 
               {/* Badges */}
               {item.badge && !item.isWildcard && (
                 <div className="absolute bottom-2 right-2">
-                  <span className="bg-black/80 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 rounded-md">
+                  <span className="bg-black/80 backdrop-blur-sm text-[#3A2E27] text-[10px] font-medium px-2 py-1 rounded-md">
                     {item.badge}
                   </span>
                 </div>
               )}
               {item.isWildcard && (
                 <div className="absolute top-2 right-2">
-                  <span className="bg-[#F97316]/90 backdrop-blur-sm text-white text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
+                  <span className="bg-[#F97316]/90 backdrop-blur-sm text-[#3A2E27] text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
                     Wildcard
                   </span>
                 </div>
@@ -84,10 +84,10 @@ const MediaGrid: React.FC<MediaGridProps> = ({ title, items, viewAllLink }) => {
             </div>
 
             {/* Meta Text */}
-            <h3 className="text-[14px] font-medium text-white truncate mb-0.5 group-hover:text-white transition-colors">
+            <h3 className="text-[14px] font-medium text-[#3A2E27] truncate mb-0.5 group-hover:text-[#3A2E27] transition-colors">
               {item.title}
             </h3>
-            <p className="text-[12px] text-[#999999] truncate">
+            <p className="text-[12px] text-[#5C5C52] truncate">
               {item.subtitle}
             </p>
             </>
@@ -109,3 +109,7 @@ const MediaGrid: React.FC<MediaGridProps> = ({ title, items, viewAllLink }) => {
 };
 
 export default MediaGrid;
+
+
+
+

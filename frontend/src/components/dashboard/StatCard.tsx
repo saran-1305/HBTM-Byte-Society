@@ -14,16 +14,16 @@ interface StatCardProps {
 
 const StatCard = ({ title, value, subtitle, icon, progress, trend }: StatCardProps) => {
   return (
-    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-2xl border border-white/10 flex flex-col justify-between hover:bg-slate-800/40 transition-colors">
+    <div className="bg-slate-900/40 backdrop-blur-md p-6 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#3A2E27] flex flex-col justify-between hover:bg-slate-800/40 transition-colors">
       <div className="flex items-center gap-3 mb-4 text-sm font-medium text-slate-400">
-        <div className="p-2 rounded-lg bg-slate-800/50">
+        <div className="p-2 rounded-full bg-slate-800/50">
           {icon}
         </div>
         {title}
       </div>
       
       <div className="mb-4">
-        <div className="text-3xl font-bold text-white mb-1">{value}</div>
+        <div className="text-3xl font-bold text-[#3A2E27] mb-1">{value}</div>
         <div className="text-sm text-slate-400">{subtitle}</div>
       </div>
 
@@ -47,3 +47,8 @@ const StatCard = ({ title, value, subtitle, icon, progress, trend }: StatCardPro
 };
 
 export default StatCard;
+
+
+
+
+

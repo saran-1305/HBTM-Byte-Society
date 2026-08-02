@@ -28,9 +28,12 @@ const PublishingCallback = () => {
 
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-black">
-      <div className="text-white text-lg animate-pulse">Connecting to LinkedIn...</div>
+      <div className="text-[#3A2E27] text-lg animate-pulse">Connecting to LinkedIn...</div>
     </div>
   );
 };
 
 export default PublishingCallback;
+
+
+

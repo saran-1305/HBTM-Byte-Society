@@ -87,7 +87,7 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ items }) => {
         onKeyDown={handleKeyDown}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className="relative flex flex-row items-center justify-center overflow-hidden h-[560px] w-full select-none outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1]/50 rounded-2xl"
+        className="relative flex flex-row items-center justify-center overflow-hidden h-[560px] w-full select-none outline-none focus-visible:ring-2 focus-visible:ring-[#1FA35A]/50 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
       >
         {items.map((item, index) => {
           const len = items.length;
@@ -109,10 +109,10 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ items }) => {
             <div
               key={item.id}
               onClick={() => { if (!isCenter) goTo(index); }}
-              className={`group absolute top-1/2 left-1/2 rounded-2xl overflow-hidden bg-[#131826] transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`group absolute top-1/2 left-1/2 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden bg-white transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isCenter
-                  ? 'border-2 border-[#6366F1] shadow-[0_0_60px_rgba(99,102,241,0.4)]'
-                  : 'border border-[#1F2937] cursor-pointer hover:border-[#6366F1]/50 hover:shadow-[0_0_30px_rgba(99,102,241,0.15)]'
+                  ? 'border-[2px] border-[#1FA35A] shadow-[0_0_60px_rgba(29,158,117,0.3)]'
+                  : 'border-[1.5px] border-[#3A2E27]/20 cursor-pointer hover:border-[#1FA35A]/50 hover:shadow-[0_0_30px_rgba(29,158,117,0.15)]'
               }`}
               style={{
                 width: CENTER_W,
@@ -138,9 +138,9 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ items }) => {
                       <CardMedia item={item} large />
                     )}
                   </div>
-                  <div className="px-4 py-3 border-t border-[#1F2937] shrink-0">
-                    <p className="text-[15px] font-semibold text-white truncate">{item.title}</p>
-                    <p className="text-[11px] text-[#9CA3AF] uppercase tracking-wide mt-0.5">{item.type}</p>
+                  <div className="px-4 py-3 border-t border-[#3A2E27]/20 shrink-0">
+                    <p className="text-[15px] font-semibold text-[#3A2E27] truncate">{item.title}</p>
+                    <p className="text-[11px] text-[#5C5C52] uppercase tracking-wide mt-0.5">{item.type}</p>
                   </div>
                 </div>
               ) : (
@@ -161,14 +161,14 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ items }) => {
         <button
           onClick={goPrev}
           aria-label="Previous"
-          className="w-11 h-11 rounded-full flex items-center justify-center bg-[#131826] border border-[#1F2937] text-[#9CA3AF] transition-colors duration-200 hover:border-[#6366F1] hover:text-white"
+          className="w-11 h-11 rounded-full flex items-center justify-center bg-white border-[1.5px] border-[#3A2E27] text-[#3A2E27] hover:bg-black/5 transition-colors duration-200 hover:border-[#1FA35A] hover:text-[#3A2E27]"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={goNext}
           aria-label="Next"
-          className="w-11 h-11 rounded-full flex items-center justify-center bg-[#131826] border border-[#1F2937] text-[#9CA3AF] transition-colors duration-200 hover:border-[#6366F1] hover:text-white"
+          className="w-11 h-11 rounded-full flex items-center justify-center bg-white border-[1.5px] border-[#3A2E27] text-[#3A2E27] hover:bg-black/5 transition-colors duration-200 hover:border-[#1FA35A] hover:text-[#3A2E27]"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -178,3 +178,9 @@ const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ items }) => {
 };
 
 export default FeaturedCarousel;
+
+
+
+
+
+

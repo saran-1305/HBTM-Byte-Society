@@ -333,3 +333,5 @@ export default function ColorBends({
 
   return <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={style} />;
 }
+
+

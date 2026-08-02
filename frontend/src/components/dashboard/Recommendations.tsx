@@ -23,13 +23,13 @@ const MOCK_DATA = [
 
 const Recommendations = () => {
   return (
-    <div className="bg-[#131826] p-6 rounded-2xl border border-[#1F2937] h-full flex flex-col">
+    <div className="bg-[#131826] p-6 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#1F2937] h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-[18px] font-bold text-white">Curated for you today</h2>
+          <h2 className="text-[18px] font-bold text-[#3A2E27]">Curated for you today</h2>
           <p className="text-[13px] text-[#9CA3AF] mt-1">Matched to your current 'Struggle' phase</p>
         </div>
-        <Link to="/recommendations" className="text-[#6366F1] text-[13px] font-semibold hover:text-indigo-400 transition-colors bg-[#6366F1]/10 px-3 py-1.5 rounded-lg">
+        <Link to="/recommendations" className="text-[#6366F1] text-[13px] font-semibold hover:text-[#1FA35A]/400 transition-colors bg-[#6366F1]/10 px-3 py-1.5 rounded-full">
           View all
         </Link>
       </div>
@@ -38,7 +38,7 @@ const Recommendations = () => {
         {MOCK_DATA.map((item) => (
           <div 
             key={item.id}
-            className="bg-[#0B0F1A] border border-[#1F2937] rounded-xl p-4 hover:border-[#6366F1]/50 transition-all duration-150 group"
+            className="bg-[#0B0F1A] border border-[#1F2937] rounded-full p-4 hover:border-[#6366F1]/50 transition-all duration-150 group"
           >
             <div className="flex justify-between items-start mb-2">
               <span className="bg-[#6366F1]/15 text-[#6366F1] uppercase text-[10px] font-bold rounded-md px-2 py-0.5 tracking-wide">
@@ -52,7 +52,7 @@ const Recommendations = () => {
               )}
             </div>
 
-            <h3 className="text-[15px] font-medium text-white mb-1 leading-snug">{item.title}</h3>
+            <h3 className="text-[15px] font-medium text-[#3A2E27] mb-1 leading-snug">{item.title}</h3>
             <p className="text-[12px] text-[#9CA3AF] mb-3">{item.source}</p>
             
             <div className="border-l-2 border-[#1F2937] pl-3 py-0.5 mb-2">
@@ -68,3 +68,7 @@ const Recommendations = () => {
 };
 
 export default Recommendations;
+
+
+
+

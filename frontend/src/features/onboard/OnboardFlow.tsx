@@ -65,14 +65,14 @@ const OnboardFlow = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-700 ease-in-out bg-[#000000] text-white flex flex-col font-sans`}>
+    <div className={`min-h-screen transition-colors duration-700 ease-in-out bg-background text-[#3A2E27] flex flex-col font-sans`}>
       {/* Top Navigation */}
       <div className="pt-8 px-8 flex justify-between items-center max-w-4xl mx-auto w-full h-16">
         <div>
           {step > 1 && step < 5 && (
             <button
               onClick={handlePrev}
-              className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center text-[#666666] hover:text-white"
+              className="p-2 hover:bg-white/10 rounded-full transition-colors flex items-center text-[#666666] hover:text-[#3A2E27]"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
@@ -111,20 +111,20 @@ const OnboardFlow = () => {
             >
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Who are you trying to become?</h1>
-                <p className="text-xl text-[#999999]">Not your job title. The version of you that you're working toward.</p>
+                <p className="text-xl text-[#5C5C52]">Not your job title. The version of you that you're working toward.</p>
               </div>
               <textarea
                 value={aspiration}
                 onChange={(e) => setAspiration(e.target.value)}
                 placeholder="A writer who publishes every week"
-                className="w-full bg-transparent border-b-2 border-[#333333] text-white placeholder-[#666666] text-3xl md:text-4xl leading-relaxed py-4 focus:outline-none focus:border-white transition-colors resize-none overflow-hidden"
+                className="w-full bg-transparent border-b-2 border-[#3A2E27]/20 text-[#3A2E27] placeholder-[#666666] text-3xl md:text-4xl leading-relaxed py-4 focus:outline-none focus:border-[#1D9E75] transition-colors resize-none overflow-hidden"
                 rows={3}
                 autoFocus
               />
               <button
                 onClick={handleNext}
                 disabled={!aspiration.trim()}
-                className="mt-8 bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
+                className="mt-8 bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
               >
                 Continue <span className="text-[#666666] text-sm ml-2 font-bold">Press Enter ↵</span>
               </button>
@@ -148,10 +148,10 @@ const OnboardFlow = () => {
                   <button
                     key={tf}
                     onClick={() => setTimeframe(tf)}
-                    className={`px-8 py-5 rounded-2xl text-xl font-bold border-2 transition-all ${
+                    className={`px-8 py-5 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] text-xl font-bold border-2 transition-all ${
                       timeframe === tf
                         ? 'bg-white border-white text-black scale-105'
-                        : 'bg-transparent border-[#333333] text-[#999999] hover:bg-white/10 hover:border-[#666666]'
+                        : 'bg-transparent border-[#3A2E27]/20 text-[#5C5C52] hover:bg-white/10 hover:border-[#666666]'
                     }`}
                   >
                     {tf}
@@ -166,7 +166,7 @@ const OnboardFlow = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
                       onClick={handleNext}
-                      className="bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 transition-all"
+                      className="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition-all"
                     >
                       Continue <span className="text-[#666666] text-sm ml-2 font-bold">Press Enter ↵</span>
                     </motion.button>
@@ -189,10 +189,10 @@ const OnboardFlow = () => {
             >
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight">What does your day actually look like right now?</h1>
-                <p className="text-xl text-[#999999]">Be honest — this helps us understand the gap.</p>
+                <p className="text-xl text-[#5C5C52]">Be honest — this helps us understand the gap.</p>
               </div>
               
-              <div className="bg-[#121212] rounded-2xl border border-transparent focus-within:border-white transition-colors p-4 flex flex-wrap gap-2 items-center min-h-[80px]">
+              <div className="bg-white rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-transparent focus-within:border-white transition-colors p-4 flex flex-wrap gap-2 items-center min-h-[80px]">
                 <AnimatePresence>
                   {habits.map((habit) => (
                     <motion.div
@@ -200,7 +200,7 @@ const OnboardFlow = () => {
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.8 }}
-                      className="bg-white/10 text-white border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 text-lg"
+                      className="bg-white/10 text-[#3A2E27] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 text-lg"
                     >
                       {habit}
                       <button onClick={() => removeHabit(habit)} className="hover:text-red-400 transition-colors">
@@ -220,7 +220,7 @@ const OnboardFlow = () => {
                     }
                   }}
                   placeholder={habits.length === 0 ? "Type a habit & press enter..." : "Add another..."}
-                  className="flex-1 bg-transparent border-none text-white placeholder-[#666666] text-xl py-2 focus:outline-none min-w-[200px]"
+                  className="flex-1 bg-transparent border-none text-[#3A2E27] placeholder-[#666666] text-xl py-2 focus:outline-none min-w-[200px]"
                 />
               </div>
 
@@ -229,7 +229,7 @@ const OnboardFlow = () => {
                   <button
                     key={placeholder}
                     onClick={() => addHabit(placeholder)}
-                    className="bg-white/5 hover:bg-white/10 text-[#999999] hover:text-white border border-white/10 px-4 py-2 rounded-full text-sm font-bold transition-colors flex items-center gap-2"
+                    className="bg-white/5 hover:bg-white/10 text-[#5C5C52] hover:text-[#3A2E27] border border-[#3A2E27] px-4 py-2 rounded-full text-sm font-bold transition-colors flex items-center gap-2"
                   >
                     + {placeholder}
                   </button>
@@ -240,7 +240,7 @@ const OnboardFlow = () => {
                 <button
                   onClick={handleNext}
                   disabled={habits.length === 0}
-                  className="bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
+                  className="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
                 >
                   Continue
                 </button>
@@ -260,18 +260,18 @@ const OnboardFlow = () => {
               className="w-full space-y-8"
             >
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">Where do you get stuck most?</h1>
-              <input
-                type="text"
+              <textarea
                 value={stuckPoint}
                 onChange={(e) => setStuckPoint(e.target.value)}
                 placeholder="Starting is fine, finishing is the problem"
-                className="w-full bg-transparent border-b-2 border-[#333333] text-white placeholder-[#666666] text-3xl leading-relaxed py-4 focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-transparent border-b-2 border-[#3A2E27]/20 text-[#3A2E27] placeholder-[#666666] text-3xl leading-relaxed py-4 focus:outline-none focus:border-[#1D9E75] transition-colors resize-none overflow-hidden"
+                rows={3}
                 autoFocus
               />
               <button
                 onClick={submitForm}
                 disabled={!stuckPoint.trim()}
-                className="mt-8 bg-white text-black px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
+                className="mt-8 bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 disabled:opacity-50 transition-all"
               >
                 Complete <span className="text-[#666666] text-sm ml-2 font-bold">Press Enter ↵</span>
               </button>
@@ -291,15 +291,15 @@ const OnboardFlow = () => {
             >
               {isSubmitting ? (
                 <div className="flex flex-col items-center justify-center space-y-6 py-12">
-                  <Loader2 className="w-12 h-12 text-white animate-spin" />
-                  <h2 className="text-2xl font-bold text-white">Getting to know you...</h2>
+                  <Loader2 className="w-12 h-12 text-[#3A2E27] animate-spin" />
+                  <h2 className="text-2xl font-bold text-[#3A2E27]">Getting to know you...</h2>
                 </div>
               ) : (
                 <div className="space-y-8 py-8">
                   <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto">
                     <Check className="w-10 h-10" />
                   </div>
-                  <p className="text-2xl md:text-3xl font-bold leading-relaxed text-white max-w-2xl mx-auto">
+                  <p className="text-2xl md:text-3xl font-bold leading-relaxed text-[#3A2E27] max-w-2xl mx-auto">
                     "{profileSummary}"
                   </p>
                   <button
@@ -319,3 +319,9 @@ const OnboardFlow = () => {
 };
 
 export default OnboardFlow;
+
+
+
+
+
+

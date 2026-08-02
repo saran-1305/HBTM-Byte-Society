@@ -80,12 +80,12 @@ const ProfileSetupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] flex flex-col items-center justify-center p-6 font-sans">
-      <div className="w-full max-w-[480px] bg-[#121212] rounded-2xl p-8 md:p-10 shadow-2xl">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 font-sans">
+      <div className="w-full max-w-[480px] bg-white rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 md:p-10 ">
         
         <div className="mb-8">
-          <h1 className="text-[22px] text-white font-bold mb-1">Complete your profile</h1>
-          <p className="text-[14px] text-[#999999]">This helps DASKALOS understand who you're building toward.</p>
+          <h1 className="text-[22px] text-[#3A2E27] font-bold mb-1">Complete your profile</h1>
+          <p className="text-[14px] text-[#5C5C52]">This helps DASKALOS understand who you're building toward.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -93,23 +93,23 @@ const ProfileSetupPage = () => {
           {/* Name & Age Row */}
           <div className="flex gap-4">
             <div className="flex-1 space-y-2">
-              <label className="block text-[13px] font-bold text-[#999999]">Name</label>
+              <label className="block text-[13px] font-bold text-[#5C5C52]">Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                className="w-full bg-[#000000] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                className="w-full bg-white border border-[#3A2E27]/20 rounded-full px-4 py-3 text-[#3A2E27] focus:outline-none focus:border-[#1D9E75] focus:ring-1 focus:ring-[#1D9E75]/30 transition-all"
                 placeholder="Your name"
                 required
               />
             </div>
             <div className="w-24 space-y-2">
-              <label className="block text-[13px] font-bold text-[#999999]">Age <span className="opacity-50">(opt)</span></label>
+              <label className="block text-[13px] font-bold text-[#5C5C52]">Age <span className="opacity-50">(opt)</span></label>
               <input
                 type="number"
                 value={age}
                 onChange={e => setAge(e.target.value)}
-                className="w-full bg-[#000000] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+                className="w-full bg-white border border-[#3A2E27]/20 rounded-full px-4 py-3 text-[#3A2E27] focus:outline-none focus:border-[#1D9E75] focus:ring-1 focus:ring-[#1D9E75]/30 transition-all"
                 placeholder="25"
               />
             </div>
@@ -117,23 +117,23 @@ const ProfileSetupPage = () => {
 
           {/* Role */}
           <div className="space-y-2">
-            <label className="block text-[13px] font-bold text-[#999999]">Current role or occupation</label>
+            <label className="block text-[13px] font-bold text-[#5C5C52]">Current role or occupation</label>
             <input
               type="text"
               value={role}
               onChange={e => setRole(e.target.value)}
-              className="w-full bg-[#000000] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
+              className="w-full bg-white border border-[#3A2E27]/20 rounded-full px-4 py-3 text-[#3A2E27] focus:outline-none focus:border-[#1D9E75] focus:ring-1 focus:ring-[#1D9E75]/30 transition-all"
               placeholder="What do you do day to day?"
             />
           </div>
 
           {/* Aspiration */}
           <div className="space-y-2">
-            <label className="block text-[13px] font-bold text-[#999999]">Who are you trying to become?</label>
+            <label className="block text-[13px] font-bold text-[#5C5C52]">Who are you trying to become?</label>
             <textarea
               value={aspiration}
               onChange={e => setAspiration(e.target.value)}
-              className="w-full bg-[#000000] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all resize-none"
+              className="w-full bg-white border border-[#3A2E27]/20 rounded-full px-4 py-3 text-[#3A2E27] focus:outline-none focus:border-[#1D9E75] focus:ring-1 focus:ring-[#1D9E75]/30 transition-all resize-none"
               placeholder="A writer who publishes every week"
               rows={3}
               required
@@ -142,15 +142,15 @@ const ProfileSetupPage = () => {
 
           {/* Habits */}
           <div className="space-y-2">
-            <label className="block text-[13px] font-bold text-[#999999]">Current habits</label>
-            <div className="w-full bg-[#000000] border border-[#333333] rounded-lg p-2 min-h-[52px] flex flex-wrap gap-2 items-center focus-within:border-white focus-within:ring-1 focus-within:ring-white transition-all">
+            <label className="block text-[13px] font-bold text-[#5C5C52]">Current habits</label>
+            <div className="w-full bg-white border border-[#3A2E27]/20 rounded-full p-2 min-h-[52px] flex flex-wrap gap-2 items-center focus-within:border-white focus-within:ring-1 focus-within:ring-white transition-all">
               {habits.map((habit) => (
                 <div
                   key={habit}
-                  className="bg-[#121212] border border-[#333333] px-3 py-1 rounded-md flex items-center gap-1.5 text-sm text-white"
+                  className="bg-white border border-[#3A2E27]/20 px-3 py-1 rounded-md flex items-center gap-1.5 text-sm text-[#3A2E27]"
                 >
                   {habit}
-                  <button type="button" onClick={() => removeHabit(habit)} className="text-[#999999] hover:text-white">
+                  <button type="button" onClick={() => removeHabit(habit)} className="text-[#5C5C52] hover:text-[#3A2E27]">
                     <X className="w-3 h-3" />
                   </button>
                 </div>
@@ -161,7 +161,7 @@ const ProfileSetupPage = () => {
                 onChange={e => setHabitInput(e.target.value)}
                 onKeyDown={handleAddHabit}
                 placeholder={habits.length === 0 ? "Type and press enter..." : "Add another..."}
-                className="flex-1 bg-transparent border-none text-white text-sm px-2 py-1 focus:outline-none min-w-[150px]"
+                className="flex-1 bg-transparent border-none text-[#3A2E27] text-sm px-2 py-1 focus:outline-none min-w-[150px]"
               />
             </div>
           </div>
@@ -171,7 +171,7 @@ const ProfileSetupPage = () => {
             <button
               type="submit"
               disabled={!isValid || isSubmitting}
-              className="w-full bg-white text-black rounded-lg py-3.5 font-bold transition-all hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+              className="w-full bg-white text-black rounded-full py-3.5 font-bold transition-all hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
             >
               {isSubmitting ? 'Saving...' : 'Continue to dashboard'}
             </button>
@@ -183,3 +183,10 @@ const ProfileSetupPage = () => {
 };
 
 export default ProfileSetupPage;
+
+
+
+
+
+
+

@@ -1,28 +1,45 @@
 import React from 'react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
-import FeaturedCarousel from '../../components/dashboard/FeaturedCarousel';
+import BackgroundBlobs from '../../components/layout/BackgroundBlobs';
+import FeaturedCarousel from '../../components/FeaturedCarousel';
 
 const MOCK_ITEMS = [
-  { id: '1', title: 'The Discipline of Showing Up Daily', type: 'video', videoId: 'pW-SOdj4Kkk' },
-  { id: '2', title: 'Steve Jobs on Connecting the Dots', type: 'video', videoId: 'vj-91dNMcc0' },
-  { id: '3', title: 'David Goggins - Mastering Your Mind', type: 'video', videoId: 'TLKxdTmk-yg' },
-  { id: '4', title: 'Kobe Bryant Mamba Mentality', type: 'video', videoId: 'qj8EELwWkE4' },
-  { id: '5', title: 'Denzel Washington Fall Forward', type: 'video', videoId: 'tbnzAVRZ9Xc' },
+  { id: '1', title: 'Start Taking Action', type: 'video', videoId: 'm7kRfGkGSOY' },
+  { id: '2', title: 'Break Your Limits', type: 'video', videoId: 'nkSFReN7DAw' },
+  { id: '3', title: 'Focus on Growth', type: 'video', videoId: 'ygMYFa1hISA' },
+  { id: '4', title: 'Consistency is Key', type: 'video', videoId: 'wTF0lOOfQxg' },
+  { id: '5', title: 'Embrace the Struggle', type: 'video', videoId: 'VO72be6GKfs' },
 ];
 
 const FeaturedPage = () => {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Simulate initial loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <DashboardLayout>
-      <div className="space-y-10 pt-8">
+      <BackgroundBlobs />
+      <div className="space-y-10 pt-8 relative z-10">
         <div>
-          <h1 className="text-[28px] font-bold text-white mb-2">Featured</h1>
-          <p className="text-[15px] text-[#999999]">Hand-picked media matched to where you are right now.</p>
+          <h1 className="text-[28px] font-bold text-[#3A2E27] mb-2">Featured</h1>
+          <p className="text-[15px] text-[#5C5C52]">Hand-picked media matched to where you are right now.</p>
         </div>
 
-        <FeaturedCarousel items={MOCK_ITEMS} />
+        <FeaturedCarousel items={MOCK_ITEMS} isLoading={loading} />
       </div>
     </DashboardLayout>
   );
 };
 
 export default FeaturedPage;
+
+
+
+
+

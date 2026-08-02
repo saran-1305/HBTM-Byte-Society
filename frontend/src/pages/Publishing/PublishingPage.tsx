@@ -94,7 +94,7 @@ const PublishingPage = () => {
       case 'Published':
       case 'Verified Published': return <IconCheck className="w-4 h-4 text-emerald-400" />;
       case 'Scheduled': return <IconClock className="w-4 h-4 text-blue-400" />;
-      case 'Draft': return <IconCheckupList className="w-4 h-4 text-gray-400" />;
+      case 'Draft': return <IconCheckupList className="w-4 h-4 text-[#5C5C52]" />;
       case 'Failed': return <IconAlertCircle className="w-4 h-4 text-red-400" />;
       default: return <IconCheckupList className="w-4 h-4 text-yellow-400" />;
     }
@@ -107,23 +107,23 @@ const PublishingPage = () => {
         {/* Header Section */}
         <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-white mb-2">Growth Sharing Engine</h1>
-          <p className="text-gray-400">Manage, schedule, and automate your insights across platforms.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-[#3A2E27] mb-2">Growth Sharing Engine</h1>
+          <p className="text-[#5C5C52]">Manage, schedule, and automate your insights across platforms.</p>
         </div>
         
         {/* Connected Accounts */}
         <div className="flex gap-4">
           {accounts.length > 0 ? (
             accounts.map(acc => (
-              <div key={acc.id} className="flex items-center gap-2 px-4 py-2 bg-[#1A1A1A]/80 backdrop-blur-md rounded-full border border-emerald-500/30">
+              <div key={acc.id} className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md rounded-full border border-emerald-500/30">
                 <IconBrandLinkedin className="w-5 h-5 text-emerald-400" />
-                <span className="text-sm font-medium text-white">{acc.platform_name} Connected</span>
+                <span className="text-sm font-medium text-[#3A2E27]">{acc.platform_name} Connected</span>
               </div>
             ))
           ) : (
             <button 
               onClick={handleConnect}
-              className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 transition-colors rounded-full text-sm font-medium text-white"
+              className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 transition-colors rounded-full text-sm font-medium text-[#3A2E27]"
             >
               <IconBrandLinkedin className="w-5 h-5" />
               Connect LinkedIn
@@ -133,15 +133,15 @@ const PublishingPage = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 p-1 bg-[#1A1A1A] rounded-xl w-fit">
+      <div className="flex gap-2 p-1 bg-white rounded-full w-fit">
         {['queue', 'history', 'calendar'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-6 py-2 rounded-lg text-sm font-medium capitalize transition-all ${
+            className={`px-6 py-2 rounded-full text-sm font-medium capitalize transition-all ${
               activeTab === tab 
-                ? 'bg-[#2A2A2A] text-white shadow-sm' 
-                : 'text-gray-400 hover:text-white hover:bg-[#2A2A2A]/50'
+                ? 'bg-[#2A2A2A] text-[#3A2E27] shadow-sm' 
+                : 'text-[#5C5C52] hover:text-[#3A2E27] hover:bg-[#2A2A2A]/50'
             }`}
           >
             {tab}
@@ -150,27 +150,27 @@ const PublishingPage = () => {
       </div>
 
       {/* Content Area */}
-      <div className="bg-[#1A1A1A]/50 backdrop-blur-xl border border-white/5 rounded-2xl p-6 min-h-[400px]">
+      <div className="bg-white/50 backdrop-blur-xl border border-[#3A2E27]/20 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-6 min-h-[400px]">
         {loading ? (
-          <div className="flex justify-center items-center h-64 text-gray-400">Loading engine state...</div>
+          <div className="flex justify-center items-center h-64 text-[#5C5C52]">Loading engine state...</div>
         ) : (
           <>
             {/* QUEUE TAB */}
             {activeTab === 'queue' && (
               <div className="space-y-4">
-                <h3 className="text-lg font-medium text-white mb-4">Publishing Queue</h3>
+                <h3 className="text-lg font-medium text-[#3A2E27] mb-4">Publishing Queue</h3>
                 {queue.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">No pending jobs in the queue.</div>
                 ) : (
                   queue.map(job => (
-                    <div key={job.id} className="flex items-center justify-between p-4 bg-[#2A2A2A]/50 hover:bg-[#2A2A2A] transition-colors rounded-xl border border-white/5 group">
+                    <div key={job.id} className="flex items-center justify-between p-4 bg-[#2A2A2A]/50 hover:bg-[#2A2A2A] transition-colors rounded-full border border-[#3A2E27]/20 group">
                       <div className="flex items-center gap-4">
-                        <div className="p-2 bg-black/50 rounded-lg">
+                        <div className="p-2 bg-black/50 rounded-full">
                           {getStatusIcon(job.status)}
                         </div>
                         <div>
-                          <div className="text-white font-medium">Growth Insight #{job.growth_content_id}</div>
-                          <div className="text-sm text-gray-400 flex items-center gap-2">
+                          <div className="text-[#3A2E27] font-medium">Growth Insight #{job.growth_content_id}</div>
+                          <div className="text-sm text-[#5C5C52] flex items-center gap-2">
                             Status: <span className="text-gray-300">{job.status}</span>
                             {job.scheduled_time && (
                               <>
@@ -186,14 +186,14 @@ const PublishingPage = () => {
                         {job.status === 'Draft' && (
                           <button 
                             onClick={() => handleApprove(job.id)}
-                            className="px-4 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-lg text-sm font-medium transition-colors"
+                            className="px-4 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium transition-colors"
                           >
                             Approve
                           </button>
                         )}
                         <button 
                           onClick={() => handlePublishNow(job.id)}
-                          className="flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg text-sm font-medium transition-colors"
+                          className="flex items-center gap-2 px-4 py-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-full text-sm font-medium transition-colors"
                         >
                           <IconSend className="w-4 h-4" /> Publish Now
                         </button>
@@ -208,8 +208,8 @@ const PublishingPage = () => {
             {activeTab === 'history' && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-medium text-white">Publishing History</h3>
-                  <button onClick={fetchData} className="text-gray-400 hover:text-white transition-colors">
+                  <h3 className="text-lg font-medium text-[#3A2E27]">Publishing History</h3>
+                  <button onClick={fetchData} className="text-[#5C5C52] hover:text-[#3A2E27] transition-colors">
                     <IconRefresh className="w-5 h-5" />
                   </button>
                 </div>
@@ -217,9 +217,9 @@ const PublishingPage = () => {
                   <div className="text-center py-12 text-gray-500">No publishing history available.</div>
                 ) : (
                   history.filter(j => j.status === 'Published' || j.status === 'Failed' || j.status === 'Verified Published').map(job => (
-                    <div key={job.id} className="flex items-center justify-between p-4 bg-[#2A2A2A]/30 rounded-xl border border-white/5">
+                    <div key={job.id} className="flex items-center justify-between p-4 bg-[#2A2A2A]/30 rounded-full border border-[#3A2E27]/20">
                       <div className="flex items-center gap-4">
-                        <div className="p-2 bg-black/30 rounded-lg">
+                        <div className="p-2 bg-black/30 rounded-full">
                           {getStatusIcon(job.status)}
                         </div>
                         <div>
@@ -233,7 +233,7 @@ const PublishingPage = () => {
                         {job.status === 'Failed' && (
                           <button 
                             onClick={() => handlePublishNow(job.id)}
-                            className="flex items-center gap-2 px-4 py-1.5 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 rounded-lg text-sm font-medium transition-colors"
+                            className="flex items-center gap-2 px-4 py-1.5 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 rounded-full text-sm font-medium transition-colors"
                           >
                             <IconRefresh className="w-4 h-4" /> Retry
                           </button>
@@ -243,7 +243,7 @@ const PublishingPage = () => {
                             href={job.url} 
                             target="_blank" 
                             rel="noreferrer"
-                            className="px-4 py-1.5 bg-white/5 hover:bg-white/10 text-white rounded-lg text-sm font-medium transition-colors"
+                            className="px-4 py-1.5 bg-white/5 hover:bg-white/10 text-[#3A2E27] rounded-full text-sm font-medium transition-colors"
                           >
                             View Post
                           </a>
@@ -257,9 +257,9 @@ const PublishingPage = () => {
 
             {/* CALENDAR TAB */}
             {activeTab === 'calendar' && (
-              <div className="flex flex-col items-center justify-center py-12 text-gray-400">
+              <div className="flex flex-col items-center justify-center py-12 text-[#5C5C52]">
                 <IconCalendar className="w-16 h-16 mb-4 opacity-20" />
-                <h3 className="text-lg font-medium text-white mb-2">Publishing Calendar</h3>
+                <h3 className="text-lg font-medium text-[#3A2E27] mb-2">Publishing Calendar</h3>
                 <p className="text-sm text-center max-w-sm">
                   Calendar view is currently being integrated with the Growth Planner module.
                 </p>
@@ -275,3 +275,8 @@ const PublishingPage = () => {
 };
 
 export default PublishingPage;
+
+
+
+
+

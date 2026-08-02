@@ -136,7 +136,7 @@ const CommunityPage = () => {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center py-32">
-          <p className="text-xl tracking-widest animate-pulse font-light text-white">Loading Community...</p>
+          <p className="text-xl tracking-widest animate-pulse font-light text-[#3A2E27]">Loading Community...</p>
         </div>
       </DashboardLayout>
     );
@@ -150,18 +150,18 @@ const CommunityPage = () => {
       <div className="space-y-12 pb-20 max-w-5xl mx-auto pt-8">
 
         <div>
-          <h1 className="text-[28px] font-bold text-white mb-2 flex items-center gap-3">
+          <h1 className="text-[28px] font-bold text-[#3A2E27] mb-2 flex items-center gap-3">
             <IconUsers size={28} />
             Community
           </h1>
-          <p className="text-[15px] text-[#999999]">Ask for help when you're struggling. Mentor others once you've made it through.</p>
+          <p className="text-[15px] text-[#5C5C52]">Ask for help when you're struggling. Mentor others once you've made it through.</p>
         </div>
 
         {!isStruggling && !isCertified && (
-          <div className="bg-[#121212] p-10 rounded-2xl border border-[#333333] flex flex-col items-center text-center gap-3">
-            <IconLock size={32} className="text-white/30" />
-            <p className="text-white/70 font-medium">Community unlocks when you enter Struggle (to ask for help) or reach Integrate (to mentor others).</p>
-            <p className="text-white/40 text-sm">Your current stage: <span className="capitalize">{currentStage || 'unknown'}</span></p>
+          <div className="bg-white p-10 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#333333] flex flex-col items-center text-center gap-3">
+            <IconLock size={32} className="text-[#3A2E27]/30" />
+            <p className="text-[#5C5C52] font-medium">Community unlocks when you enter Struggle (to ask for help) or reach Integrate (to mentor others).</p>
+            <p className="text-[#5C5C52] text-sm">Your current stage: <span className="capitalize">{currentStage || 'unknown'}</span></p>
           </div>
         )}
 
@@ -169,25 +169,25 @@ const CommunityPage = () => {
           <div className="space-y-6">
             <h2 className="text-sm text-orange-400 uppercase tracking-widest font-bold">Ask the Community</h2>
 
-            <form onSubmit={handleSubmitPost} className="bg-[#121212] p-6 rounded-2xl border border-[#333333] space-y-4">
+            <form onSubmit={handleSubmitPost} className="bg-white p-6 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#333333] space-y-4">
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="What are you stuck on?"
-                className="w-full bg-black border border-[#333333] text-white placeholder-[#666666] rounded-lg px-4 py-2.5 focus:outline-none focus:border-orange-400/50 transition-colors text-sm"
+                className="w-full bg-white border-[1.5px] border-[#3A2E27] text-[#3A2E27] placeholder-[#5C5C52] rounded-full px-4 py-2.5 focus:outline-none focus:border-[#1D9E75] transition-colors text-sm"
               />
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Describe the setback in detail — someone who's been through it will see this."
                 rows={3}
-                className="w-full bg-black border border-[#333333] text-white placeholder-[#666666] rounded-lg px-4 py-2.5 focus:outline-none focus:border-orange-400/50 transition-colors text-sm resize-none"
+                className="w-full bg-white border-[1.5px] border-[#3A2E27] text-[#3A2E27] placeholder-[#5C5C52] rounded-[12px] px-4 py-3 min-h-[120px] focus:outline-none focus:border-[#1D9E75] transition-colors text-sm resize-none"
               />
               <button
                 type="submit"
                 disabled={posting}
-                className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-black font-bold px-5 py-2.5 rounded-lg text-sm transition-colors"
+                className="flex items-center gap-2 bg-[#FF5A36] hover:bg-[#FF5A36]/90 disabled:opacity-50 text-black font-bold px-5 py-2.5 rounded-full text-sm transition-colors"
               >
                 <IconSend size={16} />
                 {posting ? 'Posting...' : 'Post to Community'}
@@ -196,25 +196,25 @@ const CommunityPage = () => {
 
             <div className="space-y-4">
               {myPosts.length === 0 ? (
-                <p className="text-white/40 text-sm">You haven't posted anything yet.</p>
+                <p className="text-[#5C5C52] text-sm">You haven't posted anything yet.</p>
               ) : (
                 myPosts.map(({ post, reply_count }) => (
-                  <div key={post.id} className="bg-[#121212] p-6 rounded-2xl border border-[#333333]">
+                  <div key={post.id} className="bg-white p-6 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#333333]">
                     <div className="flex items-start justify-between gap-4 mb-2">
-                      <h3 className="text-white font-bold">{post.title}</h3>
+                      <h3 className="text-[#3A2E27] font-bold">{post.title}</h3>
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${post.status === 'resolved' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-orange-500/10 text-orange-400 border border-orange-500/20'}`}>
                         {post.status}
                       </span>
                     </div>
-                    <p className="text-white/60 text-sm leading-relaxed mb-3">{post.description}</p>
+                    <p className="text-[#5C5C52] text-sm leading-relaxed mb-3">{post.description}</p>
                     <div className="flex items-center justify-between">
-                      <p className="text-white/30 text-xs flex items-center gap-1">
+                      <p className="text-[#3A2E27]/30 text-xs flex items-center gap-1">
                         <IconMessage2 size={12} /> {reply_count} {reply_count === 1 ? 'reply' : 'replies'}
                       </p>
                       {post.status === 'open' && (
                         <button
                           onClick={() => handleResolve(post.id)}
-                          className="text-xs text-white/50 hover:text-white flex items-center gap-1"
+                          className="text-xs text-[#5C5C52] hover:text-[#3A2E27] flex items-center gap-1"
                         >
                           <IconCheck size={14} /> Mark resolved
                         </button>
@@ -242,27 +242,27 @@ const CommunityPage = () => {
 
             <div className="space-y-4">
               {mentorFeed.length === 0 ? (
-                <p className="text-white/40 text-sm">No open problems in your domain right now.</p>
+                <p className="text-[#5C5C52] text-sm">No open problems in your domain right now.</p>
               ) : (
                 mentorFeed.map((post) => (
-                  <div key={post.id} className="bg-[#121212] p-6 rounded-2xl border border-[#333333]">
+                  <div key={post.id} className="bg-white p-6 rounded-[20px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#333333]">
                     <div className="flex items-start justify-between gap-4 mb-2">
-                      <h3 className="text-white font-bold">{post.title}</h3>
-                      <span className="text-[10px] font-bold text-white/40 uppercase tracking-wide shrink-0">{post.domain}</span>
+                      <h3 className="text-[#3A2E27] font-bold">{post.title}</h3>
+                      <span className="text-[10px] font-bold text-[#5C5C52] uppercase tracking-wide shrink-0">{post.domain}</span>
                     </div>
-                    <p className="text-white/60 text-sm leading-relaxed mb-4">{post.description}</p>
+                    <p className="text-[#5C5C52] text-sm leading-relaxed mb-4">{post.description}</p>
                     <div className="flex gap-3">
                       <input
                         type="text"
                         value={replyDrafts[post.id] || ''}
                         onChange={(e) => setReplyDrafts(prev => ({ ...prev, [post.id]: e.target.value }))}
                         placeholder="Share how you got through this..."
-                        className="flex-1 bg-black border border-[#333333] text-white placeholder-[#666666] rounded-lg px-4 py-2 focus:outline-none focus:border-emerald-500/50 transition-colors text-sm"
+                        className="flex-1 bg-black border border-[#333333] text-[#3A2E27] placeholder-[#666666] rounded-full px-4 py-2 focus:outline-none focus:border-[#1D9E75]/50 transition-colors text-sm"
                       />
                       <button
                         onClick={() => handleReply(post.id)}
                         disabled={replying === post.id}
-                        className="bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-black font-bold px-4 py-2 rounded-lg text-sm transition-colors"
+                        className="bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-black font-bold px-4 py-2 rounded-full text-sm transition-colors"
                       >
                         Reply
                       </button>
@@ -280,3 +280,11 @@ const CommunityPage = () => {
 };
 
 export default CommunityPage;
+
+
+
+
+
+
+
+

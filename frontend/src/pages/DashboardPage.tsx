@@ -46,9 +46,9 @@ function DashboardPage() {
         {/* Main Feed Column */}
         <div className="xl:col-span-8 flex flex-col">
           {isLoading ? (
-            <div className="w-full h-[340px] rounded-[24px] bg-[#121212] flex flex-col items-center justify-center border border-[#333333]">
+            <div className="w-full h-[340px] rounded-[24px] bg-white flex flex-col items-center justify-center border border-[#333333]">
               <Loader2 className="w-8 h-8 text-[#E50914] animate-spin mb-4" />
-              <p className="text-[#999999] font-medium animate-pulse">DASKALOS is synthesizing your personalized feed (this takes ~15 seconds)...</p>
+              <p className="text-[#5C5C52] font-medium animate-pulse">DASKALOS is synthesizing your personalized feed (this takes ~15 seconds)...</p>
             </div>
           ) : spotlight ? (
             <HeroCurationBanner 
@@ -58,8 +58,8 @@ function DashboardPage() {
               url={spotlight.recommendation.url}
             />
           ) : (
-             <div className="w-full h-[340px] rounded-[24px] bg-[#121212] flex flex-col items-center justify-center border border-[#333333]">
-              <p className="text-[#999999] font-medium">No recommendation available.</p>
+             <div className="w-full h-[340px] rounded-[24px] bg-white flex flex-col items-center justify-center border border-[#333333]">
+              <p className="text-[#5C5C52] font-medium">No recommendation available.</p>
             </div>
           )}
           
@@ -92,3 +92,6 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
+
+
+

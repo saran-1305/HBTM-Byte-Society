@@ -11,8 +11,11 @@ import AnalyticsPage from './features/analytics/AnalyticsPage';
 import ReflectionPage from './features/reflection/ReflectionPage';
 import GrowthPlanPage from './features/growthplan/GrowthPlanPage';
 import CommunityPage from './features/community/CommunityPage';
+import FeaturedPage from './features/featured/FeaturedPage';
 import PublishingPage from './pages/Publishing/PublishingPage';
 import PublishingCallback from './pages/Publishing/PublishingCallback';
+import LifestylePage from './features/lifestyle/LifestylePage';
+import CartPage from './features/cart/CartPage';
 
 function App() {
   return (
@@ -29,10 +32,16 @@ function App() {
       <Route path="/reflection" element={<ReflectionPage />} />
       <Route path="/growth-plan" element={<GrowthPlanPage />} />
       <Route path="/community" element={<CommunityPage />} />
+      <Route path="/featured" element={<FeaturedPage />} />
       <Route path="/publishing" element={<PublishingPage />} />
       <Route path="/publishing/callback" element={<PublishingCallback />} />
+      <Route path="/lifestyle" element={<LifestylePage />} />
+      <Route path="/cart" element={<CartPage />} />
     </Routes>
   );
 }
+
+
+
 
 export default App;

@@ -4,12 +4,12 @@
 
 @layer base {
   :root {
-    --bg-main: #000000;
-    --bg-surface: #121212;
-    --text-primary: #FFFFFF;
-    --text-muted: #999999;
-    --border-subtle: #222222;
-    --accent-primary: #E50914;
+    --bg-main: #FBFAF6;
+    --bg-surface: #FFFFFF;
+    --text-primary: #3A2E27;
+    --text-muted: #5C5C52;
+    --border-subtle: #3A2E27;
+    --accent-primary: #1FA35A;
   }
 
   body {
@@ -25,3 +25,14 @@
     cursor: text;
   }
 }
+
+@layer utilities {
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-ticker {
+    animation: ticker 25s linear infinite;
+  }
+}
+

@@ -76,25 +76,25 @@ const ReflectionPage = () => {
 
         {/* Header Block */}
         <div>
-          <h1 className="text-[28px] font-bold text-white mb-2">Reflection</h1>
-          <p className="text-[15px] text-[#999999]">What you've noticed along the way, in your own words. Every reflection here becomes evidence ARC uses to understand your journey.</p>
+          <h1 className="text-[28px] font-bold text-[#3A2E27] mb-2">Reflection</h1>
+          <p className="text-[15px] text-[#5C5C52]">What you've noticed along the way, in your own words. Every reflection here becomes evidence ARC uses to understand your journey.</p>
         </div>
 
         {/* New Reflection Input */}
-        <div className="bg-[#121212] rounded-xl p-5">
-          <label className="block text-[13px] font-bold text-[#999999] mb-3">Today's reflection</label>
+        <div className="bg-white border-[1.5px] border-[#3A2E27] rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-6">
+          <label className="block text-[13px] font-bold text-[#5C5C52] mb-3">Today's reflection</label>
           <div className="relative">
             <textarea
               value={reflectionText}
               onChange={(e) => setReflectionText(e.target.value)}
               placeholder="What did today's curation bring up for you?"
-              className="w-full min-h-[100px] bg-transparent text-white placeholder-[#666666] border border-transparent rounded-lg p-3 resize-none focus:outline-none focus:border-[#333333] focus:bg-black/50 transition-colors"
+              className="w-full bg-white border-[1.5px] border-[#3A2E27] rounded-[12px] p-4 text-[#3A2E27] placeholder-[#5C5C52] focus:outline-none focus:border-[#1D9E75] transition-colors min-h-[120px] resize-none"
             />
-            <div className="flex justify-end mt-2">
+            <div className="flex justify-end mt-4">
               <button
                 onClick={handleSave}
                 disabled={!reflectionText.trim() || saving}
-                className="bg-white text-black text-sm font-bold px-5 py-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
+                className="bg-[#1FA35A] text-white text-sm font-bold px-5 py-2.5 rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#198549] transition-colors"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -104,36 +104,36 @@ const ReflectionPage = () => {
 
         {/* Past Reflections List */}
         {loading ? (
-          <p className="text-white/40 text-sm">Loading your reflections...</p>
+          <p className="text-[#5C5C52] text-sm">Loading your reflections...</p>
         ) : data.length === 0 ? (
-          <div className="bg-[#121212] rounded-xl p-8 text-center">
-            <p className="text-white/40 text-sm">No reflections yet — the one you write above will be your first.</p>
+          <div className="bg-white border-[1.5px] border-[#3A2E27] rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-8 text-center">
+            <p className="text-[#5C5C52] text-sm">No reflections yet — the one you write above will be your first.</p>
           </div>
         ) : (
           <div className="space-y-10">
             {data.map((group) => (
               <section key={group.month}>
                 <div className="mb-6">
-                  <h2 className="text-[14px] font-bold text-[#999999] mb-2">{group.month}</h2>
+                  <h2 className="text-[14px] font-bold text-[#5C5C52] mb-2">{group.month}</h2>
                   <div className="h-[1px] w-full bg-[#222222]"></div>
                 </div>
 
                 <div className="space-y-4">
                   {group.entries.map((entry) => (
-                    <div key={entry.id} className="bg-[#121212] rounded-xl p-5 relative group hover:bg-[#1A1A1A] transition-colors">
-                      <Quote className="w-5 h-5 text-[#666666] opacity-30 absolute top-5 left-5" />
+                    <div key={entry.id} className="bg-white border-[1.5px] border-[#3A2E27] rounded-[16px] shadow-[0_2px_8px_rgba(0,0,0,0.06)] p-6 relative group transition-colors">
+                      <Quote className="w-5 h-5 text-[#5C5C52] opacity-30 absolute top-6 left-6" />
 
-                      <div className="pl-8">
-                        <p className="text-[15px] text-white leading-[1.6] font-normal mb-6">
+                      <div className="pl-10">
+                        <p className="text-[15px] text-[#3A2E27] leading-[1.6] font-normal mb-6">
                           {entry.text}
                         </p>
 
                         <div className="flex justify-between items-center border-t border-[#222222] pt-3 mt-auto">
-                          <span className="text-[13px] text-[#999999]">
+                          <span className="text-[13px] text-[#5C5C52]">
                             {new Date(entry.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                           </span>
                           {entry.recommendation_id && (
-                            <span className="bg-white/10 text-white text-[11px] font-bold rounded-md px-2 py-0.5">
+                            <span className="bg-white/10 text-[#3A2E27] text-[11px] font-bold rounded-md px-2 py-0.5">
                               In response to a recommendation
                             </span>
                           )}
@@ -153,3 +153,8 @@ const ReflectionPage = () => {
 };
 
 export default ReflectionPage;
+
+
+
+
+
