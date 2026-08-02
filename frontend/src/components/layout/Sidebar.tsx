@@ -26,7 +26,7 @@ const Sidebar = ({ onOpenSettings }: SidebarProps) => {
     { icon: IconHome, label: 'Today', path: '/dashboard' },
     { icon: IconCompass, label: 'Recommendations', path: '/recommendations' },
     { icon: IconBook, label: 'Knowledge', path: '/knowledge' },
-    { icon: IconTarget, label: 'Growth Plan', path: '/growth-plan' },
+    { icon: IconTarget, label: 'Curator - ARC', path: '/growth-plan' },
     { icon: IconUsers, label: 'Community', path: '/community' },
     { icon: IconMessage2, label: 'Reflection', path: '/reflection' },
   ];
