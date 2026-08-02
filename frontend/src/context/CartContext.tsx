@@ -65,7 +65,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   const totalPrice = items.reduce((total, item) => {
-    // Extract numerical value from price string (e.g. "$21.99" -> 21.99)
+    // Extract numerical value from price string — handle ₹ and $ prefixes
     const priceNum = parseFloat(item.price.replace(/[^0-9.]/g, '')) || 0;
     return total + priceNum * item.quantity;
   }, 0);

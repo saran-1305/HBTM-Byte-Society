@@ -43,7 +43,7 @@ class StoreService:
                 {{
                     "title": "Product Title",
                     "description": "Short 1-2 sentence description",
-                    "price": "$XX.XX",
+                    "price": "₹XXXX" (in Indian Rupees INR, e.g. "₹999" or "₹2499"),
                     "brand": "Brand Name",
                     "store_link": "A real amazon search link, e.g. https://www.amazon.com/s?k=keyword",
                     "image_keyword": "A SINGLE simple noun for the image (e.g. journal, planner, desk, bottle, book)",
@@ -74,37 +74,37 @@ class StoreService:
                 {
                     "title": "Atomic Habits",
                     "description": "Build better habits as you explore new possibilities.",
-                    "price": "$21.99",
+                    "price": "₹1799",
                     "brand": "James Clear",
                     "image_url": "https://loremflickr.com/400/400/book?lock=101",
-                    "store_link": "https://www.amazon.com/s?k=atomic+habits",
+                    "store_link": "https://www.amazon.in/s?k=atomic+habits",
                     "match_percentage": 98
                 },
                 {
                     "title": "Minimalist Desk Lamp",
                     "description": "Clean workspace, clear mind. Perfect for late night learning.",
-                    "price": "$45.00",
-                    "brand": "Lumina",
+                    "price": "₹3499",
+                    "brand": "Syska",
                     "image_url": "https://loremflickr.com/400/400/lamp?lock=102",
-                    "store_link": "https://www.amazon.com/s?k=minimalist+desk+lamp",
+                    "store_link": "https://www.amazon.in/s?k=minimalist+desk+lamp",
                     "match_percentage": 92
                 },
                 {
                     "title": "Insulated Water Bottle",
                     "description": "Stay hydrated, stay focused on your journey.",
-                    "price": "$32.99",
-                    "brand": "HydroFlow",
+                    "price": "₹899",
+                    "brand": "Milton",
                     "image_url": "https://loremflickr.com/400/400/bottle?lock=103",
-                    "store_link": "https://www.amazon.com/s?k=insulated+water+bottle",
+                    "store_link": "https://www.amazon.in/s?k=insulated+water+bottle",
                     "match_percentage": 90
                 },
                 {
                     "title": "Blue Light Glasses",
                     "description": "Reduce eye strain during long study or screen time.",
-                    "price": "$29.99",
-                    "brand": "OpticShield",
+                    "price": "₹799",
+                    "brand": "Specta",
                     "image_url": "https://loremflickr.com/400/400/glasses?lock=104",
-                    "store_link": "https://www.amazon.com/s?k=blue+light+glasses",
+                    "store_link": "https://www.amazon.in/s?k=blue+light+glasses",
                     "match_percentage": 88
                 }
             ]
