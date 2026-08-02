@@ -6,13 +6,12 @@ class IdentityProfileBase(BaseModel):
     full_name: Optional[str] = None
     age: Optional[int] = None
     occupation: Optional[str] = None
+    long_term_goal: Optional[str] = None
     aspirations: Optional[List[str]] = None
     habits: Optional[List[str]] = None
-    
-    # Other potential fields that can be expanded later
+    interests: Optional[List[str]] = None
     learning_style: Optional[str] = None
     available_time: Optional[str] = None
-    interests: Optional[List[str]] = None
 
 class IdentityProfileCreate(IdentityProfileBase):
     pass

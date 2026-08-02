@@ -60,7 +60,7 @@ class OpportunityService:
         # Get or create user profile lazily
         arc_service = ArcService(self.db)
         try:
-            profile = await arc_service.initialize_arc(user_id)
+            profile = await arc_service.get_profile(user_id)
             
             id_result = await self.db.execute(select(IdentityProfile).where(IdentityProfile.user_id == user_id))
             identity = id_result.scalar_one_or_none()
@@ -137,4 +137,27 @@ class OpportunityService:
         )
         self.db.add(fb)
         await self.db.commit()
+
+        observation_type = {
+            "applied": "Opportunity Applied",
+            "liked": "Opportunity Liked",
+            "ignored": "Opportunity Ignored",
+            "rejected": "Opportunity Ignored",
+        }.get(feedback)
+
+        if observation_type:
+            from backend.services.arc_service import ArcService
+            arc_service = ArcService(self.db)
+            opp_result = await self.db.execute(select(Opportunity).where(Opportunity.id == opportunity_id))
+            opp = opp_result.scalar_one_or_none()
+            await arc_service.record_observation(
+                user_id=user_id,
+                observation_type=observation_type,
+                source_module="opportunity",
+                title=opp.title if opp else f"Opportunity {opportunity_id}",
+                # Applying is meaningful evidence of execution behaviour and re-evaluates
+                # immediately; ignores/likes are lower-signal and just feed future evaluations.
+                trigger_evaluation=(feedback == "applied"),
+            )
+
         return True

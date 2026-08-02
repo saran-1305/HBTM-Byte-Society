@@ -42,28 +42,46 @@ class OpportunityAgent:
     async def _generate_queries(self, profile: UserProfile, identity: IdentityProfile) -> List[str]:
         prompt = f"""
         You are an expert AI Opportunity Scout.
-        Based on the user's current growth stage and identity, generate 5 highly specific internet search queries to find LIVE and UPCOMING opportunities in these 3 categories ONLY: Hackathons, Internships, and Workshops.
-        
+        Based on the user's current growth stage and identity, generate 5 highly specific internet search queries
+        to find LIVE and UPCOMING real-world opportunities that match their ACTUAL field — not generic tech opportunities.
+
         User Goal: {identity.long_term_goal or 'Growth'}
         Aspirations: {identity.aspirations}
         Interests: {identity.interests}
         Skills: {identity.current_skills}
         User Stage: {profile.current_stage}
-        
-        IMPORTANT: Always append keywords like "upcoming 2026", "open for registration", or "apply now" to ensure live results.
-        Output ONLY a JSON array of strings. Example: ["upcoming AI hackathons 2026 registration", "machine learning internships apply now"]
+
+        First decide what kind of opportunities actually fit this person's field. Examples of the mapping to use:
+        - Technology / engineering / AI goals -> hackathons, internships, coding competitions
+        - Business / entrepreneurship / finance goals -> case competitions, pitch competitions, business plan contests, internships
+        - Dance / music / performing arts goals -> workshops, auditions, showcases, masterclasses, competitions
+        - Design goals -> design challenges, portfolio reviews, workshops
+        - Any other field -> the equivalent real-world competitions, workshops, or internships for THAT field
+
+        Do NOT default to hackathons or tech terms unless the user's goal is actually technology-related.
+        Always append keywords like "upcoming 2026", "open for registration", or "apply now" to ensure live results.
+        Output ONLY a JSON array of strings, each one a search query specific to this user's field.
         """
-        
+
         try:
             _, raw_response = await self.provider_manager.generate_json(prompt)
             cleaned = self._clean_json(raw_response)
             queries = json.loads(cleaned)
-            if isinstance(queries, list):
+            if isinstance(queries, list) and queries:
                 return queries[:5]
-            return ["latest tech hackathons", "online coding competitions"]
+            return self._fallback_queries(identity)
         except Exception as e:
             logger.error(f"Failed to generate queries: {e}")
-            return ["latest opportunities 2026"]
+            return self._fallback_queries(identity)
+
+    def _fallback_queries(self, identity: IdentityProfile) -> List[str]:
+        """Deterministic fallback (LLM unavailable) — still keyed off the user's actual goal, never generic tech terms."""
+        goal = identity.long_term_goal or (identity.aspirations[0] if identity.aspirations else "personal growth")
+        return [
+            f"{goal} competitions 2026 open for registration",
+            f"{goal} workshops upcoming apply now",
+            f"{goal} internships apply now",
+        ]
 
     async def _rank_opportunity(self, raw_opp: RawOpportunity, profile: UserProfile, identity: IdentityProfile) -> OpportunityRank:
         prompt = f"""
@@ -85,7 +103,7 @@ class OpportunityAgent:
             "priority_score": (float 0.0 to 1.0, how urgently they should apply/attend),
             "ai_explanation": (string, "Why this? Why now? How does it align with your goal?"),
             "estimated_impact": (string, short description of expected benefit),
-            "category": (string, e.g. 'Hackathon', 'Workshop', 'Internship', 'Conference'),
+            "category": (string, e.g. 'Hackathon', 'Competition', 'Workshop', 'Internship', 'Audition', 'Conference' — whatever fits this opportunity),
             "difficulty": (string, 'beginner', 'intermediate', 'advanced'),
             "estimated_time": (string, e.g., '3 days', '2 hours')
         }}
@@ -97,11 +115,13 @@ class OpportunityAgent:
             return OpportunityRank(**parsed)
         except Exception as e:
             logger.error(f"Failed to rank opportunity {raw_opp.title}: {e}")
+            # Below the discover_and_rank confidence threshold on purpose: if we can't even
+            # evaluate relevance, we must not let it silently pass through as a match.
             return OpportunityRank(
-                confidence_score=0.5,
-                priority_score=0.5,
-                ai_explanation="This opportunity was found based on your current stage.",
-                estimated_impact="General growth and networking.",
+                confidence_score=0.2,
+                priority_score=0.3,
+                ai_explanation="Could not evaluate this opportunity's relevance to your goal.",
+                estimated_impact="Unknown.",
                 category="General",
                 difficulty="intermediate",
                 estimated_time="Unknown"
@@ -130,14 +150,21 @@ class OpportunityAgent:
         if len(unique_raw) == 0:
             logger.info("Search providers returned 0 results. Generating simulated live opportunities via LLM.")
             prompt = f"""
-            Generate 4 highly realistic, UPCOMING "live" opportunities (Hackathons, Workshops, Internships) for a user at this growth stage:
+            Generate 4 highly realistic, UPCOMING "live" opportunities for a user at this growth stage.
+            The opportunity TYPES must match this user's actual field — do not default to hackathons/tech unless
+            their goal is technology-related. For example: business goals -> case/pitch competitions; dance or
+            performing arts goals -> workshops, auditions, showcases; design goals -> design challenges. Pick
+            whatever real-world opportunity types genuinely fit the goal below.
+
             Stage: {profile.current_stage}
             Goal: {identity.long_term_goal or 'Growth'}
             Aspirations: {identity.aspirations}
             Interests: {identity.interests}
-            
-            IMPORTANT: Do NOT use fake URLs like example.com. Generate realistic URLs pointing to actual platforms like Devpost, Unstop, MLH, LinkedIn, etc. (e.g. 'https://devpost.com/software/ai-hackathon').
-            
+
+            IMPORTANT: Do NOT use fake URLs like example.com. Generate realistic URLs pointing to actual platforms
+            relevant to the opportunity type (e.g. Devpost/MLH/Unstop for tech, Unstop/LinkedIn for business
+            competitions, Eventbrite/Meetup for workshops).
+
             Return ONLY a JSON array of objects with this exact schema:
             [
               {{

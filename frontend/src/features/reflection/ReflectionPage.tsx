@@ -1,70 +1,83 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Quote } from 'lucide-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 
-const INITIAL_MOCK_DATA = [
-  {
-    month: "May 2024",
-    entries: [
-      { id: 1, text: "Today I learned about database indexing and it really clicked! Building the project is challenging but exciting.", date: "May 20", linkedTo: "System design deep dive" },
-      { id: 2, text: "Skipped the reading today. Not feeling it. Might need something different tomorrow.", date: "May 18", linkedTo: "Deep Work reading" },
-      { id: 3, text: "The marathon training article actually stuck with me more than I expected — discipline really does look the same everywhere.", date: "May 12", linkedTo: "Marathon article" },
-    ]
-  },
-  {
-    month: "April 2024",
-    entries: [
-      { id: 4, text: "Struggling to keep up the momentum this week. Need to rethink my evening routine.", date: "April 28", linkedTo: null },
-      { id: 5, text: "Felt very productive today. The Pomodoro technique is working wonders.", date: "April 15", linkedTo: "Pomodoro guide" }
-    ]
+const FALLBACK_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
+
+interface ReflectionEntry {
+  id: string;
+  text: string;
+  recommendation_id: string | null;
+  created_at: string;
+}
+
+interface ReflectionGroup {
+  month: string;
+  entries: ReflectionEntry[];
+}
+
+const groupByMonth = (entries: ReflectionEntry[]): ReflectionGroup[] => {
+  const groups: Record<string, ReflectionEntry[]> = {};
+  for (const entry of entries) {
+    const month = new Date(entry.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    groups[month] = groups[month] || [];
+    groups[month].push(entry);
   }
-];
+  return Object.entries(groups).map(([month, entries]) => ({ month, entries }));
+};
 
 const ReflectionPage = () => {
+  const userId = localStorage.getItem('daskalos_user_id') || FALLBACK_USER_ID;
   const [reflectionText, setReflectionText] = useState('');
-  const [data, setData] = useState(INITIAL_MOCK_DATA);
+  const [entries, setEntries] = useState<ReflectionEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  const handleSave = () => {
-    if (!reflectionText.trim()) return;
-
-    const newEntry = {
-      id: Date.now(),
-      text: reflectionText.trim(),
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      linkedTo: null
-    };
-
-    const currentMonth = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-
-    setData(prevData => {
-      const newData = [...prevData];
-      const monthIndex = newData.findIndex(group => group.month === currentMonth);
-
-      if (monthIndex >= 0) {
-        newData[monthIndex] = {
-          ...newData[monthIndex],
-          entries: [newEntry, ...newData[monthIndex].entries]
-        };
-      } else {
-        newData.unshift({
-          month: currentMonth,
-          entries: [newEntry]
-        });
-      }
-      return newData;
-    });
-
-    setReflectionText('');
+  const fetchReflections = async () => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/activity/${userId}/reflections`);
+      if (res.ok) setEntries(await res.json());
+    } catch (err) {
+      console.error("Failed to fetch reflections", err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchReflections();
+  }, []);
+
+  const handleSave = async () => {
+    if (!reflectionText.trim()) return;
+    setSaving(true);
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/activity/${userId}/reflection`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ biggest_insight: reflectionText.trim() }),
+      });
+      if (res.ok) {
+        setReflectionText('');
+        await fetchReflections();
+      }
+    } catch (err) {
+      console.error("Failed to save reflection", err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const data = groupByMonth(entries);
 
   return (
     <DashboardLayout>
       <div className="space-y-10">
-        
+
         {/* Header Block */}
         <div>
           <h1 className="text-[28px] font-bold text-white mb-2">Reflection</h1>
-          <p className="text-[15px] text-[#999999]">What you've noticed along the way, in your own words.</p>
+          <p className="text-[15px] text-[#999999]">What you've noticed along the way, in your own words. Every reflection here becomes evidence ARC uses to understand your journey.</p>
         </div>
 
         {/* New Reflection Input */}
@@ -80,49 +93,59 @@ const ReflectionPage = () => {
             <div className="flex justify-end mt-2">
               <button
                 onClick={handleSave}
-                disabled={!reflectionText.trim()}
+                disabled={!reflectionText.trim() || saving}
                 className="bg-white text-black text-sm font-bold px-5 py-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/90 transition-colors"
               >
-                Save
+                {saving ? 'Saving...' : 'Save'}
               </button>
             </div>
           </div>
         </div>
 
         {/* Past Reflections List */}
-        <div className="space-y-10">
-          {data.map((group) => (
-            <section key={group.month}>
-              <div className="mb-6">
-                <h2 className="text-[14px] font-bold text-[#999999] mb-2">{group.month}</h2>
-                <div className="h-[1px] w-full bg-[#222222]"></div>
-              </div>
-              
-              <div className="space-y-4">
-                {group.entries.map((entry) => (
-                  <div key={entry.id} className="bg-[#121212] rounded-xl p-5 relative group hover:bg-[#1A1A1A] transition-colors">
-                    <Quote className="w-5 h-5 text-[#666666] opacity-30 absolute top-5 left-5" />
-                    
-                    <div className="pl-8">
-                      <p className="text-[15px] text-white leading-[1.6] font-normal mb-6">
-                        {entry.text}
-                      </p>
-                      
-                      <div className="flex justify-between items-center border-t border-[#222222] pt-3 mt-auto">
-                        <span className="text-[13px] text-[#999999]">{entry.date}</span>
-                        {entry.linkedTo && (
-                          <span className="bg-white/10 text-white text-[11px] font-bold rounded-md px-2 py-0.5">
-                            In response to: {entry.linkedTo}
+        {loading ? (
+          <p className="text-white/40 text-sm">Loading your reflections...</p>
+        ) : data.length === 0 ? (
+          <div className="bg-[#121212] rounded-xl p-8 text-center">
+            <p className="text-white/40 text-sm">No reflections yet — the one you write above will be your first.</p>
+          </div>
+        ) : (
+          <div className="space-y-10">
+            {data.map((group) => (
+              <section key={group.month}>
+                <div className="mb-6">
+                  <h2 className="text-[14px] font-bold text-[#999999] mb-2">{group.month}</h2>
+                  <div className="h-[1px] w-full bg-[#222222]"></div>
+                </div>
+
+                <div className="space-y-4">
+                  {group.entries.map((entry) => (
+                    <div key={entry.id} className="bg-[#121212] rounded-xl p-5 relative group hover:bg-[#1A1A1A] transition-colors">
+                      <Quote className="w-5 h-5 text-[#666666] opacity-30 absolute top-5 left-5" />
+
+                      <div className="pl-8">
+                        <p className="text-[15px] text-white leading-[1.6] font-normal mb-6">
+                          {entry.text}
+                        </p>
+
+                        <div className="flex justify-between items-center border-t border-[#222222] pt-3 mt-auto">
+                          <span className="text-[13px] text-[#999999]">
+                            {new Date(entry.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                           </span>
-                        )}
+                          {entry.recommendation_id && (
+                            <span className="bg-white/10 text-white text-[11px] font-bold rounded-md px-2 py-0.5">
+                              In response to a recommendation
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        )}
 
       </div>
     </DashboardLayout>

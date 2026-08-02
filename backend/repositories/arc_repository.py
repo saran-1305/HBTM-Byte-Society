@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import desc
 
-from backend.models.arc import ARCProfile, ARCObservation, ARCStageHistory
+from backend.models.arc import ARCProfile, ARCObservation, ARCStageHistory, ARCEvaluation
 
 class ARCRepository:
     def __init__(self, db: AsyncSession):
@@ -91,5 +91,71 @@ class ARCStageHistoryRepository:
             select(ARCStageHistory)
             .where(ARCStageHistory.user_id == user_id)
             .order_by(desc(ARCStageHistory.transitioned_at))
+        )
+        return result.scalars().all()
+
+
+class ARCEvaluationRepository:
+    def __init__(self, db: AsyncSession):
+        self.db = db
+
+    async def create(
+        self,
+        user_id: UUID,
+        stage: str,
+        decision: str,
+        ai_observation: str = None,
+        reasoning: str = None,
+        transition_explanation: str = None,
+        suggested_actions: List[Dict[str, Any]] = None,
+        evidence_snapshot: Dict[str, Any] = None,
+        evidence_used: List[str] = None,
+        recent_changes: str = None,
+        strengths: List[str] = None,
+        weaknesses: List[str] = None,
+        current_focus: str = None,
+        behaviour_trend: str = None,
+        hidden_opportunity: str = None,
+        future_prediction: str = None,
+        confidence: str = None,
+    ) -> ARCEvaluation:
+        evaluation = ARCEvaluation(
+            user_id=user_id,
+            stage=stage,
+            decision=decision,
+            ai_observation=ai_observation,
+            reasoning=reasoning,
+            transition_explanation=transition_explanation,
+            suggested_actions=suggested_actions or [],
+            evidence_snapshot=evidence_snapshot,
+            evidence_used=evidence_used or [],
+            recent_changes=recent_changes,
+            strengths=strengths or [],
+            weaknesses=weaknesses or [],
+            current_focus=current_focus,
+            behaviour_trend=behaviour_trend,
+            hidden_opportunity=hidden_opportunity,
+            future_prediction=future_prediction,
+            confidence=confidence,
+        )
+        self.db.add(evaluation)
+        await self.db.flush()
+        return evaluation
+
+    async def get_latest(self, user_id: UUID) -> Optional[ARCEvaluation]:
+        result = await self.db.execute(
+            select(ARCEvaluation)
+            .where(ARCEvaluation.user_id == user_id)
+            .order_by(desc(ARCEvaluation.created_at))
+            .limit(1)
+        )
+        return result.scalar_one_or_none()
+
+    async def get_history(self, user_id: UUID, limit: int = 20) -> List[ARCEvaluation]:
+        result = await self.db.execute(
+            select(ARCEvaluation)
+            .where(ARCEvaluation.user_id == user_id)
+            .order_by(desc(ARCEvaluation.created_at))
+            .limit(limit)
         )
         return result.scalars().all()

@@ -18,10 +18,10 @@ class ReflectionService:
     async def analyze_reflection(self, reflection: ReflectionSubmitRequest) -> ReflectionAnalysis:
         prompt = f"""
 You are an AI Mentor evaluating a student's reflection after they consumed a learning resource.
-Evaluate their reflection based on these three questions:
+Evaluate their reflection based on whatever they shared:
 1. Biggest Insight: {reflection.biggest_insight}
-2. Confusion: {reflection.confusion}
-3. Application: {reflection.application}
+2. Confusion: {reflection.confusion or "(not shared)"}
+3. Application: {reflection.application or "(not shared)"}
 
 Output strictly in JSON matching exactly this schema:
 {{

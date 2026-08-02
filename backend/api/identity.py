@@ -36,3 +36,6 @@ async def upsert_identity(user_id: str, profile_data: IdentityProfileCreate, db:
         return profile
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        import traceback
+        raise HTTPException(status_code=500, detail=traceback.format_exc())

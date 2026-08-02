@@ -4,11 +4,22 @@ from typing import List, Dict, Any
 from .base import BaseOpportunityProvider, RawOpportunity
 from backend.models.opportunity import OpportunityProviderType
 
+# Generic scouting/timing vocabulary that appears in almost every opportunity's boilerplate
+# (deadlines, status, years) — matching on these produces false positives regardless of domain.
+_GENERIC_STOPWORDS = {
+    'latest', 'upcoming', 'apply', 'registration', 'register', 'open', 'live', 'now',
+    'deadline', 'submission', 'days', 'left', 'about', 'month', 'months', 'week', 'weeks',
+    'from', 'this', 'that', 'with', 'your', 'today', 'event', 'events',
+}
+
+
 class DevpostProvider(BaseOpportunityProvider):
     """
     A live search provider that fetches real hackathons from Devpost API.
+    Devpost is a tech-hackathon-only platform, so relevance filtering here must be strict:
+    for a non-tech goal (business, dance, etc.) this should correctly return nothing.
     """
-    
+
     @property
     def provider_name(self) -> str:
         # Reusing DUCKDUCKGO type for now, or just use a generic name
@@ -32,18 +43,22 @@ class DevpostProvider(BaseOpportunityProvider):
                         themes = [t.get("name") for t in h.get("themes", [])]
                         desc = f"Themes: {', '.join(themes)}. {h.get('time_left_to_submission', '')}"
                         
-                        # Simple keyword matching to ensure relevance to the queries
+                        # Keyword matching to ensure relevance to the queries. Only substantive,
+                        # domain-specific terms count — generic scouting vocabulary and bare years
+                        # (e.g. "2026", "open") appear in nearly every hackathon's boilerplate and
+                        # would otherwise cause false-positive matches for unrelated goals.
                         combined_text = (title + " " + desc).lower()
                         is_relevant = False
                         for query in queries:
-                            # Extract key terms from query
-                            terms = [t for t in query.lower().split() if len(t) > 3 and t not in ['latest', 'upcoming', 'apply', 'registration']]
+                            terms = [
+                                t for t in query.lower().split()
+                                if len(t) > 3 and not t.isdigit() and t not in _GENERIC_STOPWORDS
+                            ]
                             if any(term in combined_text for term in terms):
                                 is_relevant = True
                                 break
-                        
-                        # If no specific queries match, but we have hackathons, just pass them and let LLM ranker filter
-                        if title and url and (is_relevant or len(results) < 5):
+
+                        if title and url and is_relevant:
                             results.append(RawOpportunity(
                                 title=title,
                                 description=desc,

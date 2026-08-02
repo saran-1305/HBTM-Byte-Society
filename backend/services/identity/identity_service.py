@@ -46,6 +46,11 @@ class IdentityService:
             existing_profile.occupation = profile_data.occupation
             existing_profile.aspirations = profile_data.aspirations
             existing_profile.habits = profile_data.habits
+            existing_profile.interests = profile_data.interests
+            existing_profile.learning_style = profile_data.learning_style
+            existing_profile.available_time = profile_data.available_time
+            if profile_data.long_term_goal:
+                existing_profile.long_term_goal = profile_data.long_term_goal
             existing_profile.onboarding_completed = True
             await self.db.commit()
             await self.db.refresh(existing_profile)
@@ -56,8 +61,12 @@ class IdentityService:
                 full_name=profile_data.full_name,
                 age=profile_data.age,
                 occupation=profile_data.occupation,
+                long_term_goal=profile_data.long_term_goal,
                 aspirations=profile_data.aspirations,
                 habits=profile_data.habits,
+                interests=profile_data.interests,
+                learning_style=profile_data.learning_style,
+                available_time=profile_data.available_time,
                 onboarding_completed=True
             )
             self.db.add(new_profile)

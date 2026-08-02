@@ -3,14 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # Import routers
 from backend.api import auth, onboarding, identity, knowledge, publishing, opportunities
-from backend.api import recommendation_router, arc_router, curator_router, activity_router
+from backend.api import recommendation_router, arc_router, curator_router, activity_router, community_router
 from backend.publishing.scheduler.core import get_scheduler
 from backend.opportunities.scheduler_jobs import schedule_discovery_jobs
 
 app = FastAPI(
-    title="Personal Growth AI",
-    description="Agentic AI Curator API",
-    version="1.0.0"
+    title="DASKALOS API",
+    description="The backend engine for the HBTM Byte Society",
+    version="0.1.0",
+    debug=True
 )
 
 # CORS configuration
@@ -34,6 +35,7 @@ app.include_router(recommendation_router.router, prefix="/api/recommendation")
 app.include_router(arc_router.router, prefix="/api/arc")
 app.include_router(curator_router.router, prefix="/api/curator")
 app.include_router(activity_router.router, prefix="/api/activity")
+app.include_router(community_router.router, prefix="/api/community")
 
 @app.on_event("startup")
 async def startup_event():

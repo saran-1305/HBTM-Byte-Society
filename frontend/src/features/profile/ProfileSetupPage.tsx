@@ -54,6 +54,7 @@ const ProfileSetupPage = () => {
         full_name: name,
         age: age ? parseInt(age) : null,
         occupation: role,
+        long_term_goal: aspiration,
         aspirations: [aspiration],
         habits: habits
       };

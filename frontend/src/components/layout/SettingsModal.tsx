@@ -9,7 +9,7 @@ interface SettingsModalProps {
 
 const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }) => {
   const [activeTab, setActiveTab] = useState<'profile' | 'preferences'>('profile');
-  
+
   // Profile State
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -17,7 +17,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
   const [aspiration, setAspiration] = useState('');
   const [habits, setHabits] = useState<string[]>([]);
   const [habitInput, setHabitInput] = useState('');
-  
+
   // UI State
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -71,6 +71,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
         full_name: name,
         age: age ? parseInt(age) : null,
         occupation: role,
+        long_term_goal: aspiration,
         aspirations: aspiration ? [aspiration] : [],
         habits: habits
       };
@@ -98,30 +99,28 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-fade-in">
       <div className="bg-[#121212] border border-[#333333] rounded-2xl w-full max-w-4xl h-[80vh] flex overflow-hidden shadow-2xl relative">
-        
+
         {/* Left Sidebar Menu */}
         <div className="w-64 bg-[#0A0A0A] border-r border-[#333333] p-6 flex flex-col">
           <h2 className="text-xl font-bold text-white mb-8">Settings</h2>
-          
+
           <div className="space-y-2">
-            <button 
+            <button
               onClick={() => setActiveTab('profile')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm ${
-                activeTab === 'profile' 
-                  ? 'bg-white/10 text-white shadow-inner' 
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm ${activeTab === 'profile'
+                  ? 'bg-white/10 text-white shadow-inner'
                   : 'text-[#999999] hover:bg-white/5 hover:text-white'
-              }`}
+                }`}
             >
               <IconUser size={18} />
               Identity Profile
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab('preferences')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm ${
-                activeTab === 'preferences' 
-                  ? 'bg-white/10 text-white shadow-inner' 
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm ${activeTab === 'preferences'
+                  ? 'bg-white/10 text-white shadow-inner'
                   : 'text-[#999999] hover:bg-white/5 hover:text-white'
-              }`}
+                }`}
             >
               <IconSettings size={18} />
               App Preferences
@@ -131,7 +130,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col relative">
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-6 right-6 text-[#999999] hover:text-white transition-colors z-10"
           >
@@ -143,7 +142,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
               <div className="max-w-2xl animate-fade-in">
                 <h3 className="text-3xl font-bold text-white mb-2">Identity Profile</h3>
                 <p className="text-[#999999] mb-10">Manage the core identity that DASKALOS uses to personalize your growth journey.</p>
-                
+
                 {isLoading ? (
                   <div className="flex items-center justify-center h-48">
                     <span className="w-8 h-8 border-2 border-[#333333] border-t-white rounded-full animate-spin"></span>
@@ -220,14 +219,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
                     </div>
 
                     <div className="pt-6 flex justify-end gap-4 border-t border-[#333333]">
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={onClose}
                         className="px-6 py-3 rounded-xl font-bold text-[#999999] hover:text-white transition-colors"
                       >
                         Cancel
                       </button>
-                      <button 
+                      <button
                         type="submit"
                         disabled={isSaving}
                         className="px-8 py-3 bg-white hover:bg-gray-200 text-black font-bold rounded-xl transition-all shadow-lg flex items-center gap-2"
@@ -244,7 +243,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
               <div className="max-w-2xl animate-fade-in">
                 <h3 className="text-3xl font-bold text-white mb-2">App Preferences</h3>
                 <p className="text-[#999999] mb-10">Customize your DASKALOS experience.</p>
-                
+
                 <div className="space-y-8">
                   {/* Theme Settings (Mock) */}
                   <div className="bg-[#000000] border border-[#333333] rounded-2xl p-6">
@@ -257,7 +256,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
                         <p className="text-[#999999] text-sm">Choose how DASKALOS looks.</p>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4 mt-6">
                       <div className="border-2 border-white rounded-xl p-4 flex flex-col items-center justify-center gap-3 cursor-pointer">
                         <div className="w-12 h-12 rounded-full bg-black border border-[#333333]"></div>
@@ -281,7 +280,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, userId }
                         <p className="text-[#999999] text-sm">Manage how we communicate with you.</p>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-[#121212] rounded-xl border border-[#333333]">
                         <div>

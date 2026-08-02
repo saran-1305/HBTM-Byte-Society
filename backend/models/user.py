@@ -14,3 +14,7 @@ class User(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     recommendations = relationship("RecommendationHistory", back_populates="user")
+
+# Ensure relationships are registered in the metadata
+from backend.models.recommendation import RecommendationHistory
+from backend.models.identity_profile import IdentityProfile

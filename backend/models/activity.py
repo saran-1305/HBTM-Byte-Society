@@ -21,7 +21,7 @@ class ActivityLog(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
-    recommendation_id = Column(String, nullable=False)
+    recommendation_id = Column(String, nullable=True)
     action = Column(SQLAlchemyEnum(ActivityAction), nullable=False)
     
     completed = Column(Boolean, default=False)

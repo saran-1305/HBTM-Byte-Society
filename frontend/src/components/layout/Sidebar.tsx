@@ -1,15 +1,16 @@
 import React from 'react';
-import { 
-  IconHome, 
-  IconCompass, 
-  IconBook, 
-  IconTarget, 
-  IconMessage2, 
-  IconChartBar, 
-  IconUser, 
+import {
+  IconHome,
+  IconCompass,
+  IconBook,
+  IconTarget,
+  IconMessage2,
+  IconChartBar,
+  IconUser,
   IconSettings,
   IconChevronRight,
-  IconShare
+  IconShare,
+  IconUsers
 } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -26,6 +27,7 @@ const Sidebar = ({ onOpenSettings }: SidebarProps) => {
     { icon: IconCompass, label: 'Recommendations', path: '/recommendations' },
     { icon: IconBook, label: 'Knowledge', path: '/knowledge' },
     { icon: IconTarget, label: 'Growth Plan', path: '/growth-plan' },
+    { icon: IconUsers, label: 'Community', path: '/community' },
     { icon: IconMessage2, label: 'Reflection', path: '/reflection' },
     { icon: IconChartBar, label: 'Analytics', path: '/analytics' },
     { icon: IconShare, label: 'Publishing', path: '/publishing' },

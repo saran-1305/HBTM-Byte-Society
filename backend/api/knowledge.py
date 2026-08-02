@@ -1,13 +1,39 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import List, Any
+import asyncio
 import uuid
 
-from backend.config.database import get_sync_db
+from backend.config.database import get_sync_db, AsyncSessionLocal
 from backend.utils.auth import get_current_user_id
 from backend.knowledge.service import KnowledgeService
 
 router = APIRouter(prefix="/api/knowledge", tags=["knowledge"])
+
+
+def _notify_arc_knowledge_observation(user_id: str, knowledge_id: str, title: str) -> None:
+    """
+    Bridges this router's sync SQLAlchemy session to the async ArcService.
+    Runs on FastAPI's threadpool (this module's routes are sync `def`s), so a
+    fresh event loop here is safe. Best-effort: never let ARC bookkeeping
+    break a bookmark request.
+    """
+    async def _run():
+        from backend.services.arc_service import ArcService
+        async with AsyncSessionLocal() as async_db:
+            arc_service = ArcService(async_db)
+            await arc_service.record_observation(
+                user_id=uuid.UUID(user_id),
+                observation_type="Knowledge Completed",
+                source_module="knowledge",
+                title=title,
+                trigger_evaluation=True,
+            )
+
+    try:
+        asyncio.run(_run())
+    except Exception:
+        pass
 
 @router.get("")
 def get_knowledge(
@@ -74,6 +100,10 @@ def bookmark_knowledge(
 ):
     service = KnowledgeService(db)
     service.repo.add_bookmark(user_id, knowledge_id, notes)
+
+    details = service.get_details(knowledge_id)
+    _notify_arc_knowledge_observation(user_id, knowledge_id, details["title"] if details else knowledge_id)
+
     return {"message": "Bookmarked"}
 
 @router.delete("/bookmark")
