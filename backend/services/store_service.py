@@ -32,18 +32,20 @@ class StoreService:
         Their interests are: {', '.join(interests)}.
         Their long-term goal is: {long_term_goal}.
         
-        Generate exactly 8 highly relevant, real-world physical products (books, wellness tools, desk accessories, productivity gear) that someone in this stage would buy.
+        Generate exactly 8 highly relevant, real-world physical products that someone in this stage would buy.
+        CRITICAL RULES:
+        1. MAXIMUM 2 books allowed.
+        2. The other 6 items MUST be physical gear (e.g. wellness tools, desk accessories, productivity gadgets, apparel, fitness equipment, journals).
         
         Return ONLY valid JSON matching this exact structure:
         {{
             "products": [
                 {{
-                    "title": "Product Title (e.g. Atomic Habits)",
-                    "description": "Short 1-2 sentence description highlighting the material or benefit",
+                    "title": "Product Title",
+                    "description": "Short 1-2 sentence description",
                     "price": "$XX.XX",
-                    "brand": "Brand Name or Author",
-                    "image_url": "URL to a realistic image or leave as empty string if unsure",
-                    "store_link": "A real amazon search link, e.g. https://www.amazon.com/s?k=atomic+habits",
+                    "brand": "Brand Name",
+                    "store_link": "A real amazon search link, e.g. https://www.amazon.com/s?k=keyword",
                     "match_percentage": 95
                 }}
             ]
@@ -110,12 +112,12 @@ class StoreService:
         parsed_products = []
         for p in products:
             try:
-                # Add default images based on category if empty or if using dead unsplash service
                 import urllib.parse
-                img_url = p.get("image_url", "")
-                if not img_url or "unsplash.com" in img_url:
-                    safe_title = urllib.parse.quote(p.get("title", "Product Image"))
-                    p["image_url"] = f"https://placehold.co/400x400/eeeeee/333333?text={safe_title}"
+                # Force placeholder image since LLMs hallucinate image URLs 99% of the time
+                safe_title = urllib.parse.quote(p.get("title", "Product Image"))
+                # Use plus instead of %20 for placehold.co text
+                safe_title = safe_title.replace("%20", "+")
+                p["image_url"] = f"https://placehold.co/400x400/eeeeee/333333?text={safe_title}"
                 
                 parsed_products.append(StoreProduct(**p))
             except Exception:
