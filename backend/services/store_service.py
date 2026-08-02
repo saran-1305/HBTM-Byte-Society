@@ -4,14 +4,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.services.provider_manager import ProviderManager
 from backend.schemas.store import StoreProduct, StoreRecommendationResponse
 from backend.agents.identity.repository import IdentityRepository
-from backend.repositories.arc_repository import ArcRepository
+from backend.repositories.arc_repository import ARCRepository
 import uuid
 
 class StoreService:
     def __init__(self, db: AsyncSession):
         self.db = db
         self.identity_repo = IdentityRepository(db)
-        self.arc_repo = ArcRepository(db)
+        self.arc_repo = ARCRepository(db)
         self.provider = ProviderManager()
 
     async def get_store_recommendations(self, user_id: str) -> StoreRecommendationResponse:
