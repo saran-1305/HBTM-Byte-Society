@@ -1,4 +1,6 @@
-import React, { ReactNode, useState } from 'react';
+import React from 'react';
+import type { ReactNode } from 'react';
+import { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import SettingsModal from './SettingsModal';
