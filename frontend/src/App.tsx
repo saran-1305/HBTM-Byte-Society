@@ -12,6 +12,7 @@ import ReflectionPage from './features/reflection/ReflectionPage';
 import GrowthPlanPage from './features/growthplan/GrowthPlanPage';
 import CommunityPage from './features/community/CommunityPage';
 import PublishingPage from './pages/Publishing/PublishingPage';
+import LifestylePage from './features/lifestyle/LifestylePage';
 import PublishingCallback from './pages/Publishing/PublishingCallback';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
       <Route path="/growth-plan" element={<GrowthPlanPage />} />
       <Route path="/community" element={<CommunityPage />} />
       <Route path="/publishing" element={<PublishingPage />} />
+      <Route path="/lifestyle" element={<LifestylePage />} />
       <Route path="/publishing/callback" element={<PublishingCallback />} />
     </Routes>
   );

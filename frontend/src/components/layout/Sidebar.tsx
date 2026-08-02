@@ -10,7 +10,8 @@ import {
   IconSettings,
   IconChevronRight,
   IconShare,
-  IconUsers
+  IconUsers,
+  IconHanger
 } from '@tabler/icons-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ const Sidebar = ({ onOpenSettings }: SidebarProps) => {
     { icon: IconCompass, label: 'Recommendations', path: '/recommendations' },
     { icon: IconBook, label: 'Knowledge', path: '/knowledge' },
     { icon: IconTarget, label: 'Curator - ARC', path: '/growth-plan' },
+    { icon: IconHanger, label: 'Lifestyle', path: '/lifestyle' },
     { icon: IconUsers, label: 'Community', path: '/community' },
     { icon: IconMessage2, label: 'Reflection', path: '/reflection' },
   ];
