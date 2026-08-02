@@ -75,7 +75,7 @@ class StoreService:
                     "description": "Build better habits as you explore new possibilities.",
                     "price": "$21.99",
                     "brand": "James Clear",
-                    "image_url": "https://loremflickr.com/400/400/Atomic,Habits,book?lock=101",
+                    "image_url": "https://picsum.photos/seed/AtomicHabits/400/400",
                     "store_link": "https://www.amazon.com/s?k=atomic+habits",
                     "match_percentage": 98
                 },
@@ -84,7 +84,7 @@ class StoreService:
                     "description": "Clean workspace, clear mind. Perfect for late night learning.",
                     "price": "$45.00",
                     "brand": "Lumina",
-                    "image_url": "https://loremflickr.com/400/400/Minimalist,Desk,Lamp?lock=102",
+                    "image_url": "https://picsum.photos/seed/DeskLamp/400/400",
                     "store_link": "https://www.amazon.com/s?k=minimalist+desk+lamp",
                     "match_percentage": 92
                 },
@@ -93,7 +93,7 @@ class StoreService:
                     "description": "Stay hydrated, stay focused on your journey.",
                     "price": "$32.99",
                     "brand": "HydroFlow",
-                    "image_url": "https://loremflickr.com/400/400/Insulated,Water,Bottle?lock=103",
+                    "image_url": "https://picsum.photos/seed/WaterBottle/400/400",
                     "store_link": "https://www.amazon.com/s?k=insulated+water+bottle",
                     "match_percentage": 90
                 },
@@ -102,7 +102,7 @@ class StoreService:
                     "description": "Reduce eye strain during long study or screen time.",
                     "price": "$29.99",
                     "brand": "OpticShield",
-                    "image_url": "https://loremflickr.com/400/400/Blue,Light,Glasses?lock=104",
+                    "image_url": "https://picsum.photos/seed/Glasses/400/400",
                     "store_link": "https://www.amazon.com/s?k=blue+light+glasses",
                     "match_percentage": 88
                 }
@@ -114,13 +114,10 @@ class StoreService:
             try:
                 import urllib.parse
                 import random
-                # Use LoremFlickr to fetch realistic product photography based on title keywords
-                # Replace spaces with commas for the keyword search
-                keywords = p.get("title", "product").replace(" ", ",")
-                safe_keywords = urllib.parse.quote(keywords)
-                # Add a unique lock parameter so the browser doesn't cache and duplicate the same image
-                lock_id = random.randint(1, 10000)
-                p["image_url"] = f"https://loremflickr.com/400/400/{safe_keywords},product?lock={lock_id}"
+                # Use Picsum for high-quality random photography to ensure diverse images
+                # (LoremFlickr defaults to a single cat image if it can't match all keywords)
+                seed_id = p.get("title", "product").replace(" ", "") + str(random.randint(1, 1000))
+                p["image_url"] = f"https://picsum.photos/seed/{seed_id}/400/400"
                 
                 parsed_products.append(StoreProduct(**p))
             except Exception:
