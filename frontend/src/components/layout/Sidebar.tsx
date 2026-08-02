@@ -29,8 +29,6 @@ const Sidebar = ({ onOpenSettings }: SidebarProps) => {
     { icon: IconTarget, label: 'Growth Plan', path: '/growth-plan' },
     { icon: IconUsers, label: 'Community', path: '/community' },
     { icon: IconMessage2, label: 'Reflection', path: '/reflection' },
-    { icon: IconChartBar, label: 'Analytics', path: '/analytics' },
-    { icon: IconShare, label: 'Publishing', path: '/publishing' },
   ];
 
   return (
@@ -71,21 +69,18 @@ const Sidebar = ({ onOpenSettings }: SidebarProps) => {
       <div className="h-[1px] w-[calc(100%-2rem)] mx-auto bg-[#1A1A1A] mb-6"></div>
 
       {/* Account Section */}
-      <nav className="px-4 space-y-1 flex-1">
-        <button
-          onClick={onOpenSettings}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors text-[#9CA3AF] hover:bg-[#1A1A1A] hover:text-white"
+      <nav className="px-4 space-y-1 flex-1 flex flex-col justify-end pb-2">
+        <Link
+          to="/analytics"
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors ${
+            currentPath === '/analytics'
+              ? 'bg-[#2A2A2A] text-white' 
+              : 'text-[#9CA3AF] hover:bg-[#1A1A1A] hover:text-white'
+          }`}
         >
-          <IconUser stroke={1.5} className="w-[20px] h-[20px]" />
-          Identity
-        </button>
-        <button 
-          onClick={onOpenSettings}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors text-[#9CA3AF] hover:bg-[#1A1A1A] hover:text-white"
-        >
-          <IconSettings stroke={1.5} className="w-[20px] h-[20px]" />
-          Settings
-        </button>
+          <IconChartBar stroke={currentPath === '/analytics' ? 2 : 1.5} className="w-[20px] h-[20px]" />
+          Analytics
+        </Link>
       </nav>
 
       {/* Bottom Pinned User Card */}
