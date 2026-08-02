@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # Import routers
 from backend.api import auth, onboarding, identity, knowledge, publishing, opportunities
-from backend.api import recommendation_router, arc_router, curator_router, activity_router, community_router
+from backend.api import auth, onboarding, identity, knowledge, publishing, opportunities, recommendation_router, arc_router, curator_router, activity_router, community_router, store_router
 from backend.publishing.scheduler.core import get_scheduler
 from backend.opportunities.scheduler_jobs import schedule_discovery_jobs
 
@@ -17,7 +17,7 @@ app = FastAPI(
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this to frontend URL
+    allow_origins=["http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://127.0.0.1:5173", "http://127.0.0.1:5174", "http://127.0.0.1:5175"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,6 +36,7 @@ app.include_router(arc_router.router, prefix="/api/arc")
 app.include_router(curator_router.router, prefix="/api/curator")
 app.include_router(activity_router.router, prefix="/api/activity")
 app.include_router(community_router.router, prefix="/api/community")
+app.include_router(store_router.router)
 
 @app.on_event("startup")
 async def startup_event():
