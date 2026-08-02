@@ -73,7 +73,7 @@ class StoreService:
                     "description": "Build better habits as you explore new possibilities.",
                     "price": "$21.99",
                     "brand": "James Clear",
-                    "image_url": "https://source.unsplash.com/400x400/?book,habit",
+                    "image_url": "https://placehold.co/400x400/eeeeee/333333?text=Atomic+Habits",
                     "store_link": "https://www.amazon.com/s?k=atomic+habits",
                     "match_percentage": 98
                 },
@@ -82,7 +82,7 @@ class StoreService:
                     "description": "Clean workspace, clear mind. Perfect for late night learning.",
                     "price": "$45.00",
                     "brand": "Lumina",
-                    "image_url": "https://source.unsplash.com/400x400/?desk,lamp",
+                    "image_url": "https://placehold.co/400x400/eeeeee/333333?text=Minimalist+Desk+Lamp",
                     "store_link": "https://www.amazon.com/s?k=minimalist+desk+lamp",
                     "match_percentage": 92
                 },
@@ -91,7 +91,7 @@ class StoreService:
                     "description": "Stay hydrated, stay focused on your journey.",
                     "price": "$32.99",
                     "brand": "HydroFlow",
-                    "image_url": "https://source.unsplash.com/400x400/?water,bottle,black",
+                    "image_url": "https://placehold.co/400x400/eeeeee/333333?text=Insulated+Water+Bottle",
                     "store_link": "https://www.amazon.com/s?k=insulated+water+bottle",
                     "match_percentage": 90
                 },
@@ -100,7 +100,7 @@ class StoreService:
                     "description": "Reduce eye strain during long study or screen time.",
                     "price": "$29.99",
                     "brand": "OpticShield",
-                    "image_url": "https://source.unsplash.com/400x400/?glasses",
+                    "image_url": "https://placehold.co/400x400/eeeeee/333333?text=Blue+Light+Glasses",
                     "store_link": "https://www.amazon.com/s?k=blue+light+glasses",
                     "match_percentage": 88
                 }
@@ -110,10 +110,12 @@ class StoreService:
         parsed_products = []
         for p in products:
             try:
-                # Add default images based on category if empty
-                if not p.get("image_url"):
-                    q = p.get("title", "").replace(" ", "+")
-                    p["image_url"] = f"https://source.unsplash.com/400x400/?{q},product"
+                # Add default images based on category if empty or if using dead unsplash service
+                import urllib.parse
+                img_url = p.get("image_url", "")
+                if not img_url or "unsplash.com" in img_url:
+                    safe_title = urllib.parse.quote(p.get("title", "Product Image"))
+                    p["image_url"] = f"https://placehold.co/400x400/eeeeee/333333?text={safe_title}"
                 
                 parsed_products.append(StoreProduct(**p))
             except Exception:
