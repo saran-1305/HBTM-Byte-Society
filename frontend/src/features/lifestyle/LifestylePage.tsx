@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IconShoppingCart, IconHeart, IconChevronDown, IconFilter, IconCheck } from '@tabler/icons-react';
+import { IconShoppingCart, IconHeart, IconChevronDown, IconFilter, IconCheck, IconActivity } from '@tabler/icons-react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 
 const FALLBACK_USER_ID = "123e4567-e89b-12d3-a456-426614174000";
