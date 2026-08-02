@@ -75,7 +75,7 @@ class StoreService:
                     "description": "Build better habits as you explore new possibilities.",
                     "price": "$21.99",
                     "brand": "James Clear",
-                    "image_url": "https://placehold.co/400x400/eeeeee/333333?text=Atomic+Habits",
+                    "image_url": "https://loremflickr.com/400/400/Atomic,Habits,book",
                     "store_link": "https://www.amazon.com/s?k=atomic+habits",
                     "match_percentage": 98
                 },
@@ -84,7 +84,7 @@ class StoreService:
                     "description": "Clean workspace, clear mind. Perfect for late night learning.",
                     "price": "$45.00",
                     "brand": "Lumina",
-                    "image_url": "https://placehold.co/400x400/eeeeee/333333?text=Minimalist+Desk+Lamp",
+                    "image_url": "https://loremflickr.com/400/400/Minimalist,Desk,Lamp",
                     "store_link": "https://www.amazon.com/s?k=minimalist+desk+lamp",
                     "match_percentage": 92
                 },
@@ -93,7 +93,7 @@ class StoreService:
                     "description": "Stay hydrated, stay focused on your journey.",
                     "price": "$32.99",
                     "brand": "HydroFlow",
-                    "image_url": "https://placehold.co/400x400/eeeeee/333333?text=Insulated+Water+Bottle",
+                    "image_url": "https://loremflickr.com/400/400/Insulated,Water,Bottle",
                     "store_link": "https://www.amazon.com/s?k=insulated+water+bottle",
                     "match_percentage": 90
                 },
@@ -102,7 +102,7 @@ class StoreService:
                     "description": "Reduce eye strain during long study or screen time.",
                     "price": "$29.99",
                     "brand": "OpticShield",
-                    "image_url": "https://placehold.co/400x400/eeeeee/333333?text=Blue+Light+Glasses",
+                    "image_url": "https://loremflickr.com/400/400/Blue,Light,Glasses",
                     "store_link": "https://www.amazon.com/s?k=blue+light+glasses",
                     "match_percentage": 88
                 }
@@ -113,11 +113,11 @@ class StoreService:
         for p in products:
             try:
                 import urllib.parse
-                # Force placeholder image since LLMs hallucinate image URLs 99% of the time
-                safe_title = urllib.parse.quote(p.get("title", "Product Image"))
-                # Use plus instead of %20 for placehold.co text
-                safe_title = safe_title.replace("%20", "+")
-                p["image_url"] = f"https://placehold.co/400x400/eeeeee/333333?text={safe_title}"
+                # Use LoremFlickr to fetch realistic product photography based on title keywords
+                # Replace spaces with commas for the keyword search
+                keywords = p.get("title", "product").replace(" ", ",")
+                safe_keywords = urllib.parse.quote(keywords)
+                p["image_url"] = f"https://loremflickr.com/400/400/{safe_keywords},product"
                 
                 parsed_products.append(StoreProduct(**p))
             except Exception:

@@ -98,7 +98,7 @@ const LifestylePage = () => {
                     </div>
                   )}
                   
-                  <img src={p.image_url} alt={p.title} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500" />
+                  <img src={p.image_url} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 
                 {/* Details */}
